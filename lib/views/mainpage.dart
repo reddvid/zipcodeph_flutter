@@ -67,11 +67,11 @@ class _MainMenuState extends State<MainMenu> {
                 child: Column(
                   children: [
                     ncr(),
-                    divider(),
+                    const Spacer(),
                     luzon(),
-                    divider(),
+                    const Spacer(),
                     visayas(),
-                    divider(),
+                    const Spacer(),
                     mindanao()
                   ],
                 ),
