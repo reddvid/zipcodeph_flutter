@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -64,18 +65,20 @@ class _MainMenuState extends State<MainMenu> {
               ),
               Expanded(
                   child: SingleChildScrollView(
+                      child: Container(
                 child: Column(
                   children: [
                     ncr(),
-                    const Spacer(),
+                    divider(),
                     luzon(),
-                    const Spacer(),
+                    divider(),
                     visayas(),
-                    const Spacer(),
-                    mindanao()
+                    divider(),
+                    mindanao(),
+                    enddivider()
                   ],
                 ),
-              ))
+              )))
             ],
           )),
     ));
@@ -144,31 +147,90 @@ class _MainMenuState extends State<MainMenu> {
 
   ncr() {
     return Stack(
-      children: [bgImage('assets/images/ncr.jpg'), menuTitle('Metro Manila')],
+      children: [
+        bgImage('assets/images/ncr.jpg'),
+        ClipRRect(
+          // Clip it cleanly.
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+            child: Container(
+              color: Colors.grey.withOpacity(0.1),
+              alignment: Alignment.center,
+              child: menuTitle('Metro Manila'),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
   luzon() {
     return Stack(
-      children: [bgImage('assets/images/ncr.jpg'), menuTitle('Luzon')],
+      children: [
+        bgImage('assets/images/ncr.jpg'),
+        ClipRRect(
+          // Clip it cleanly.
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+            child: Container(
+              color: Colors.grey.withOpacity(0.1),
+              alignment: Alignment.center,
+              child: menuTitle('Luzon'),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
   visayas() {
     return Stack(
-      children: [bgImage('assets/images/ncr.jpg'), menuTitle('Visayas')],
+      children: [
+        bgImage('assets/images/ncr.jpg'),
+        ClipRRect(
+          // Clip it cleanly.
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+            child: Container(
+              color: Colors.grey.withOpacity(0.1),
+              alignment: Alignment.center,
+              child: menuTitle('Visayas'),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
   mindanao() {
     return Stack(
-      children: [bgImage('assets/images/ncr.jpg'), menuTitle('Mindanao')],
+      children: [
+        bgImage('assets/images/ncr.jpg'),
+        ClipRRect(
+          // Clip it cleanly.
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+            child: Container(
+              color: Colors.grey.withOpacity(0.1),
+              alignment: Alignment.center,
+              child: menuTitle('Mindanao'),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
   divider() {
     return const Divider(
       height: 10,
+      color: Colors.transparent,
+    );
+  }
+
+  enddivider() {
+    return const Divider(
+      height: 40,
       color: Colors.transparent,
     );
   }
