@@ -20,8 +20,8 @@ class _MainMenuState extends State<MainMenu> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        home: Scaffold(
+    return SafeArea(
+        child: Scaffold(
       body: Container(
           padding: const EdgeInsets.all(10),
           margin: MediaQuery.of(context).padding,

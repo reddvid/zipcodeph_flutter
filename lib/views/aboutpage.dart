@@ -34,148 +34,171 @@ class _AboutPageState extends State<AboutPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: AppBar(title: const Text("Help & About")),
-        body: ListView.separated(
-            itemCount: 1,
-            separatorBuilder: (context, index) => const Divider(
-                  color: Colors.black,
-                ),
-            itemBuilder: (context, index) => Column(children: [
-                  ListTile(
-                      title: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Padding(
-                          padding: EdgeInsets.only(bottom: 10),
-                          child: Text("What is a ZIP Code?")),
-                      const Text(
-                          "ZIP (Zone Identification Plan) Codes are a system of postal codes first used by the United States Postal Services (USPS) in 1963 - so that the mail travels more efficiently, and therefore more quickly, when senders use the code in the postal address."),
-                      const SizedBox(height: 10),
-                      const Text(
-                          "In the Philippines, the ZIP Code is used by the Philippine Postal Corporation (PhilPost) to simplify the distribution of mail."),
-                      const SizedBox(height: 20),
-                      const Padding(
-                          padding: EdgeInsets.only(bottom: 10),
-                          child: Text("Where to put the ZIP Code?")),
-                      const Text(
-                          "The ZIP Code is usually placed at the left-hand corner of the last line where the city/town is written:"),
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(20),
-                        decoration: const BoxDecoration(
-                            border: Border(
-                          top: BorderSide(width: 1, color: Colors.grey),
-                          left: BorderSide(width: 1, color: Colors.grey),
-                          right: BorderSide(width: 1, color: Colors.grey),
-                          bottom: BorderSide(width: 1, color: Colors.grey),
-                        )),
-                        child: Column(
+    return SafeArea(
+        child: Scaffold(
+            appBar: AppBar(title: const Text("Help & About")),
+            body: ListView.separated(
+                itemCount: 1,
+                separatorBuilder: (context, index) => const Divider(
+                      color: Colors.black,
+                    ),
+                itemBuilder: (context, index) => Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ListTile(
+                            title: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Text(
-                              "Mr. Juan Dela Cruz",
-                              style: TextStyle(fontStyle: FontStyle.italic),
-                            ),
-                            Text(
-                              "Malacañang Complex",
-                              style: TextStyle(fontStyle: FontStyle.italic),
-                            ),
-                            Text(
-                              "J.P. Laurel Street",
-                              style: TextStyle(fontStyle: FontStyle.italic),
-                            ),
-                            Text(
-                              "1005 San Miguel, Manila",
-                              style: TextStyle(fontStyle: FontStyle.italic),
-                            )
+                          children: [
+                            const Padding(
+                                padding: EdgeInsets.only(bottom: 10),
+                                child: Text("What is a ZIP Code?")),
+                            const Text(
+                                "ZIP (Zone Identification Plan) Codes are a system of postal codes first used by the United States Postal Services (USPS) in 1963 - so that the mail travels more efficiently, and therefore more quickly, when senders use the code in the postal address."),
                           ],
+                        )),
+                        ListTile(
+                            title: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                              const Text(
+                                  "In the Philippines, the ZIP Code is used by the Philippine Postal Corporation (PhilPost) to simplify the distribution of mail."),
+                              const SizedBox(height: 20),
+                              const Padding(
+                                  padding: EdgeInsets.only(bottom: 10),
+                                  child: Text("Where to put the ZIP Code?")),
+                              const Text(
+                                  "The ZIP Code is usually placed at the left-hand corner of the last line where the city/town is written:"),
+                              Container(
+                                width: double.infinity,
+                                padding: const EdgeInsets.all(20),
+                                decoration: const BoxDecoration(
+                                    border: Border(
+                                  top: BorderSide(width: 1, color: Colors.grey),
+                                  left:
+                                      BorderSide(width: 1, color: Colors.grey),
+                                  right:
+                                      BorderSide(width: 1, color: Colors.grey),
+                                  bottom:
+                                      BorderSide(width: 1, color: Colors.grey),
+                                )),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: const [
+                                    Text(
+                                      "Mr. Juan Dela Cruz",
+                                      style: TextStyle(
+                                          fontStyle: FontStyle.italic),
+                                    ),
+                                    Text(
+                                      "Malacañang Complex",
+                                      style: TextStyle(
+                                          fontStyle: FontStyle.italic),
+                                    ),
+                                    Text(
+                                      "J.P. Laurel Street",
+                                      style: TextStyle(
+                                          fontStyle: FontStyle.italic),
+                                    ),
+                                    Text(
+                                      "1005 San Miguel, Manila",
+                                      style: TextStyle(
+                                          fontStyle: FontStyle.italic),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ])),
+                        ListTile(
+                          leading: Transform.translate(
+                              offset: const Offset(0, 0),
+                              child: const Icon(Icons.share_outlined)),
+                          minLeadingWidth: 0,
+                          title: Transform.translate(
+                            offset: const Offset(0, 0),
+                            child: const Text("Share app to your friends"),
+                          ),
+                          onTap: () {
+                            Share.share(
+                                'Sending out mail or parcel? Or even filling out forms? Look up Philippines ZIP codes in ZIP Code PH app. Download here: https://reddavid.me/zipcodeph-app/',
+                                subject: "Share ZIP Code PH app");
+                          },
                         ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      ListTile(
-                        leading: Transform.translate(
-                            offset: const Offset(-12, 0),
-                            child: const Icon(Icons.share_outlined)),
-                        minLeadingWidth: 0,
-                        title: Transform.translate(
-                          offset: const Offset(-16, 0),
-                          child: const Text("Share app to your friends"),
+                        ListTile(
+                          leading: Transform.translate(
+                              offset: const Offset(0, 0),
+                              child: const Icon(Icons.coffee_outlined)),
+                          minLeadingWidth: 0,
+                          title: Transform.translate(
+                            offset: const Offset(0, 0),
+                            child: const Text("Buy me a coffee"),
+                          ),
+                          onTap: () {
+                            _launchUrl("https://buymeacoffee.com/reddavid");
+                          },
                         ),
-                        onTap: () {
-                          Share.share(
-                              'Sending out mail or parcel? Or even filling out forms? Look up Philippines ZIP codes in ZIP Code PH app. Download here: https://reddavid.me/zipcodeph-app/',
-                              subject: "Share ZIP Code PH app");
-                        },
-                      ),
-                      ListTile(
-                        leading: Transform.translate(
-                            offset: const Offset(-12, 0),
-                            child: const Icon(Icons.coffee_outlined)),
-                        minLeadingWidth: 0,
-                        title: Transform.translate(
-                          offset: const Offset(-16, 0),
-                          child: const Text("Buy me a coffee"),
+                        ListTile(
+                          leading: Transform.translate(
+                              offset: const Offset(0, 0),
+                              child: const Icon(Icons.feedback_outlined)),
+                          minLeadingWidth: 0,
+                          title: Transform.translate(
+                            offset: const Offset(0, 0),
+                            child: const Text("Send feedback"),
+                          ),
+                          onTap: () {
+                            _launchUrl(
+                                "mailto:reddavidapps?subject=[FEEDBACK] ZIP Code PH&body=App version: " +
+                                    _packageInfo.version +
+                                    " build " +
+                                    _packageInfo.buildNumber);
+                          },
                         ),
-                        onTap: () {
-                          _launchUrl("https://buymeacoffee.com/reddavid");
-                        },
-                      ),
-                      ListTile(
-                        leading: Transform.translate(
-                            offset: const Offset(-12, 0),
-                            child: const Icon(Icons.feedback_outlined)),
-                        minLeadingWidth: 0,
-                        title: Transform.translate(
-                          offset: const Offset(-16, 0),
-                          child: const Text("Send feedback"),
+                        const SizedBox(
+                          height: 20,
                         ),
-                        onTap: () {
-                          _launchUrl(
-                              "mailto:reddavidapps?subject=[FEEDBACK] ZIP Code PH?body=App version: $_packageInfo.version" +
+                        ListTile(
+                            title: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text("Photo/Image Attributions:"),
+                            InkWell(
+                                onTap: () {
+                                  _launchUrl("https://unsplash.com/");
+                                },
+                                child: const Text(
+                                    "Makati City during Night by Sean Yoro")),
+                            InkWell(
+                                onTap: () {
+                                  _launchUrl("https://unsplash.com/");
+                                },
+                                child: const Text(
+                                    "Mayon Volcano by Camille San Vicente")),
+                            InkWell(
+                                onTap: () {
+                                  _launchUrl("https://unsplash.com/");
+                                },
+                                child: const Text(
+                                    "Bohol Chocolate Hills by Robin P")),
+                            InkWell(
+                                onTap: () {
+                                  _launchUrl("https://unsplash.com/");
+                                },
+                                child: const Text(
+                                    "Siargao Island by Giachen's World")),
+                          ],
+                        )),
+                        Padding(
+                            padding: const EdgeInsets.fromLTRB(15, 20, 10, 20),
+                            child: Text(
+                              "version " +
+                                  _packageInfo.version +
                                   "b" +
-                                  "$_packageInfo.buildNumber");
-                        },
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      const Text("Photo/Image Attributions:"),
-                      ListTile(
-                          title: Transform.translate(
-                              offset: const Offset(-16, 0),
-                              child: const Text(
-                                  "Makati City during Night by Sean Yoro"))),
-                      ListTile(
-                          title: Transform.translate(
-                              offset: const Offset(-16, 0),
-                              child: const Text(
-                                  "Mayon Volcano by Camille San Vicente"))),
-                      ListTile(
-                          title: Transform.translate(
-                              offset: const Offset(-16, 0),
-                              child: const Text(
-                                  "Bohol Chocolate Hills by Robin P"))),
-                      ListTile(
-                          title: Transform.translate(
-                              offset: const Offset(-16, 0),
-                              child: const Text(
-                                  "Siargao Island by Giachen's World"))),
-                    ],
-                  )),
-                  Padding(
-                      padding: const EdgeInsets.fromLTRB(15, 20, 10, 20),
-                      child: Text(
-                        "version " +
-                            _packageInfo.version +
-                            "b" +
-                            _packageInfo.buildNumber,
-                        style:
-                            const TextStyle(fontSize: 12.0, color: Colors.grey),
-                      )),
-                ])));
+                                  _packageInfo.buildNumber,
+                              style: const TextStyle(
+                                  fontSize: 12.0, color: Colors.grey),
+                            ))
+                      ],
+                    ))));
   }
 
   void _launchUrl(String url) async {
