@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class AboutPage extends StatefulWidget {
   const AboutPage({Key? key}) : super(key: key);
@@ -102,6 +104,11 @@ class _AboutPageState extends State<AboutPage> {
                           offset: const Offset(-16, 0),
                           child: const Text("Share app to your friends"),
                         ),
+                        onTap: () {
+                          Share.share(
+                              'Sending out mail or parcel? Or even filling out forms? Look up Philippines ZIP codes in ZIP Code PH app. Download here: https://reddavid.me/zipcodeph-app/',
+                              subject: "Share ZIP Code PH app");
+                        },
                       ),
                       ListTile(
                         leading: Transform.translate(
@@ -112,6 +119,9 @@ class _AboutPageState extends State<AboutPage> {
                           offset: const Offset(-16, 0),
                           child: const Text("Buy me a coffee"),
                         ),
+                        onTap: () {
+                          _launchUrl("https://buymeacoffee.com/reddavid");
+                        },
                       ),
                       ListTile(
                         leading: Transform.translate(
@@ -122,6 +132,12 @@ class _AboutPageState extends State<AboutPage> {
                           offset: const Offset(-16, 0),
                           child: const Text("Send feedback"),
                         ),
+                        onTap: () {
+                          _launchUrl(
+                              "mailto:reddavidapps?subject=[FEEDBACK] ZIP Code PH?body=App version: $_packageInfo.version" +
+                                  "b" +
+                                  "$_packageInfo.buildNumber");
+                        },
                       ),
                       const SizedBox(
                         height: 20,
@@ -160,5 +176,9 @@ class _AboutPageState extends State<AboutPage> {
                             const TextStyle(fontSize: 12.0, color: Colors.grey),
                       )),
                 ])));
+  }
+
+  void _launchUrl(String url) async {
+    if (!await launchUrl(Uri.parse(url))) throw 'Could not launch $url';
   }
 }
