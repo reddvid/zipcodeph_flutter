@@ -3,7 +3,10 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:zipcodeph_flutter/views/aboutpage.dart';
+import 'package:zipcodeph_flutter/views/areaspage.dart';
+import 'package:zipcodeph_flutter/views/favespage.dart';
+import 'package:zipcodeph_flutter/views/searchpage.dart';
 
 class MainMenu extends StatefulWidget {
   const MainMenu({Key? key}) : super(key: key);
@@ -13,7 +16,7 @@ class MainMenu extends StatefulWidget {
 }
 
 class _MainMenuState extends State<MainMenu> {
-  static const double _height = 130;
+  static const double _height = 110;
 
   @override
   Widget build(BuildContext context) {
@@ -23,16 +26,12 @@ class _MainMenuState extends State<MainMenu> {
           padding: const EdgeInsets.all(10),
           margin: MediaQuery.of(context).padding,
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
             children: [
-              aboutButton(),
               Container(
                   width: double.infinity,
-                  height: 110,
-                  padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
+                  padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text(
                         'Did You Know?',
@@ -41,10 +40,14 @@ class _MainMenuState extends State<MainMenu> {
                             color: Colors.white,
                             fontSize: 16),
                       ),
+                      const Divider(
+                        height: 5,
+                        color: Colors.transparent,
+                      ),
                       trivia(),
-                      Align(
-                          alignment: Alignment.bottomRight,
-                          child: shareButton())
+                      // Align(
+                      //     alignment: Alignment.bottomRight,
+                      //     child: shareButton())
                     ],
                   ),
                   decoration: const BoxDecoration(
@@ -65,20 +68,23 @@ class _MainMenuState extends State<MainMenu> {
               ),
               Expanded(
                   child: SingleChildScrollView(
-                      child: Container(
-                child: Column(
-                  children: [
-                    ncr(),
-                    divider(),
-                    luzon(),
-                    divider(),
-                    visayas(),
-                    divider(),
-                    mindanao(),
-                    enddivider()
-                  ],
-                ),
-              )))
+                      child: Column(
+                children: [
+                  ncr(),
+                  divider(),
+                  luzon(),
+                  divider(),
+                  visayas(),
+                  divider(),
+                  mindanao(),
+                  divider(),
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: aboutButton(),
+                  ),
+                  enddivider()
+                ],
+              ))),
             ],
           )),
     ));
@@ -104,45 +110,62 @@ class _MainMenuState extends State<MainMenu> {
 
   aboutButton() {
     return ElevatedButton.icon(
-      icon: Icon(
-          Platform.isAndroid ? Icons.info_outline : CupertinoIcons.info_circle,
-          color: Colors.black),
-      label: const Text('Help & About', style: TextStyle(color: Colors.black)),
-      onPressed: () {},
-      style: ElevatedButton.styleFrom(
-          primary: Colors.black.withOpacity(0.0),
-          shadowColor: Colors.transparent),
-    );
+        icon: Icon(
+            Platform.isAndroid
+                ? Icons.info_outline
+                : CupertinoIcons.info_circle,
+            color: Colors.black),
+        label:
+            const Text('Help & About', style: TextStyle(color: Colors.black)),
+        onPressed: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const AboutPage()));
+        },
+        style: ButtonStyle(
+            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(18.0),
+        ))));
   }
 
   searchButton() {
     return Padding(
         padding: const EdgeInsets.symmetric(vertical: 5),
         child: ElevatedButton.icon(
-          icon: Icon(Platform.isAndroid ? Icons.search : CupertinoIcons.search,
-              color: Colors.black),
-          label: const Text('Search ZIP Codes',
-              style: TextStyle(color: Colors.black)),
-          onPressed: () {},
-          style: ElevatedButton.styleFrom(
-              primary: Colors.black.withOpacity(0.0),
-              shadowColor: Colors.transparent),
-        ));
+            icon: Icon(
+                Platform.isAndroid ? Icons.search : CupertinoIcons.search,
+                color: Colors.black),
+            label: const Text('Search ZIP Codes',
+                style: TextStyle(color: Colors.black)),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const SearchPage()));
+            },
+            style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18.0),
+            )))));
   }
 
   favoritesButton() {
     return Padding(
         padding: const EdgeInsets.symmetric(vertical: 5),
         child: ElevatedButton.icon(
-          icon: Icon(
-              Platform.isAndroid ? Icons.star_outline : CupertinoIcons.heart,
-              color: Colors.black),
-          label: const Text('Favorites', style: TextStyle(color: Colors.black)),
-          onPressed: () {},
-          style: ElevatedButton.styleFrom(
-              primary: Colors.black.withOpacity(0.0),
-              shadowColor: Colors.transparent),
-        ));
+            icon: Icon(
+                Platform.isAndroid ? Icons.star_outline : CupertinoIcons.heart,
+                color: Colors.black),
+            label:
+                const Text('Favorites', style: TextStyle(color: Colors.black)),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const FavesPage()));
+            },
+            style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18.0),
+            )))));
   }
 
   ncr() {
@@ -152,7 +175,7 @@ class _MainMenuState extends State<MainMenu> {
         ClipRRect(
           // Clip it cleanly.
           child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+            filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
             child: Container(
               color: Colors.grey.withOpacity(0.1),
               alignment: Alignment.center,
@@ -167,18 +190,17 @@ class _MainMenuState extends State<MainMenu> {
   luzon() {
     return Stack(
       children: [
-        bgImage('assets/images/ncr.jpg'),
+        bgImage('assets/images/luzon.jpg'),
         ClipRRect(
-          // Clip it cleanly.
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
-            child: Container(
-              color: Colors.grey.withOpacity(0.1),
-              alignment: Alignment.center,
-              child: menuTitle('Luzon'),
-            ),
+            // Clip it cleanly.
+            child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
+          child: Container(
+            color: Colors.grey.withOpacity(0.1),
+            alignment: Alignment.center,
+            child: menuTitle('Luzon'),
           ),
-        ),
+        )),
       ],
     );
   }
@@ -186,11 +208,11 @@ class _MainMenuState extends State<MainMenu> {
   visayas() {
     return Stack(
       children: [
-        bgImage('assets/images/ncr.jpg'),
+        bgImage('assets/images/visayas.jpg'),
         ClipRRect(
           // Clip it cleanly.
           child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+            filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
             child: Container(
               color: Colors.grey.withOpacity(0.1),
               alignment: Alignment.center,
@@ -205,11 +227,11 @@ class _MainMenuState extends State<MainMenu> {
   mindanao() {
     return Stack(
       children: [
-        bgImage('assets/images/ncr.jpg'),
+        bgImage('assets/images/mindanao.jpg'),
         ClipRRect(
           // Clip it cleanly.
           child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 2, sigmaY: 2),
+            filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
             child: Container(
               color: Colors.grey.withOpacity(0.1),
               alignment: Alignment.center,
@@ -243,7 +265,7 @@ class _MainMenuState extends State<MainMenu> {
         ),
         image: DecorationImage(
           image: AssetImage(imgPath),
-          fit: BoxFit.cover,
+          fit: BoxFit.fitWidth,
         ),
       ),
       width: double.infinity,
@@ -258,7 +280,10 @@ class _MainMenuState extends State<MainMenu> {
         customBorder: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
-        onTap: () {},
+        onTap: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => AreasPage(area: title)));
+        },
         child: SizedBox(
             width: double.infinity,
             height: _height,
@@ -273,12 +298,12 @@ class _MainMenuState extends State<MainMenu> {
   }
 }
 
-Future<void> openUrl(String url) async {
-  if (await canLaunch(url)) {
-    await launch(
-      url,
-      forceSafariVC: false,
-      forceWebView: false,
-    );
-  }
-}
+// Future<void> openUrl(String url) async {
+//   if (await canLaunch(url)) {
+//     await launch(
+//       url,
+//       forceSafariVC: false,
+//       forceWebView: false,
+//     );
+//   }
+// }
