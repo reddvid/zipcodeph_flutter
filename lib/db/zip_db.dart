@@ -1,7 +1,4 @@
-import 'dart:io';
 import 'dart:io' as io;
-import 'dart:math';
-import 'dart:typed_data';
 
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
@@ -9,14 +6,6 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 class ZipDB {
-  // final List<Map<String, dynamic>> _items = [
-  //   {'code': 2418, 'town': 'Calasiao', 'area': 'Pangasinan', 'fave': false},
-  //   {'code': 2400, 'town': 'Dagupan', 'area': 'Pangasinan', 'fave': false},
-  // ];
-
-  static final _databaseName = "test_.db";
-  static final _databaseVersion = 1;
-
   static final table = "codes";
 
   static final columnId = '_id';

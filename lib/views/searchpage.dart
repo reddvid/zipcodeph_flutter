@@ -139,7 +139,6 @@ class _List extends StatelessWidget {
                 ZipCode zipCode = snapshot.data![index];
                 return ListTile(
                     onLongPress: () {
-                      // TODO: Open Bottom Sheet
                       showModalBottomSheet<void>(
                           context: context,
                           builder: (BuildContext context) {
@@ -148,7 +147,6 @@ class _List extends StatelessWidget {
                           });
                     },
                     onTap: () {
-                      // TODO: Open Bottom Sheet
                       showModalBottomSheet<void>(
                           context: context,
                           builder: (BuildContext context) {
@@ -198,7 +196,6 @@ class _List extends StatelessWidget {
             onTap: () {
               Clipboard.setData(ClipboardData(
                   text: "${zipCode.code} ${zipCode.town}, ${zipCode.area}"));
-              // TO-DO: Show snackbar
               Navigator.pop(context);
               var snackBar = SnackBar(
                 content: Text(

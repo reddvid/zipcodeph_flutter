@@ -8,4 +8,8 @@ class ZipsController {
   Future<List<ZipCode>?> getAreaCodes(String area) {
     return _zipRepo.getAreaCodes(area);
   }
+
+  Future<void> updateItem(ZipCode zipCode) {
+    return _zipRepo.update(zipCode);
+  }
 }

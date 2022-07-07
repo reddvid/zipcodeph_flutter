@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/src/foundation/key.dart';
@@ -23,28 +24,24 @@ class _FavesPageState extends State<FavesPage> with RouteAware {
 
   @override
   void didPop() {
-    print("Popped");
     _refreshList();
     super.didPop();
   }
 
   @override
   void didPush() {
-    print("Pushed");
     _refreshList();
     super.didPush();
   }
 
   @override
   void didPopNext() {
-    print("Popped next");
     _refreshList();
     super.didPopNext();
   }
 
   @override
   void didPushNext() {
-    print("Pushed next");
     _refreshList();
     super.didPushNext();
   }
@@ -128,7 +125,6 @@ class _List extends StatelessWidget {
                 ZipCode zipCode = snapshot.data![index];
                 return ListTile(
                     onLongPress: () {
-                      // TODO: Open Bottom Sheet
                       showModalBottomSheet<void>(
                           context: context,
                           builder: (BuildContext context) {
@@ -137,7 +133,6 @@ class _List extends StatelessWidget {
                           });
                     },
                     onTap: () {
-                      // TODO: Open Bottom Sheet
                       showModalBottomSheet<void>(
                           context: context,
                           builder: (BuildContext context) {
@@ -187,7 +182,6 @@ class _List extends StatelessWidget {
             onTap: () {
               Clipboard.setData(ClipboardData(
                   text: "${zipCode.code} ${zipCode.town}, ${zipCode.area}"));
-              // TO-DO: Show snackbar
               Navigator.pop(context);
               var snackBar = SnackBar(
                 content: Text(
