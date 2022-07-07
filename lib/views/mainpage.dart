@@ -138,7 +138,7 @@ class _MainMenuState extends State<MainMenu> {
                 style: TextStyle(color: Colors.black)),
             onPressed: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const SearchPage()));
+                  MaterialPageRoute(builder: (context) => SearchPage()));
             },
             style: ButtonStyle(
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
