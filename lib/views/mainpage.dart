@@ -1,7 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
 
+import 'package:dialog_alert/dialog_alert.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:zipcodeph_flutter/main.dart';
 import 'package:zipcodeph_flutter/views/aboutpage.dart';
@@ -18,13 +21,35 @@ class MainMenu extends StatefulWidget {
 
 class _MainMenuState extends State<MainMenu> with RouteAware {
   static const double _height = 110;
+  late List<dynamic> trivias = [];
+  late String currentTrivia = "";
 
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       routeObserver.subscribe(this, ModalRoute.of(context)!);
     });
+    DefaultAssetBundle.of(context)
+        .loadString("assets/json/trivias.json")
+        .then((value) {
+      final jsonResult = jsonDecode(value)['trivias'];
+      setState(() {
+        trivias = jsonResult;
+        trivias.shuffle();
+        currentTrivia = trivias.isEmpty ? "" : trivias.first;
+      });
+    });
+
     super.initState();
+  }
+
+  @override
+  void didPopNext() {
+    setState(() {
+      trivias.shuffle();
+      currentTrivia = trivias.first;
+    });
+    super.didPopNext();
   }
 
   @override
@@ -68,19 +93,35 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
         padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            Text(
+          children: [
+            const Text(
               'Did You Know?',
               style: TextStyle(
                   fontWeight: FontWeight.bold,
                   color: Colors.white,
                   fontSize: 16),
             ),
-            Divider(
+            const Divider(
               height: 5,
               color: Colors.transparent,
             ),
-            Text('Text', style: TextStyle(color: Colors.white))
+            RichText(
+                text: TextSpan(
+                    recognizer: TapGestureRecognizer()
+                      ..onTap = () async {
+                        final result = await showDialogAlert(
+                          context: context,
+                          title: 'Did You Know',
+                          message: currentTrivia,
+                          actionButtonTitle: 'Share',
+                          cancelButtonTitle: 'Close',
+                        );
+                        if (result == ButtonActionType.action) {
+                          // TODO: Share Trivia
+                        }
+                      },
+                    text: currentTrivia,
+                    style: const TextStyle(color: Colors.white)))
             // Align(
             //     alignment: Alignment.bottomRight,
             //     child: shareButton())

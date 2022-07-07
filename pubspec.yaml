@@ -43,7 +43,7 @@ dependencies:
   share_plus: ^4.0.10
   flutter_search_bar: ^3.0.0-dev.1
   path_provider: ^2.0.11
-  flutter_svg: ^1.1.1+1
+  dialog_alert: ^0.0.3
 
 dev_dependencies:
   flutter_test:
@@ -77,6 +77,7 @@ flutter:
     - assets/images/notfound_only.png
     - assets/images/notfound.svg
     - assets/zips_ph.db
+    - assets/json/trivias.json
 
   #   - images/a_dot_ham.jpeg
 
