@@ -17,7 +17,11 @@ class ZipRepository implements IZipRepository {
     var items = await _db.list();
     var filtered = items
         ?.where((i) =>
-            i['town'].toString().toLowerCase().startsWith(query.toLowerCase()))
+            i['town']
+                .toString()
+                .toLowerCase()
+                .startsWith(query.toLowerCase()) ||
+            i['area'].toString().toLowerCase().startsWith(query.toLowerCase()))
         .toList();
     if (query == "") {
       return items?.map((item) => ZipCode.fromMap(item)).toList();
