@@ -178,6 +178,19 @@ class _List extends StatelessWidget {
                     _searchController.updateItem(zipCode);
                     _refreshList();
                     Navigator.pop(context);
+                    var snackBar = SnackBar(
+                      content: Text(
+                          "Removed ${zipCode.code} ${zipCode.town}, ${zipCode.area} from favorites"),
+                      action: SnackBarAction(
+                        label: 'UNDO',
+                        onPressed: () {
+                          zipCode.fave = 1;
+                          _searchController.updateItem(zipCode);
+                          _refreshList();
+                        },
+                      ),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   },
                 )
               : ListTile(
@@ -188,6 +201,19 @@ class _List extends StatelessWidget {
                     _searchController.updateItem(zipCode);
                     _refreshList();
                     Navigator.pop(context);
+                    var snackBar = SnackBar(
+                      content: Text(
+                          "Added ${zipCode.code} ${zipCode.town}, ${zipCode.area} to favorites"),
+                      action: SnackBarAction(
+                        label: 'UNDO',
+                        onPressed: () {
+                          zipCode.fave = 0;
+                          _searchController.updateItem(zipCode);
+                          _refreshList();
+                        },
+                      ),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(snackBar);
                   },
                 ),
           ListTile(
