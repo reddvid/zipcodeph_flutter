@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zipcodeph_flutter/controllers/zips.dart';
 import 'package:zipcodeph_flutter/main.dart';
@@ -77,7 +75,7 @@ class _List extends StatelessWidget {
                       showModalBottomSheet<void>(
                           context: context,
                           builder: (BuildContext context) {
-                            return _BottomSheet(
+                            return bottomSheet(
                                 context, snapshot.data![index], _refreshList);
                           });
                     },
@@ -85,7 +83,7 @@ class _List extends StatelessWidget {
                       showModalBottomSheet<void>(
                           context: context,
                           builder: (BuildContext context) {
-                            return _BottomSheet(
+                            return bottomSheet(
                                 context, snapshot.data![index], _refreshList);
                           });
                     },
@@ -109,7 +107,7 @@ class _List extends StatelessWidget {
         });
   }
 
-  _BottomSheet(
+  bottomSheet(
       BuildContext context, ZipCode zipCode, VoidCallback _refreshList) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10),

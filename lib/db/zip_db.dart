@@ -6,13 +6,13 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 class ZipDB {
-  static final table = "codes";
+  static const table = "codes";
 
-  static final columnId = '_id';
-  static final columnCode = 'code';
-  static final columnTown = 'town';
-  static final columnArea = 'area';
-  static final columnFave = 'fave';
+  static const columnId = '_id';
+  static const columnCode = 'code';
+  static const columnTown = 'town';
+  static const columnArea = 'area';
+  static const columnFave = 'fave';
 
   ZipDB._privateConstructor();
   static final ZipDB instance = ZipDB._privateConstructor();

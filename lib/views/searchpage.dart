@@ -1,15 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_search_bar/flutter_search_bar.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zipcodeph_flutter/controllers/search.dart';
 import 'package:zipcodeph_flutter/main.dart';
 import 'package:zipcodeph_flutter/models/zipcode.dart';
-import 'package:zipcodeph_flutter/views/mainpage.dart';
 
 class SearchPage extends StatefulWidget {
   SearchPage({Key? key}) : super(key: key);
@@ -20,7 +16,6 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> with RouteAware {
-  final TextEditingController _editingController = TextEditingController();
   late SearchBar searchBar;
   late String query = "";
   void _refreshList() {
@@ -31,9 +26,6 @@ class _SearchPageState extends State<SearchPage> with RouteAware {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       routeObserver.subscribe(this, ModalRoute.of(context)!);
-    });
-    _editingController.addListener(() {
-      final String text = _editingController.text;
     });
     super.initState();
   }
@@ -50,7 +42,6 @@ class _SearchPageState extends State<SearchPage> with RouteAware {
         inBar: false,
         hintText: "Search towns, cities, or province",
         setState: setState,
-        controller: _editingController,
         onChanged: (value) {
           setState(() {
             query = value;
@@ -86,19 +77,10 @@ class _List extends StatelessWidget {
   final String _query;
   final VoidCallback _refreshList;
 
-  _List(this._searchController, this._query, this._refreshList);
-
-  late PackageInfo _packageInfo = PackageInfo(
-    appName: 'Unknown',
-    packageName: 'Unknown',
-    version: 'Unknown',
-    buildNumber: 'Unknown',
-    buildSignature: 'Unknown',
-  );
+  const _List(this._searchController, this._query, this._refreshList);
 
   @override
   Widget build(BuildContext context) {
-    print(_query);
     return FutureBuilder<List<ZipCode>?>(
         future: _searchController.findCodes(_query),
         builder: (context, snapshot) {
@@ -118,12 +100,11 @@ class _List extends StatelessWidget {
                     TextButton(
                         onPressed: () async {
                           final info = await PackageInfo.fromPlatform();
-                          _packageInfo = info;
                           _launchUrl(
                               "mailto:reddavidapps?subject=[FEEDBACK] ZIP Code PH&body=App version: " +
-                                  _packageInfo.version +
+                                  info.version +
                                   " build " +
-                                  _packageInfo.buildNumber);
+                                  info.buildNumber);
                         },
                         child: const Text("Send Feedback"))
                   ]),
@@ -142,7 +123,7 @@ class _List extends StatelessWidget {
                       showModalBottomSheet<void>(
                           context: context,
                           builder: (BuildContext context) {
-                            return _BottomSheet(
+                            return bottomSheet(
                                 context, snapshot.data![index], _refreshList);
                           });
                     },
@@ -150,7 +131,7 @@ class _List extends StatelessWidget {
                       showModalBottomSheet<void>(
                           context: context,
                           builder: (BuildContext context) {
-                            return _BottomSheet(
+                            return bottomSheet(
                                 context, snapshot.data![index], _refreshList);
                           });
                     },
@@ -174,7 +155,7 @@ class _List extends StatelessWidget {
         });
   }
 
-  _BottomSheet(
+  bottomSheet(
       BuildContext context, ZipCode zipCode, VoidCallback _refreshList) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10),
