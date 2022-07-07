@@ -82,20 +82,6 @@ class _List extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    void _showPopupMenu(Offset offset) async {
-      double left = offset.dx;
-      double top = offset.dy;
-      await showMenu(
-        context: context,
-        position: RelativeRect.fromLTRB(left, top, 0, 0),
-        items: [
-          const PopupMenuItem<String>(child: Text('Doge'), value: 'Doge'),
-          const PopupMenuItem<String>(child: Text('Lion'), value: 'Lion'),
-        ],
-        elevation: 8.0,
-      );
-    }
-
     print(_query);
     return FutureBuilder<List<ZipCode>>(
         future: _searchController.findCodes(_query),
@@ -113,13 +99,21 @@ class _List extends StatelessWidget {
                 ZipCode zipCode = snapshot.data![index];
                 return ListTile(
                     onLongPress: () {
-                      _showPopupMenu(Offset.zero);
+                      // TODO: Open Bottom Sheet
+                      showModalBottomSheet<void>(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return _BottomSheet(context, snapshot.data![index]);
+                          });
                     },
-                    trailing: GestureDetector(
-                        onTapDown: (TapDownDetails details) {
-                          _showPopupMenu(details.globalPosition);
-                        },
-                        child: const Icon(Icons.more_vert)),
+                    onTap: () {
+                      // TODO: Open Bottom Sheet
+                      showModalBottomSheet<void>(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return _BottomSheet(context, snapshot.data![index]);
+                          });
+                    },
                     visualDensity:
                         const VisualDensity(vertical: -4), // to compact
                     leading: Container(
@@ -138,5 +132,54 @@ class _List extends StatelessWidget {
             );
           }
         });
+  }
+
+  _BottomSheet(BuildContext context, ZipCode zipCode) {
+    return Container(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: Text(
+              "${zipCode.code} ${zipCode.town}, ${zipCode.area}",
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.copy),
+            title: const Text("Copy"),
+            onTap: () {},
+          ),
+          zipCode.fave
+              ? ListTile(
+                  leading: const Icon(Icons.heart_broken_outlined),
+                  title: const Text("Remove from favorites"),
+                  onTap: () {},
+                )
+              : ListTile(
+                  leading: const Icon(Icons.favorite_border),
+                  title: const Text("Add to favorites"),
+                  onTap: () {},
+                ),
+          ListTile(
+            leading: const Icon(Icons.map_outlined),
+            title: const Text("Open in Maps"),
+            onTap: () {},
+          ),
+          const Divider(color: Colors.grey),
+          ListTile(
+            leading: const Icon(Icons.close),
+            title: const Text("Cancel"),
+            onTap: () {
+              Navigator.pop(context);
+            },
+          ),
+        ],
+      ),
+    );
   }
 }
