@@ -161,7 +161,7 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
         padding: const EdgeInsets.symmetric(vertical: 5),
         child: TextButton.icon(
             icon: Icon(
-                Platform.isAndroid ? Icons.star_outline : CupertinoIcons.heart,
+                Platform.isAndroid ? Icons.heart : CupertinoIcons.heart,
                 color: Colors.black),
             label:
                 const Text('Favorites', style: TextStyle(color: Colors.black)),
