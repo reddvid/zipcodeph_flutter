@@ -50,13 +50,4 @@ class _List extends StatelessWidget {
           }
         });
   }
-
-  List<ListTile> _createList(List<ZipCode> zipcodes) {
-    return zipcodes
-        .map((zip) => ListTile(
-              leading: Text(zip.code.toString()),
-              title: Text(zip.town),
-            ))
-        .toList();
-  }
 }
