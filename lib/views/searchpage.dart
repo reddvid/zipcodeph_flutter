@@ -14,10 +14,19 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+  final TextEditingController _editingController = TextEditingController();
   late SearchBar searchBar;
-
+  late String query = "";
   void _refreshList() {
     setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _editingController.addListener(() {
+      final String text = _editingController.text;
+    });
   }
 
   AppBar buildAppBar(BuildContext context) {
@@ -32,10 +41,25 @@ class _SearchPageState extends State<SearchPage> {
         inBar: false,
         hintText: "Search towns, cities, or province",
         setState: setState,
+        controller: _editingController,
+        onChanged: (value) {
+          setState(() {
+            query = value;
+          });
+        },
+        onCleared: () {
+          setState(() {
+            query = "";
+          });
+        },
+        onClosed: () {
+          setState(() {
+            query = "";
+          });
+        },
         closeOnSubmit: false,
         clearOnSubmit: false,
         showClearButton: true,
-        onSubmitted: print,
         buildDefaultAppBar: buildAppBar);
   }
 
@@ -43,21 +67,23 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: searchBar.build(context),
-      body: _List(widget._searchController, _refreshList),
+      body: _List(widget._searchController, query, _refreshList),
     );
   }
 }
 
 class _List extends StatelessWidget {
   final SearchController _searchController;
+  final String _query;
   final VoidCallback _refreshList;
 
-  const _List(this._searchController, this._refreshList);
+  const _List(this._searchController, this._query, this._refreshList);
 
   @override
   Widget build(BuildContext context) {
+    print(_query);
     return FutureBuilder<List<ZipCode>>(
-        future: _searchController.getAllCodes(),
+        future: _searchController.findCodes(_query),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
             return const Center(child: Text("Search Placeholder..."));

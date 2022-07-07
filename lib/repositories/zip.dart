@@ -14,8 +14,16 @@ class ZipRepository implements IZipRepository {
   }
 
   @override
-  Future<List<ZipCode>?> find(String query) {
-    // TODO: implement find
-    throw UnimplementedError();
+  Future<List<ZipCode>> find(String query) async {
+    var items = await _db.list();
+    var filtered = items
+        .where((i) =>
+            i['town'].toString().toLowerCase().startsWith(query.toLowerCase()))
+        .toList();
+    if ((filtered.isEmpty) || query == "") {
+      return items.map((item) => ZipCode.fromMap(item)).toList();
+    } else {
+      return filtered.map((item) => ZipCode.fromMap(item)).toList();
+    }
   }
 }

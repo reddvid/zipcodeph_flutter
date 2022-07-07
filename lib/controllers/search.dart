@@ -8,4 +8,8 @@ class SearchController {
   Future<List<ZipCode>> getAllCodes() {
     return _zipRepo.getAll();
   }
+
+  Future<List<ZipCode>> findCodes(String query) {
+    return _zipRepo.find(query);
+  }
 }
