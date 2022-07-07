@@ -82,6 +82,20 @@ class _List extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    void _showPopupMenu(Offset offset) async {
+      double left = offset.dx;
+      double top = offset.dy;
+      await showMenu(
+        context: context,
+        position: RelativeRect.fromLTRB(left, top, 0, 0),
+        items: [
+          const PopupMenuItem<String>(child: Text('Doge'), value: 'Doge'),
+          const PopupMenuItem<String>(child: Text('Lion'), value: 'Lion'),
+        ],
+        elevation: 8.0,
+      );
+    }
+
     print(_query);
     return FutureBuilder<List<ZipCode>>(
         future: _searchController.findCodes(_query),
@@ -98,6 +112,14 @@ class _List extends StatelessWidget {
               itemBuilder: (context, index) {
                 ZipCode zipCode = snapshot.data![index];
                 return ListTile(
+                    onLongPress: () {
+                      _showPopupMenu(Offset.zero);
+                    },
+                    trailing: GestureDetector(
+                        onTapDown: (TapDownDetails details) {
+                          _showPopupMenu(details.globalPosition);
+                        },
+                        child: const Icon(Icons.more_vert)),
                     visualDensity:
                         const VisualDensity(vertical: -4), // to compact
                     leading: Container(
