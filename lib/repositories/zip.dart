@@ -44,8 +44,16 @@ class ZipRepository implements IZipRepository {
     }
   }
 
-  @override
   Future<void> update(ZipCode zipCode) async {
     await _db.update(zipCode.toMap());
+  }
+
+  Future<List<ZipCode>?> getFaves() async {
+    var items = await _db.list();
+    return items
+        ?.where((i) => i['fave'] == 1)
+        .toList()
+        .map((e) => ZipCode.fromMap(e))
+        .toList();
   }
 }

@@ -3,6 +3,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:zipcodeph_flutter/main.dart';
 import 'package:zipcodeph_flutter/views/aboutpage.dart';
 import 'package:zipcodeph_flutter/views/areaspage.dart';
 import 'package:zipcodeph_flutter/views/favespage.dart';
@@ -15,8 +16,16 @@ class MainMenu extends StatefulWidget {
   _MainMenuState createState() => _MainMenuState();
 }
 
-class _MainMenuState extends State<MainMenu> {
+class _MainMenuState extends State<MainMenu> with RouteAware {
   static const double _height = 110;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      routeObserver.subscribe(this, ModalRoute.of(context)!);
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -158,7 +167,7 @@ class _MainMenuState extends State<MainMenu> {
                 const Text('Favorites', style: TextStyle(color: Colors.black)),
             onPressed: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const FavesPage()));
+                  MaterialPageRoute(builder: (context) => FavesPage()));
             },
             style: ButtonStyle(
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(

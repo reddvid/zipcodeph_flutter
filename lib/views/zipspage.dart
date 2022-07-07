@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:zipcodeph_flutter/main.dart';
 
 class ZipsPage extends StatefulWidget {
   final List<String> area;
@@ -10,7 +11,15 @@ class ZipsPage extends StatefulWidget {
   State<ZipsPage> createState() => _ZipsPageState();
 }
 
-class _ZipsPageState extends State<ZipsPage> {
+class _ZipsPageState extends State<ZipsPage> with RouteAware {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      routeObserver.subscribe(this, ModalRoute.of(context)!);
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

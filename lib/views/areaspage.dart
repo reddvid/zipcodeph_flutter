@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:zipcodeph_flutter/main.dart';
 import 'package:zipcodeph_flutter/repositories/area.dart';
 import 'package:zipcodeph_flutter/views/zipspage.dart';
 
@@ -12,8 +13,17 @@ class AreasPage extends StatefulWidget {
   State<AreasPage> createState() => _AreasPageState();
 }
 
-class _AreasPageState extends State<AreasPage> {
+class _AreasPageState extends State<AreasPage> with RouteAware {
   final AreaRepository _areaRepository = AreaRepository();
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      routeObserver.subscribe(this, ModalRoute.of(context)!);
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     var menu = _areaRepository.menu(widget.area);

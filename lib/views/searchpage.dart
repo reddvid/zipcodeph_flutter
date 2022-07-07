@@ -7,6 +7,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zipcodeph_flutter/controllers/search.dart';
+import 'package:zipcodeph_flutter/main.dart';
 import 'package:zipcodeph_flutter/models/zipcode.dart';
 import 'package:zipcodeph_flutter/views/mainpage.dart';
 
@@ -18,7 +19,7 @@ class SearchPage extends StatefulWidget {
   State<SearchPage> createState() => _SearchPageState();
 }
 
-class _SearchPageState extends State<SearchPage> {
+class _SearchPageState extends State<SearchPage> with RouteAware {
   final TextEditingController _editingController = TextEditingController();
   late SearchBar searchBar;
   late String query = "";
@@ -28,10 +29,13 @@ class _SearchPageState extends State<SearchPage> {
 
   @override
   void initState() {
-    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      routeObserver.subscribe(this, ModalRoute.of(context)!);
+    });
     _editingController.addListener(() {
       final String text = _editingController.text;
     });
+    super.initState();
   }
 
   AppBar buildAppBar(BuildContext context) {
@@ -67,6 +71,7 @@ class _SearchPageState extends State<SearchPage> {
         showClearButton: true,
         buildDefaultAppBar: buildAppBar);
   }
+showSearch(context: context, delegate: searchBar);
 
   @override
   Widget build(BuildContext context) {
@@ -98,80 +103,76 @@ class _List extends StatelessWidget {
     return FutureBuilder<List<ZipCode>?>(
         future: _searchController.findCodes(_query),
         builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return const Center(child: Text("Search Placeholder..."));
+          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Center(
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/images/notfound.png',
+                      width: MediaQuery.of(context).size.width * 0.6,
+                    ),
+                    Text(
+                      "Found nothing for '$_query'",
+                      style: const TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                    TextButton(
+                        onPressed: () async {
+                          final info = await PackageInfo.fromPlatform();
+                          _packageInfo = info;
+                          _launchUrl(
+                              "mailto:reddavidapps?subject=[FEEDBACK] ZIP Code PH&body=App version: " +
+                                  _packageInfo.version +
+                                  " build " +
+                                  _packageInfo.buildNumber);
+                        },
+                        child: const Text("Send Feedback"))
+                  ]),
+            );
           } else {
-            if (snapshot.data!.isEmpty) {
-              return Center(
-                child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Image.asset(
-                        'assets/images/notfound.png',
-                        width: MediaQuery.of(context).size.width * 0.6,
-                      ),
-                      Text(
-                        "Found nothing for '$_query'",
-                        style: const TextStyle(fontWeight: FontWeight.w600),
-                      ),
-                      TextButton(
-                          onPressed: () async {
-                            final info = await PackageInfo.fromPlatform();
-                            _packageInfo = info;
-                            _launchUrl(
-                                "mailto:reddavidapps?subject=[FEEDBACK] ZIP Code PH&body=App version: " +
-                                    _packageInfo.version +
-                                    " build " +
-                                    _packageInfo.buildNumber);
-                          },
-                          child: const Text("Send Feedback"))
-                    ]),
-              );
-            } else {
-              return ListView.separated(
-                shrinkWrap: true,
-                separatorBuilder: (context, index) => const Divider(
-                  color: Colors.grey,
-                ),
-                itemCount: snapshot.data!.length,
-                itemBuilder: (context, index) {
-                  ZipCode zipCode = snapshot.data![index];
-                  return ListTile(
-                      onLongPress: () {
-                        // TODO: Open Bottom Sheet
-                        showModalBottomSheet<void>(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return _BottomSheet(
-                                  context, snapshot.data![index], _refreshList);
-                            });
-                      },
-                      onTap: () {
-                        // TODO: Open Bottom Sheet
-                        showModalBottomSheet<void>(
-                            context: context,
-                            builder: (BuildContext context) {
-                              return _BottomSheet(
-                                  context, snapshot.data![index], _refreshList);
-                            });
-                      },
-                      visualDensity:
-                          const VisualDensity(vertical: -4), // to compact
-                      leading: Container(
-                          width: 48,
-                          height: double.infinity,
-                          alignment: Alignment.center,
-                          child: Text(
-                            zipCode.code.toString(),
-                            textAlign: TextAlign.center,
-                            style: const TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
-                          )),
-                      subtitle: Text(zipCode.area),
-                      title: Text(zipCode.town));
-                },
-              );
-            }
+            return ListView.separated(
+              shrinkWrap: true,
+              separatorBuilder: (context, index) => const Divider(
+                color: Colors.grey,
+              ),
+              itemCount: snapshot.data!.length,
+              itemBuilder: (context, index) {
+                ZipCode zipCode = snapshot.data![index];
+                return ListTile(
+                    onLongPress: () {
+                      // TODO: Open Bottom Sheet
+                      showModalBottomSheet<void>(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return _BottomSheet(
+                                context, snapshot.data![index], _refreshList);
+                          });
+                    },
+                    onTap: () {
+                      // TODO: Open Bottom Sheet
+                      showModalBottomSheet<void>(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return _BottomSheet(
+                                context, snapshot.data![index], _refreshList);
+                          });
+                    },
+                    visualDensity:
+                        const VisualDensity(vertical: -4), // to compact
+                    leading: Container(
+                        width: 48,
+                        height: double.infinity,
+                        alignment: Alignment.center,
+                        child: Text(
+                          zipCode.code.toString(),
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        )),
+                    subtitle: Text(zipCode.area),
+                    title: Text(zipCode.town));
+              },
+            );
           }
         });
   }

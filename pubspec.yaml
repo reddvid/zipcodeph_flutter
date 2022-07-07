@@ -72,6 +72,7 @@ flutter:
     - assets/images/visayas.jpg
     - assets/images/mindanao.jpg
     - assets/images/notfound.png
+    - assets/images/empty.png
     - assets/images/notfound_only.png
     - assets/images/notfound.svg
     - assets/zips_ph.db
