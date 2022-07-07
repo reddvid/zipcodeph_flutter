@@ -1,8 +1,13 @@
 import 'dart:io';
+import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:zipcodeph_flutter/main.dart';
+import 'package:zipcodeph_flutter/views/aboutpage.dart';
+import 'package:zipcodeph_flutter/views/areaspage.dart';
+import 'package:zipcodeph_flutter/views/favespage.dart';
+import 'package:zipcodeph_flutter/views/searchpage.dart';
 
 class MainMenu extends StatefulWidget {
   const MainMenu({Key? key}) : super(key: key);
@@ -11,78 +16,88 @@ class MainMenu extends StatefulWidget {
   _MainMenuState createState() => _MainMenuState();
 }
 
-class _MainMenuState extends State<MainMenu> {
-  static const double _height = 130;
+class _MainMenuState extends State<MainMenu> with RouteAware {
+  static const double _height = 110;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      routeObserver.subscribe(this, ModalRoute.of(context)!);
+    });
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-        home: Scaffold(
-      body: Container(
-          padding: const EdgeInsets.all(10),
-          margin: MediaQuery.of(context).padding,
+    return Scaffold(
+        body: SafeArea(
+      child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               aboutButton(),
-              Container(
-                  width: double.infinity,
-                  height: 110,
-                  padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const Text(
-                        'Did You Know?',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontSize: 16),
-                      ),
-                      trivia(),
-                      Align(
-                          alignment: Alignment.bottomRight,
-                          child: shareButton())
-                    ],
-                  ),
-                  decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
-                      ),
-                      gradient: LinearGradient(
-                        begin: Alignment.topRight,
-                        end: Alignment.bottomLeft,
-                        colors: [
-                          Colors.blue,
-                          Colors.red,
-                        ],
-                      ))),
+              trivia(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [searchButton(), favoritesButton()],
               ),
               Expanded(
                   child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    ncr(),
-                    divider(),
-                    luzon(),
-                    divider(),
-                    visayas(),
-                    divider(),
-                    mindanao()
-                  ],
-                ),
-              ))
+                      child: Column(
+                children: [
+                  ncr(),
+                  divider(),
+                  luzon(),
+                  divider(),
+                  visayas(),
+                  divider(),
+                  mindanao(),
+                  divider(),
+                  enddivider()
+                ],
+              ))),
             ],
           )),
     ));
   }
 
   trivia() {
-    return const Text('Text', style: TextStyle(color: Colors.white));
+    return Container(
+        width: double.infinity,
+        padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: const [
+            Text(
+              'Did You Know?',
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 16),
+            ),
+            Divider(
+              height: 5,
+              color: Colors.transparent,
+            ),
+            Text('Text', style: TextStyle(color: Colors.white))
+            // Align(
+            //     alignment: Alignment.bottomRight,
+            //     child: shareButton())
+          ],
+        ),
+        decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(
+              Radius.circular(10),
+            ),
+            gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              colors: [
+                Colors.blue,
+                Colors.red,
+              ],
+            )));
   }
 
   shareButton() {
@@ -100,75 +115,152 @@ class _MainMenuState extends State<MainMenu> {
   }
 
   aboutButton() {
-    return ElevatedButton.icon(
-      icon: Icon(
-          Platform.isAndroid ? Icons.info_outline : CupertinoIcons.info_circle,
-          color: Colors.black),
-      label: const Text('Help & About', style: TextStyle(color: Colors.black)),
-      onPressed: () {},
-      style: ElevatedButton.styleFrom(
-          primary: Colors.black.withOpacity(0.0),
-          shadowColor: Colors.transparent),
-    );
+    return Align(
+        alignment: Alignment.topRight,
+        child: TextButton.icon(
+            icon: Icon(
+                Platform.isAndroid
+                    ? Icons.info_outline
+                    : CupertinoIcons.info_circle,
+                color: Colors.black),
+            label: const Text('Help & About',
+                style: TextStyle(color: Colors.black)),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const AboutPage()));
+            },
+            style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18.0),
+            )))));
   }
 
   searchButton() {
     return Padding(
         padding: const EdgeInsets.symmetric(vertical: 5),
-        child: ElevatedButton.icon(
-          icon: Icon(Platform.isAndroid ? Icons.search : CupertinoIcons.search,
-              color: Colors.black),
-          label: const Text('Search ZIP Codes',
-              style: TextStyle(color: Colors.black)),
-          onPressed: () {},
-          style: ElevatedButton.styleFrom(
-              primary: Colors.black.withOpacity(0.0),
-              shadowColor: Colors.transparent),
-        ));
+        child: TextButton.icon(
+            icon: Icon(
+                Platform.isAndroid ? Icons.search : CupertinoIcons.search,
+                color: Colors.black),
+            label: const Text('Search ZIP Codes',
+                style: TextStyle(color: Colors.black)),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SearchPage()));
+            },
+            style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18.0),
+            )))));
   }
 
   favoritesButton() {
     return Padding(
         padding: const EdgeInsets.symmetric(vertical: 5),
-        child: ElevatedButton.icon(
-          icon: Icon(
-              Platform.isAndroid ? Icons.star_outline : CupertinoIcons.heart,
-              color: Colors.black),
-          label: const Text('Favorites', style: TextStyle(color: Colors.black)),
-          onPressed: () {},
-          style: ElevatedButton.styleFrom(
-              primary: Colors.black.withOpacity(0.0),
-              shadowColor: Colors.transparent),
-        ));
+        child: TextButton.icon(
+            icon: Icon(
+                Platform.isAndroid ? Icons.star_outline : CupertinoIcons.heart,
+                color: Colors.black),
+            label:
+                const Text('Favorites', style: TextStyle(color: Colors.black)),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => FavesPage()));
+            },
+            style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18.0),
+            )))));
   }
 
   ncr() {
     return Stack(
-      children: [bgImage('assets/images/ncr.jpg'), menuTitle('Metro Manila')],
+      children: [
+        bgImage('assets/images/ncr.jpg'),
+        ClipRRect(
+          // Clip it cleanly.
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
+            child: Container(
+              color: Colors.grey.withOpacity(0.1),
+              alignment: Alignment.center,
+              child: menuTitle('Metro Manila'),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
   luzon() {
     return Stack(
-      children: [bgImage('assets/images/ncr.jpg'), menuTitle('Luzon')],
+      children: [
+        bgImage('assets/images/luzon.jpg'),
+        ClipRRect(
+            // Clip it cleanly.
+            child: BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
+          child: Container(
+            color: Colors.grey.withOpacity(0.1),
+            alignment: Alignment.center,
+            child: menuTitle('Luzon'),
+          ),
+        )),
+      ],
     );
   }
 
   visayas() {
     return Stack(
-      children: [bgImage('assets/images/ncr.jpg'), menuTitle('Visayas')],
+      children: [
+        bgImage('assets/images/visayas.jpg'),
+        ClipRRect(
+          // Clip it cleanly.
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
+            child: Container(
+              color: Colors.grey.withOpacity(0.1),
+              alignment: Alignment.center,
+              child: menuTitle('Visayas'),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
   mindanao() {
     return Stack(
-      children: [bgImage('assets/images/ncr.jpg'), menuTitle('Mindanao')],
+      children: [
+        bgImage('assets/images/mindanao.jpg'),
+        ClipRRect(
+          // Clip it cleanly.
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
+            child: Container(
+              color: Colors.grey.withOpacity(0.1),
+              alignment: Alignment.center,
+              child: menuTitle('Mindanao'),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
   divider() {
     return const Divider(
       height: 10,
+      color: Colors.transparent,
+    );
+  }
+
+  enddivider() {
+    return const Divider(
+      height: 40,
       color: Colors.transparent,
     );
   }
@@ -181,7 +273,7 @@ class _MainMenuState extends State<MainMenu> {
         ),
         image: DecorationImage(
           image: AssetImage(imgPath),
-          fit: BoxFit.cover,
+          fit: BoxFit.fitWidth,
         ),
       ),
       width: double.infinity,
@@ -196,7 +288,10 @@ class _MainMenuState extends State<MainMenu> {
         customBorder: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10),
         ),
-        onTap: () {},
+        onTap: () {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => AreasPage(area: title)));
+        },
         child: SizedBox(
             width: double.infinity,
             height: _height,
@@ -211,12 +306,12 @@ class _MainMenuState extends State<MainMenu> {
   }
 }
 
-Future<void> openUrl(String url) async {
-  if (await canLaunch(url)) {
-    await launch(
-      url,
-      forceSafariVC: false,
-      forceWebView: false,
-    );
-  }
-}
+// Future<void> openUrl(String url) async {
+//   if (await canLaunch(url)) {
+//     await launch(
+//       url,
+//       forceSafariVC: false,
+//       forceWebView: false,
+//     );
+//   }
+// }

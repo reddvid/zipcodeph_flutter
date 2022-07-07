@@ -1,22 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:zipcodeph_flutter/controllers/zips.dart';
+import 'package:zipcodeph_flutter/controllers/faves.dart';
 import 'package:zipcodeph_flutter/main.dart';
 import 'package:zipcodeph_flutter/models/zipcode.dart';
+import 'package:zipcodeph_flutter/views/searchpage.dart';
 
-class ZipsPage extends StatefulWidget {
-  final List<String> area;
-  final ZipsController _zipsController = ZipsController();
-  ZipsPage({Key? key, required this.area}) : super(key: key);
+class FavesPage extends StatefulWidget {
+  FavesPage({Key? key}) : super(key: key);
+  final FavesController _favesController = FavesController();
 
   @override
-  State<ZipsPage> createState() => _ZipsPageState();
+  State<FavesPage> createState() => _FavesPageState();
 }
 
-class _ZipsPageState extends State<ZipsPage> with RouteAware {
+class _FavesPageState extends State<FavesPage> with RouteAware {
   void _refreshList() {
     setState(() {});
+  }
+
+  @override
+  void didPop() {
+    _refreshList();
+    super.didPop();
+  }
+
+  @override
+  void didPush() {
+    _refreshList();
+    super.didPush();
+  }
+
+  @override
+  void didPopNext() {
+    _refreshList();
+    super.didPopNext();
+  }
+
+  @override
+  void didPushNext() {
+    _refreshList();
+    super.didPushNext();
   }
 
   @override
@@ -31,36 +55,62 @@ class _ZipsPageState extends State<ZipsPage> with RouteAware {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          title:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text(
-          widget.area[0],
-          style: const TextStyle(
-            fontSize: 12,
-          ),
-        ),
-        Text(widget.area[1],
-            style: const TextStyle(fontWeight: FontWeight.bold)),
-      ])),
-      body: _List(widget._zipsController, widget.area[1], _refreshList),
+        title: const Text("Favorites"),
+        actions: [
+          Padding(
+              padding: const EdgeInsets.only(right: 20.0),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => SearchPage()));
+                },
+                child: const Icon(
+                  Icons.add,
+                  size: 26.0,
+                ),
+              )),
+        ],
+      ),
+      body: _List(widget._favesController, _refreshList),
     );
   }
 }
 
 class _List extends StatelessWidget {
-  final ZipsController _zipsController;
+  final FavesController _favesController;
   final VoidCallback _refreshList;
-  final String _area;
-  const _List(this._zipsController, this._area, this._refreshList);
+
+  const _List(this._favesController, this._refreshList);
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<ZipCode>?>(
-        future: _zipsController.getAreaCodes(_area),
+        future: _favesController.getFaves(),
         builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return const Center(
-                child: Text("Can't load ZIP codes. Send Feedback"));
+          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Center(
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/images/empty.png',
+                      width: MediaQuery.of(context).size.width * 0.6,
+                    ),
+                    const Text(
+                      "You have no favorites yet",
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                    TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => SearchPage(),
+                              ));
+                        },
+                        child: const Text("Add a ZIP Code"))
+                  ]),
+            );
           } else {
             return ListView.separated(
               shrinkWrap: true,
@@ -143,7 +193,7 @@ class _List extends StatelessWidget {
                   title: const Text("Remove from favorites"),
                   onTap: () {
                     zipCode.fave = 0;
-                    _zipsController.updateItem(zipCode);
+                    _favesController.updateItem(zipCode);
                     _refreshList();
                     Navigator.pop(context);
                     var snackBar = SnackBar(
@@ -153,7 +203,7 @@ class _List extends StatelessWidget {
                         label: 'UNDO',
                         onPressed: () {
                           zipCode.fave = 1;
-                          _zipsController.updateItem(zipCode);
+                          _favesController.updateItem(zipCode);
                           _refreshList();
                         },
                       ),
@@ -166,7 +216,7 @@ class _List extends StatelessWidget {
                   title: const Text("Add to favorites"),
                   onTap: () {
                     zipCode.fave = 1;
-                    _zipsController.updateItem(zipCode);
+                    _favesController.updateItem(zipCode);
                     _refreshList();
                     Navigator.pop(context);
                     var snackBar = SnackBar(
@@ -176,7 +226,7 @@ class _List extends StatelessWidget {
                         label: 'UNDO',
                         onPressed: () {
                           zipCode.fave = 0;
-                          _zipsController.updateItem(zipCode);
+                          _favesController.updateItem(zipCode);
                           _refreshList();
                         },
                       ),

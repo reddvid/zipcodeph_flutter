@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_search_bar/flutter_search_bar.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:zipcodeph_flutter/controllers/zips.dart';
+import 'package:zipcodeph_flutter/controllers/search.dart';
 import 'package:zipcodeph_flutter/main.dart';
 import 'package:zipcodeph_flutter/models/zipcode.dart';
 
-class ZipsPage extends StatefulWidget {
-  final List<String> area;
-  final ZipsController _zipsController = ZipsController();
-  ZipsPage({Key? key, required this.area}) : super(key: key);
+class SearchPage extends StatefulWidget {
+  SearchPage({Key? key}) : super(key: key);
+  final SearchController _searchController = SearchController();
 
   @override
-  State<ZipsPage> createState() => _ZipsPageState();
+  State<SearchPage> createState() => _SearchPageState();
 }
 
-class _ZipsPageState extends State<ZipsPage> with RouteAware {
+class _SearchPageState extends State<SearchPage> with RouteAware {
+  late SearchBar searchBar;
+  late String query = "";
   void _refreshList() {
     setState(() {});
   }
@@ -27,40 +30,85 @@ class _ZipsPageState extends State<ZipsPage> with RouteAware {
     super.initState();
   }
 
+  AppBar buildAppBar(BuildContext context) {
+    return AppBar(
+      title: const Text("Search"),
+      actions: [searchBar.getSearchAction(context)],
+    );
+  }
+
+  _SearchPageState() {
+    searchBar = SearchBar(
+        inBar: false,
+        hintText: "Search towns, cities, or province",
+        setState: setState,
+        onChanged: (value) {
+          setState(() {
+            query = value;
+          });
+        },
+        onCleared: () {
+          setState(() {
+            query = "";
+          });
+        },
+        onClosed: () {
+          setState(() {
+            query = "";
+          });
+        },
+        closeOnSubmit: false,
+        clearOnSubmit: false,
+        showClearButton: true,
+        buildDefaultAppBar: buildAppBar);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          title:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text(
-          widget.area[0],
-          style: const TextStyle(
-            fontSize: 12,
-          ),
-        ),
-        Text(widget.area[1],
-            style: const TextStyle(fontWeight: FontWeight.bold)),
-      ])),
-      body: _List(widget._zipsController, widget.area[1], _refreshList),
+      appBar: searchBar.build(context),
+      body: _List(widget._searchController, query, _refreshList),
     );
   }
 }
 
 class _List extends StatelessWidget {
-  final ZipsController _zipsController;
+  final SearchController _searchController;
+  final String _query;
   final VoidCallback _refreshList;
-  final String _area;
-  const _List(this._zipsController, this._area, this._refreshList);
+
+  const _List(this._searchController, this._query, this._refreshList);
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<ZipCode>?>(
-        future: _zipsController.getAreaCodes(_area),
+        future: _searchController.findCodes(_query),
         builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return const Center(
-                child: Text("Can't load ZIP codes. Send Feedback"));
+          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Center(
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/images/notfound.png',
+                      width: MediaQuery.of(context).size.width * 0.6,
+                    ),
+                    Text(
+                      "Found nothing for '$_query'",
+                      style: const TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                    TextButton(
+                        onPressed: () async {
+                          final info = await PackageInfo.fromPlatform();
+                          _launchUrl(
+                              "mailto:reddavidapps?subject=[FEEDBACK] ZIP Code PH&body=App version: " +
+                                  info.version +
+                                  " build " +
+                                  info.buildNumber);
+                        },
+                        child: const Text("Send Feedback"))
+                  ]),
+            );
           } else {
             return ListView.separated(
               shrinkWrap: true,
@@ -143,7 +191,7 @@ class _List extends StatelessWidget {
                   title: const Text("Remove from favorites"),
                   onTap: () {
                     zipCode.fave = 0;
-                    _zipsController.updateItem(zipCode);
+                    _searchController.updateItem(zipCode);
                     _refreshList();
                     Navigator.pop(context);
                     var snackBar = SnackBar(
@@ -153,7 +201,7 @@ class _List extends StatelessWidget {
                         label: 'UNDO',
                         onPressed: () {
                           zipCode.fave = 1;
-                          _zipsController.updateItem(zipCode);
+                          _searchController.updateItem(zipCode);
                           _refreshList();
                         },
                       ),
@@ -166,7 +214,7 @@ class _List extends StatelessWidget {
                   title: const Text("Add to favorites"),
                   onTap: () {
                     zipCode.fave = 1;
-                    _zipsController.updateItem(zipCode);
+                    _searchController.updateItem(zipCode);
                     _refreshList();
                     Navigator.pop(context);
                     var snackBar = SnackBar(
@@ -176,7 +224,7 @@ class _List extends StatelessWidget {
                         label: 'UNDO',
                         onPressed: () {
                           zipCode.fave = 0;
-                          _zipsController.updateItem(zipCode);
+                          _searchController.updateItem(zipCode);
                           _refreshList();
                         },
                       ),
