@@ -71,7 +71,6 @@ class _SearchPageState extends State<SearchPage> with RouteAware {
         showClearButton: true,
         buildDefaultAppBar: buildAppBar);
   }
-showSearch(context: context, delegate: searchBar);
 
   @override
   Widget build(BuildContext context) {

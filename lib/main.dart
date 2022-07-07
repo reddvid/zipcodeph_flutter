@@ -29,15 +29,12 @@ class MyApp extends StatelessWidget {
   }
 
   ThemeData _buildTheme(brightness) {
-    var baseTheme = ThemeData(
+    return ThemeData(
         primarySwatch: Colors.red,
         brightness: brightness,
         pageTransitionsTheme: const PageTransitionsTheme(builders: {
           TargetPlatform.android: CupertinoPageTransitionsBuilder(),
           TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
         }));
-    return baseTheme.copyWith(
-      textTheme: GoogleFonts.interTextTheme(baseTheme.textTheme),
-    );
   }
 }
