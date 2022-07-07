@@ -24,8 +24,8 @@ class _MainMenuState extends State<MainMenu> {
         child: Scaffold(
       body: Container(
           padding: const EdgeInsets.all(10),
-          margin: MediaQuery.of(context).padding,
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
             children: [
               Container(
                   width: double.infinity,
