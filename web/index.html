@@ -8,6 +8,7 @@
     The path provided below has to start and end with a slash "/" in order for
     it to work correctly.
 
+<<<<<<< HEAD
     For more details:
     * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
 
@@ -15,6 +16,12 @@
     the `--base-href` argument provided to `flutter build`.
   -->
   <base href="$FLUTTER_BASE_HREF">
+=======
+    Fore more details:
+    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
+  -->
+  <base href="/">
+>>>>>>> 20caaf1f6788112b951d54e26fd3b75825bd645b
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
@@ -26,6 +33,12 @@
   <meta name="apple-mobile-web-app-title" content="zipcodeph_flutter">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
 
+<<<<<<< HEAD
+=======
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+>>>>>>> 20caaf1f6788112b951d54e26fd3b75825bd645b
   <title>zipcodeph_flutter</title>
   <link rel="manifest" href="manifest.json">
 </head>
@@ -34,6 +47,7 @@
        application. For more information, see:
        https://developers.google.com/web/fundamentals/primers/service-workers -->
   <script>
+<<<<<<< HEAD
     var serviceWorkerVersion = null;
     var scriptLoaded = false;
     function loadMainDartJs() {
@@ -97,5 +111,14 @@
       loadMainDartJs();
     }
   </script>
+=======
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('flutter-first-frame', function () {
+        navigator.serviceWorker.register('flutter_service_worker.js');
+      });
+    }
+  </script>
+  <script src="main.dart.js" type="application/javascript"></script>
+>>>>>>> 20caaf1f6788112b951d54e26fd3b75825bd645b
 </body>
 </html>

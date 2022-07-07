@@ -2,7 +2,11 @@ name: zipcodeph_flutter
 description: A new Flutter project.
 
 # The following line prevents the package from being accidentally published to
+<<<<<<< HEAD
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
+=======
+# pub.dev using `pub publish`. This is preferred for private packages.
+>>>>>>> 20caaf1f6788112b951d54e26fd3b75825bd645b
 publish_to: "none" # Remove this line if you wish to publish to pub.dev
 
 # The following defines the version and build number for your application.
@@ -20,6 +24,7 @@ version: 1.0.0+1
 environment:
   sdk: ">=2.12.0 <3.0.0"
 
+<<<<<<< HEAD
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
 # consider running `flutter pub upgrade --major-versions`. Alternatively,
@@ -43,11 +48,24 @@ dependencies:
   flutter_search_bar: ^3.0.0-dev.1
   path_provider: ^2.0.11
   flutter_svg: ^1.1.1+1
+=======
+dependencies:
+  flutter:
+    sdk: flutter
+
+  material_floating_search_bar: ^0.3.4
+  shared_preferences: ^2.0.5
+  provider: ^5.0.0
+  # The following adds the Cupertino Icons font to your application.
+  # Use with the CupertinoIcons class for iOS style icons.
+  cupertino_icons: ^1.0.2
+>>>>>>> 20caaf1f6788112b951d54e26fd3b75825bd645b
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
+<<<<<<< HEAD
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
@@ -55,6 +73,8 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
 
+=======
+>>>>>>> 20caaf1f6788112b951d54e26fd3b75825bd645b
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
@@ -67,6 +87,7 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
+<<<<<<< HEAD
     - assets/images/ncr.jpg
     - assets/images/luzon.jpg
     - assets/images/visayas.jpg
@@ -78,6 +99,12 @@ flutter:
     - assets/zips_ph.db
 
   #   - images/a_dot_ham.jpeg
+=======
+    - assets/luzon.png
+    - assets/ncr.png
+    - assets/mindanao.png
+    - assets/visayas.png
+>>>>>>> 20caaf1f6788112b951d54e26fd3b75825bd645b
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
