@@ -16,4 +16,11 @@ class ZipDB {
   Future<List<Map<String, dynamic>>> list() async {
     return _items;
   }
+
+  Future<void> update(Map<String, dynamic> updatedItem) async {
+    int i = _items.indexWhere((item) =>
+        item['code'] == updatedItem['code'] &&
+        item['area'] == updatedItem['area']);
+    _items[i] = updatedItem;
+  }
 }

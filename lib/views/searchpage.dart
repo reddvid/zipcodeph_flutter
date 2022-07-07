@@ -105,7 +105,8 @@ class _List extends StatelessWidget {
                       showModalBottomSheet<void>(
                           context: context,
                           builder: (BuildContext context) {
-                            return _BottomSheet(context, snapshot.data![index]);
+                            return _BottomSheet(context, snapshot.data![index],
+                                _searchController);
                           });
                     },
                     onTap: () {
@@ -113,7 +114,8 @@ class _List extends StatelessWidget {
                       showModalBottomSheet<void>(
                           context: context,
                           builder: (BuildContext context) {
-                            return _BottomSheet(context, snapshot.data![index]);
+                            return _BottomSheet(context, snapshot.data![index],
+                                _searchController);
                           });
                     },
                     visualDensity:
@@ -136,7 +138,7 @@ class _List extends StatelessWidget {
         });
   }
 
-  _BottomSheet(BuildContext context, ZipCode zipCode) {
+  _BottomSheet(BuildContext context, ZipCode zipCode, SearchController) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
@@ -170,12 +172,17 @@ class _List extends StatelessWidget {
               ? ListTile(
                   leading: const Icon(Icons.heart_broken_outlined),
                   title: const Text("Remove from favorites"),
-                  onTap: () {},
+                  onTap: () {
+                    zipCode.fave = false;
+                    _searchController.updateItem(zipCode);
+                  },
                 )
               : ListTile(
                   leading: const Icon(Icons.favorite_border),
                   title: const Text("Add to favorites"),
-                  onTap: () {},
+                  onTap: () {
+                    zipCode.fave = true;
+                  },
                 ),
           ListTile(
             leading: const Icon(Icons.map_outlined),

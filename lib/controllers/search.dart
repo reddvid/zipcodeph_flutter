@@ -12,4 +12,8 @@ class SearchController {
   Future<List<ZipCode>> findCodes(String query) {
     return _zipRepo.find(query);
   }
+
+  Future<void> updateItem(ZipCode zipCode) {
+    return _zipRepo.update(zipCode);
+  }
 }

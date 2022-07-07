@@ -40,4 +40,9 @@ class ZipRepository implements IZipRepository {
       return filtered.map((item) => ZipCode.fromMap(item)).toList();
     }
   }
+
+  @override
+  Future<void> update(ZipCode zipCode) async {
+    await _db.update(zipCode.toMap());
+  }
 }
