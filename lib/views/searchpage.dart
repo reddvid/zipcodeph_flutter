@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_search_bar/flutter_search_bar.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:zipcodeph_flutter/controllers/search.dart';
 import 'package:zipcodeph_flutter/models/zipcode.dart';
 import 'package:zipcodeph_flutter/views/mainpage.dart';
@@ -152,7 +154,17 @@ class _List extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.copy),
             title: const Text("Copy"),
-            onTap: () {},
+            onTap: () {
+              Clipboard.setData(ClipboardData(
+                  text: "${zipCode.code} ${zipCode.town}, ${zipCode.area}"));
+              // TO-DO: Show snackbar
+              Navigator.pop(context);
+              var snackBar = SnackBar(
+                content: Text(
+                    "Copied ${zipCode.code} ${zipCode.town}, ${zipCode.area}"),
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            },
           ),
           zipCode.fave
               ? ListTile(
@@ -168,7 +180,11 @@ class _List extends StatelessWidget {
           ListTile(
             leading: const Icon(Icons.map_outlined),
             title: const Text("Open in Maps"),
-            onTap: () {},
+            onTap: () {
+              _launchUrl(
+                  "https://google.com/maps/search/${zipCode.town}, ${zipCode.area}");
+              Navigator.pop(context);
+            },
           ),
           const Divider(color: Colors.grey),
           ListTile(
@@ -181,5 +197,9 @@ class _List extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  void _launchUrl(String url) async {
+    if (!await launchUrl(Uri.parse(url))) throw 'Could not launch $url';
   }
 }
