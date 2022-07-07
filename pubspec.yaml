@@ -42,6 +42,7 @@ dependencies:
   share_plus: ^4.0.10
   flutter_search_bar: ^3.0.0-dev.1
   path_provider: ^2.0.11
+  flutter_svg: ^1.1.1+1
 
 dev_dependencies:
   flutter_test:
@@ -70,7 +71,11 @@ flutter:
     - assets/images/luzon.jpg
     - assets/images/visayas.jpg
     - assets/images/mindanao.jpg
+    - assets/images/notfound.png
+    - assets/images/notfound_only.png
+    - assets/images/notfound.svg
     - assets/zips_ph.db
+
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

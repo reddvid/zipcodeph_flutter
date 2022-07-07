@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_search_bar/flutter_search_bar.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zipcodeph_flutter/controllers/search.dart';
 import 'package:zipcodeph_flutter/models/zipcode.dart';
@@ -80,7 +82,15 @@ class _List extends StatelessWidget {
   final String _query;
   final VoidCallback _refreshList;
 
-  const _List(this._searchController, this._query, this._refreshList);
+  _List(this._searchController, this._query, this._refreshList);
+
+  late PackageInfo _packageInfo = PackageInfo(
+    appName: 'Unknown',
+    packageName: 'Unknown',
+    version: 'Unknown',
+    buildNumber: 'Unknown',
+    buildSignature: 'Unknown',
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -91,49 +101,77 @@ class _List extends StatelessWidget {
           if (!snapshot.hasData) {
             return const Center(child: Text("Search Placeholder..."));
           } else {
-            return ListView.separated(
-              shrinkWrap: true,
-              separatorBuilder: (context, index) => const Divider(
-                color: Colors.grey,
-              ),
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                ZipCode zipCode = snapshot.data![index];
-                return ListTile(
-                    onLongPress: () {
-                      // TODO: Open Bottom Sheet
-                      showModalBottomSheet<void>(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return _BottomSheet(
-                                context, snapshot.data![index], _refreshList);
-                          });
-                    },
-                    onTap: () {
-                      // TODO: Open Bottom Sheet
-                      showModalBottomSheet<void>(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return _BottomSheet(
-                                context, snapshot.data![index], _refreshList);
-                          });
-                    },
-                    visualDensity:
-                        const VisualDensity(vertical: -4), // to compact
-                    leading: Container(
-                        width: 48,
-                        height: double.infinity,
-                        alignment: Alignment.center,
-                        child: Text(
-                          zipCode.code.toString(),
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        )),
-                    subtitle: Text(zipCode.area),
-                    title: Text(zipCode.town));
-              },
-            );
+            if (snapshot.data!.isEmpty) {
+              return Center(
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Image.asset(
+                        'assets/images/notfound.png',
+                        width: MediaQuery.of(context).size.width * 0.6,
+                      ),
+                      Text(
+                        "Found nothing for '$_query'",
+                        style: const TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                      TextButton(
+                          onPressed: () async {
+                            final info = await PackageInfo.fromPlatform();
+                            _packageInfo = info;
+                            _launchUrl(
+                                "mailto:reddavidapps?subject=[FEEDBACK] ZIP Code PH&body=App version: " +
+                                    _packageInfo.version +
+                                    " build " +
+                                    _packageInfo.buildNumber);
+                          },
+                          child: const Text("Send Feedback"))
+                    ]),
+              );
+            } else {
+              return ListView.separated(
+                shrinkWrap: true,
+                separatorBuilder: (context, index) => const Divider(
+                  color: Colors.grey,
+                ),
+                itemCount: snapshot.data!.length,
+                itemBuilder: (context, index) {
+                  ZipCode zipCode = snapshot.data![index];
+                  return ListTile(
+                      onLongPress: () {
+                        // TODO: Open Bottom Sheet
+                        showModalBottomSheet<void>(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return _BottomSheet(
+                                  context, snapshot.data![index], _refreshList);
+                            });
+                      },
+                      onTap: () {
+                        // TODO: Open Bottom Sheet
+                        showModalBottomSheet<void>(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return _BottomSheet(
+                                  context, snapshot.data![index], _refreshList);
+                            });
+                      },
+                      visualDensity:
+                          const VisualDensity(vertical: -4), // to compact
+                      leading: Container(
+                          width: 48,
+                          height: double.infinity,
+                          alignment: Alignment.center,
+                          child: Text(
+                            zipCode.code.toString(),
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          )),
+                      subtitle: Text(zipCode.area),
+                      title: Text(zipCode.town));
+                },
+              );
+            }
           }
         });
   }
