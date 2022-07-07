@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter_search_bar/flutter_search_bar.dart';
 import 'package:zipcodeph_flutter/controllers/search.dart';
 import 'package:zipcodeph_flutter/models/zipcode.dart';
 
@@ -13,14 +14,35 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
+  late SearchBar searchBar;
+
   void _refreshList() {
     setState(() {});
+  }
+
+  AppBar buildAppBar(BuildContext context) {
+    return AppBar(
+      title: const Text("Search"),
+      actions: [searchBar.getSearchAction(context)],
+    );
+  }
+
+  _SearchPageState() {
+    searchBar = SearchBar(
+        inBar: false,
+        hintText: "Search towns, cities, or province",
+        setState: setState,
+        closeOnSubmit: false,
+        clearOnSubmit: false,
+        showClearButton: true,
+        onSubmitted: print,
+        buildDefaultAppBar: buildAppBar);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Search")),
+      appBar: searchBar.build(context),
       body: _List(widget._searchController, _refreshList),
     );
   }
