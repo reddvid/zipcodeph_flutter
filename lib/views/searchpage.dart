@@ -85,7 +85,7 @@ class _List extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print(_query);
-    return FutureBuilder<List<ZipCode>>(
+    return FutureBuilder<List<ZipCode>?>(
         future: _searchController.findCodes(_query),
         builder: (context, snapshot) {
           if (!snapshot.hasData) {
@@ -105,8 +105,8 @@ class _List extends StatelessWidget {
                       showModalBottomSheet<void>(
                           context: context,
                           builder: (BuildContext context) {
-                            return _BottomSheet(context, snapshot.data![index],
-                                _searchController);
+                            return _BottomSheet(
+                                context, snapshot.data![index], _refreshList);
                           });
                     },
                     onTap: () {
@@ -114,8 +114,8 @@ class _List extends StatelessWidget {
                       showModalBottomSheet<void>(
                           context: context,
                           builder: (BuildContext context) {
-                            return _BottomSheet(context, snapshot.data![index],
-                                _searchController);
+                            return _BottomSheet(
+                                context, snapshot.data![index], _refreshList);
                           });
                     },
                     visualDensity:
@@ -138,7 +138,8 @@ class _List extends StatelessWidget {
         });
   }
 
-  _BottomSheet(BuildContext context, ZipCode zipCode, SearchController) {
+  _BottomSheet(
+      BuildContext context, ZipCode zipCode, VoidCallback _refreshList) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
@@ -168,20 +169,25 @@ class _List extends StatelessWidget {
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
             },
           ),
-          zipCode.fave
+          zipCode.fave == 1
               ? ListTile(
                   leading: const Icon(Icons.heart_broken_outlined),
                   title: const Text("Remove from favorites"),
                   onTap: () {
-                    zipCode.fave = false;
+                    zipCode.fave = 0;
                     _searchController.updateItem(zipCode);
+                    _refreshList();
+                    Navigator.pop(context);
                   },
                 )
               : ListTile(
                   leading: const Icon(Icons.favorite_border),
                   title: const Text("Add to favorites"),
                   onTap: () {
-                    zipCode.fave = true;
+                    zipCode.fave = 1;
+                    _searchController.updateItem(zipCode);
+                    _refreshList();
+                    Navigator.pop(context);
                   },
                 ),
           ListTile(

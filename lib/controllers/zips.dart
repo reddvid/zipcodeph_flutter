@@ -5,7 +5,7 @@ import 'package:zipcodeph_flutter/repositories/zip.dart';
 class ZipsController {
   final ZipRepository _zipRepo = ZipRepository(ZipDB());
 
-  Future<List<ZipCode>> getAreaCodes(String area) {
+  Future<List<ZipCode>?> getAreaCodes(String area) {
     return _zipRepo.getAreaCodes(area);
   }
 }

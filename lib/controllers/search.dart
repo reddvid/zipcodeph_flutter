@@ -5,11 +5,11 @@ import 'package:zipcodeph_flutter/repositories/zip.dart';
 class SearchController {
   final ZipRepository _zipRepo = ZipRepository(ZipDB());
 
-  Future<List<ZipCode>> getAllCodes() {
+  Future<List<ZipCode>?> getAllCodes() {
     return _zipRepo.getAll();
   }
 
-  Future<List<ZipCode>> findCodes(String query) {
+  Future<List<ZipCode>?> findCodes(String query) {
     return _zipRepo.find(query);
   }
 
