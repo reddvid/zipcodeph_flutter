@@ -45,29 +45,44 @@ class _AboutPageState extends State<AboutPage> {
                 itemBuilder: (context, index) => Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        const SizedBox(
+                          height: 20,
+                        ),
                         ListTile(
                             title: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Padding(
-                                padding: EdgeInsets.only(bottom: 10),
-                                child: Text("What is a ZIP Code?")),
-                            const Text(
-                                "ZIP (Zone Identification Plan) Codes are a system of postal codes first used by the United States Postal Services (USPS) in 1963 - so that the mail travels more efficiently, and therefore more quickly, when senders use the code in the postal address."),
+                            Padding(
+                                padding: const EdgeInsets.only(bottom: 10),
+                                child: Text(
+                                  "What is a ZIP Code?",
+                                  style: Theme.of(context).textTheme.headline6,
+                                )),
+                            Text(
+                                "ZIP (Zone Identification Plan) Codes are a system of postal codes first used by the United States Postal Services (USPS) in 1963 - so that the mail travels more efficiently, and therefore more quickly, when senders use the code in the postal address.",
+                                style: Theme.of(context).textTheme.bodyMedium),
                           ],
                         )),
                         ListTile(
                             title: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                              const Text(
-                                  "In the Philippines, the ZIP Code is used by the Philippine Postal Corporation (PhilPost) to simplify the distribution of mail."),
+                              Text(
+                                  "In the Philippines, the ZIP Code is used by the Philippine Postal Corporation (PhilPost) to simplify the distribution of mail.",
+                                  style:
+                                      Theme.of(context).textTheme.bodyMedium),
                               const SizedBox(height: 20),
-                              const Padding(
-                                  padding: EdgeInsets.only(bottom: 10),
-                                  child: Text("Where to put the ZIP Code?")),
-                              const Text(
-                                  "The ZIP Code is usually placed at the left-hand corner of the last line where the city/town is written:"),
+                              Padding(
+                                  padding: const EdgeInsets.only(bottom: 10),
+                                  child: Text(
+                                    "Where to put the ZIP Code?",
+                                    style:
+                                        Theme.of(context).textTheme.headline6,
+                                  )),
+                              Text(
+                                  "The ZIP Code is usually placed at the left-hand corner of the last line where the city/town is written:",
+                                  style:
+                                      Theme.of(context).textTheme.bodyMedium),
                               Container(
                                 width: double.infinity,
                                 padding: const EdgeInsets.all(20),
@@ -87,21 +102,25 @@ class _AboutPageState extends State<AboutPage> {
                                     Text(
                                       "Mr. Juan Dela Cruz",
                                       style: TextStyle(
+                                          fontSize: 14,
                                           fontStyle: FontStyle.italic),
                                     ),
                                     Text(
                                       "Malacañang Complex",
                                       style: TextStyle(
+                                          fontSize: 14,
                                           fontStyle: FontStyle.italic),
                                     ),
                                     Text(
                                       "J.P. Laurel Street",
                                       style: TextStyle(
+                                          fontSize: 14,
                                           fontStyle: FontStyle.italic),
                                     ),
                                     Text(
                                       "1005 San Miguel, Manila",
                                       style: TextStyle(
+                                          fontSize: 14,
                                           fontStyle: FontStyle.italic),
                                     )
                                   ],
