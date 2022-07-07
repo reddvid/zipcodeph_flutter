@@ -89,11 +89,17 @@ class _List extends StatelessWidget {
           if (!snapshot.hasData) {
             return const Center(child: Text("Search Placeholder..."));
           } else {
-            return ListView.builder(
+            return ListView.separated(
+              shrinkWrap: true,
+              separatorBuilder: (context, index) => const Divider(
+                color: Colors.grey,
+              ),
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 ZipCode zipCode = snapshot.data![index];
                 return ListTile(
+                    visualDensity:
+                        const VisualDensity(vertical: -4), // to compact
                     leading: Container(
                         width: 48,
                         height: double.infinity,

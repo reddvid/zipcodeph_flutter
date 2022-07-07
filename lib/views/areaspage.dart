@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:zipcodeph_flutter/repositories/area.dart';
+import 'package:zipcodeph_flutter/views/zipspage.dart';
 
 class AreasPage extends StatefulWidget {
   final String area;
@@ -11,12 +13,36 @@ class AreasPage extends StatefulWidget {
 }
 
 class _AreasPageState extends State<AreasPage> {
+  final AreaRepository _areaRepository = AreaRepository();
   @override
   Widget build(BuildContext context) {
+    var menu = _areaRepository.menu(widget.area);
     return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.area),
-      ),
-    );
+        appBar: AppBar(
+          title: Text(widget.area,
+              style: const TextStyle(fontWeight: FontWeight.bold)),
+        ),
+        body: ListView.separated(
+            shrinkWrap: true,
+            separatorBuilder: (context, index) => const Divider(
+                  color: Colors.grey,
+                ),
+            itemCount: menu.length,
+            itemBuilder: (context, index) {
+              return ListTile(
+                visualDensity: const VisualDensity(vertical: -4), // to compact
+                trailing: const Icon(Icons.chevron_right),
+                title: Text(
+                  menu[index],
+                ),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              ZipsPage(area: [widget.area, menu[index]])));
+                },
+              );
+            }));
   }
 }

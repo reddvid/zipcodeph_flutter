@@ -26,4 +26,18 @@ class ZipRepository implements IZipRepository {
       return filtered.map((item) => ZipCode.fromMap(item)).toList();
     }
   }
+
+  @override
+  Future<List<ZipCode>> getAreaCodes(String query) async {
+    var items = await _db.list();
+    var filtered = items
+        .where((i) =>
+            i['town'].toString().toLowerCase().startsWith(query.toLowerCase()))
+        .toList();
+    if ((filtered.isEmpty) || query == "") {
+      return items.map((item) => ZipCode.fromMap(item)).toList();
+    } else {
+      return filtered.map((item) => ZipCode.fromMap(item)).toList();
+    }
+  }
 }
