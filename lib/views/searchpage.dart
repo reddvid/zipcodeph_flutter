@@ -4,6 +4,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_search_bar/flutter_search_bar.dart';
 import 'package:zipcodeph_flutter/controllers/search.dart';
 import 'package:zipcodeph_flutter/models/zipcode.dart';
+import 'package:zipcodeph_flutter/views/mainpage.dart';
 
 class SearchPage extends StatefulWidget {
   SearchPage({Key? key}) : super(key: key);
@@ -92,7 +93,19 @@ class _List extends StatelessWidget {
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 ZipCode zipCode = snapshot.data![index];
-                return Text(zipCode.code.toString() + " " + zipCode.town);
+                return ListTile(
+                    leading: Container(
+                        width: 48,
+                        height: double.infinity,
+                        alignment: Alignment.center,
+                        child: Text(
+                          zipCode.code.toString(),
+                          textAlign: TextAlign.center,
+                          style: const TextStyle(
+                              fontSize: 16, fontWeight: FontWeight.bold),
+                        )),
+                    subtitle: Text(zipCode.area),
+                    title: Text(zipCode.town));
               },
             );
           }
