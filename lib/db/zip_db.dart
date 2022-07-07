@@ -19,7 +19,8 @@ class ZipDB {
 
   static final table = "codes";
 
-  static final columnId = '_code';
+  static final columnId = '_id';
+  static final columnCode = 'code';
   static final columnTown = 'town';
   static final columnArea = 'area';
   static final columnFave = 'fave';
@@ -37,10 +38,10 @@ class ZipDB {
   _initDatabase() async {
     io.Directory applicationDirectory =
         await getApplicationDocumentsDirectory();
-    String path = join(applicationDirectory.path, 't2.db');
+    String path = join(applicationDirectory.path, 'zips_ph.db');
     bool dbExists = await io.File(path).exists();
     if (!dbExists) {
-      ByteData data = await rootBundle.load(join('assets', 't2.db'));
+      ByteData data = await rootBundle.load(join('assets', 'zips_ph.db'));
       List<int> bytes =
           data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
       await io.File(path).writeAsBytes(bytes, flush: true);
@@ -61,8 +62,7 @@ class ZipDB {
   Future<int?> update(Map<String, dynamic> updatedItem) async {
     Database? db = await instance.database;
     int i = updatedItem[columnId];
-    String area = updatedItem[columnArea];
-    return await db?.update(table, updatedItem,
-        where: '$columnId = ? AND $columnArea = ?', whereArgs: [i, area]);
+    return await db
+        ?.update(table, updatedItem, where: '$columnId = ?', whereArgs: [i]);
   }
 }

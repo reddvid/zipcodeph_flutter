@@ -1,18 +1,20 @@
 class ZipCode {
+  final int id;
   final int code;
   final String town;
   final String area;
   int fave;
 
-  ZipCode(this.code, this.town, this.area, this.fave);
+  ZipCode(this.id, this.code, this.town, this.area, this.fave);
 
   ZipCode.fromMap(Map<String, dynamic> data)
-      : code = data['_code'],
+      : id = data['_id'],
+        code = data['code'],
         town = data['town'],
         area = data['area'],
         fave = data['fave'];
 
   Map<String, dynamic> toMap() {
-    return {'_code': code, 'town': town, 'area': area, 'fave': fave};
+    return {'_id': id, 'code': code, 'town': town, 'area': area, 'fave': fave};
   }
 }
