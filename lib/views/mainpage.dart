@@ -27,41 +27,8 @@ class _MainMenuState extends State<MainMenu> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Did You Know?',
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                            fontSize: 16),
-                      ),
-                      const Divider(
-                        height: 5,
-                        color: Colors.transparent,
-                      ),
-                      trivia(),
-                      // Align(
-                      //     alignment: Alignment.bottomRight,
-                      //     child: shareButton())
-                    ],
-                  ),
-                  decoration: const BoxDecoration(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(10),
-                      ),
-                      gradient: LinearGradient(
-                        begin: Alignment.topRight,
-                        end: Alignment.bottomLeft,
-                        colors: [
-                          Colors.blue,
-                          Colors.red,
-                        ],
-                      ))),
+              aboutButton(),
+              trivia(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [searchButton(), favoritesButton()],
@@ -78,10 +45,6 @@ class _MainMenuState extends State<MainMenu> {
                   divider(),
                   mindanao(),
                   divider(),
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: aboutButton(),
-                  ),
                   enddivider()
                 ],
               ))),
@@ -91,7 +54,41 @@ class _MainMenuState extends State<MainMenu> {
   }
 
   trivia() {
-    return const Text('Text', style: TextStyle(color: Colors.white));
+    return Container(
+        width: double.infinity,
+        padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: const [
+            Text(
+              'Did You Know?',
+              style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 16),
+            ),
+            Divider(
+              height: 5,
+              color: Colors.transparent,
+            ),
+            Text('Text', style: TextStyle(color: Colors.white))
+            // Align(
+            //     alignment: Alignment.bottomRight,
+            //     child: shareButton())
+          ],
+        ),
+        decoration: const BoxDecoration(
+            borderRadius: BorderRadius.all(
+              Radius.circular(10),
+            ),
+            gradient: LinearGradient(
+              begin: Alignment.topRight,
+              end: Alignment.bottomLeft,
+              colors: [
+                Colors.blue,
+                Colors.red,
+              ],
+            )));
   }
 
   shareButton() {
@@ -109,29 +106,31 @@ class _MainMenuState extends State<MainMenu> {
   }
 
   aboutButton() {
-    return ElevatedButton.icon(
-        icon: Icon(
-            Platform.isAndroid
-                ? Icons.info_outline
-                : CupertinoIcons.info_circle,
-            color: Colors.black),
-        label:
-            const Text('Help & About', style: TextStyle(color: Colors.black)),
-        onPressed: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => const AboutPage()));
-        },
-        style: ButtonStyle(
-            shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18.0),
-        ))));
+    return Align(
+        alignment: Alignment.topRight,
+        child: TextButton.icon(
+            icon: Icon(
+                Platform.isAndroid
+                    ? Icons.info_outline
+                    : CupertinoIcons.info_circle,
+                color: Colors.black),
+            label: const Text('Help & About',
+                style: TextStyle(color: Colors.black)),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const AboutPage()));
+            },
+            style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18.0),
+            )))));
   }
 
   searchButton() {
     return Padding(
         padding: const EdgeInsets.symmetric(vertical: 5),
-        child: ElevatedButton.icon(
+        child: TextButton.icon(
             icon: Icon(
                 Platform.isAndroid ? Icons.search : CupertinoIcons.search,
                 color: Colors.black),
@@ -151,7 +150,7 @@ class _MainMenuState extends State<MainMenu> {
   favoritesButton() {
     return Padding(
         padding: const EdgeInsets.symmetric(vertical: 5),
-        child: ElevatedButton.icon(
+        child: TextButton.icon(
             icon: Icon(
                 Platform.isAndroid ? Icons.star_outline : CupertinoIcons.heart,
                 color: Colors.black),
