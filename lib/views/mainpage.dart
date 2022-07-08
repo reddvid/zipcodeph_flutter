@@ -49,8 +49,6 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
       });
     });
 
-    print("Load banner ad");
-
     BannerAd(
         adUnitId: AdHelper.bannerAdUnitId,
         request: const AdRequest(),
@@ -86,57 +84,46 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: FutureBuilder<void>(
-            future: _initGoogleMobileAds(),
-            builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
-              if (snapshot.hasData)
-                // ignore: curly_braces_in_flow_control_structures
-                return SafeArea(
-                  child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: Stack(children: [
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            aboutButton(),
-                            trivia(),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [searchButton(), favoritesButton()],
-                            ),
-                            Expanded(
-                                child: SingleChildScrollView(
-                                    child: Column(
-                              children: [
-                                ncr(),
-                                divider(),
-                                luzon(),
-                                divider(),
-                                visayas(),
-                                divider(),
-                                mindanao(),
-                                divider(),
-                                enddivider()
-                              ],
-                            ))),
-                          ],
-                        ),
-                        if (_bannerAd != null)
-                          Align(
-                              alignment: Alignment.bottomCenter,
-                              child: SizedBox(
-                                width: _bannerAd!.size.width.toDouble(),
-                                height: _bannerAd!.size.width.toDouble(),
-                                child: AdWidget(ad: _bannerAd!),
-                              ))
-                      ])),
-                );
-              else {
-                return const Center(
-                  child: Text("FUCK"),
-                );
-              }
-            }));
+        body: SafeArea(
+      child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Stack(children: [
+            Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                aboutButton(),
+                trivia(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [searchButton(), favoritesButton()],
+                ),
+                Expanded(
+                    child: SingleChildScrollView(
+                        child: Column(
+                  children: [
+                    ncr(),
+                    divider(),
+                    luzon(),
+                    divider(),
+                    visayas(),
+                    divider(),
+                    mindanao(),
+                    divider(),
+                    enddivider()
+                  ],
+                ))),
+              ],
+            ),
+            if (_bannerAd != null)
+              Align(
+                  alignment: Alignment.bottomCenter,
+                  child: SizedBox(
+                    width: _bannerAd!.size.width.toDouble(),
+                    height: _bannerAd!.size.height.toDouble(),
+                    child: AdWidget(ad: _bannerAd!),
+                  ))
+          ])),
+    ));
   }
 
   trivia() {
@@ -414,9 +401,5 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
   void _shareTrivia(String currentTrivia) {
     Share.share(currentTrivia + " #ZIPCodePH",
         subject: "Did You Know? ZIP Code PH Trivia");
-  }
-
-  Future<InitializationStatus> _initGoogleMobileAds() {
-    return MobileAds.instance.initialize();
   }
 }
