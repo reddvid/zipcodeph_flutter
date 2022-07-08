@@ -5,7 +5,8 @@ import '../views/mainpage.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   MobileAds.instance.initialize();
-  
+  // MobileAds.instance.initialize();
+
   runApp(const MyApp());
 }
 
@@ -30,6 +31,11 @@ class MyApp extends StatelessWidget {
 
   ThemeData _buildTheme(brightness) {
     return ThemeData(
+        textButtonTheme: TextButtonThemeData(
+            style: ButtonStyle(
+                foregroundColor: (brightness == Brightness.dark)
+                    ? MaterialStateProperty.all<Color>(Colors.white)
+                    : MaterialStateProperty.all<Color>(Colors.black))),
         primarySwatch: Colors.red,
         brightness: brightness,
         pageTransitionsTheme: const PageTransitionsTheme(builders: {
