@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:zipcodeph_flutter/views/mainpage.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
+import '../views/mainpage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  MobileAds.instance.initialize();
+  
   runApp(const MyApp());
 }
 

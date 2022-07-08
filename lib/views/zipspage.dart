@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:zipcodeph_flutter/controllers/zips.dart';
-import 'package:zipcodeph_flutter/main.dart';
-import 'package:zipcodeph_flutter/models/zipcode.dart';
+import '../controllers/zips.dart';
+import '../main.dart';
+import '../models/zipcode.dart';
 
 class ZipsPage extends StatefulWidget {
   final List<String> area;

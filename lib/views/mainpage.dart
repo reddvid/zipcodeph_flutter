@@ -6,12 +6,14 @@ import 'package:dialog_alert/dialog_alert.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:zipcodeph_flutter/main.dart';
-import 'package:zipcodeph_flutter/views/aboutpage.dart';
-import 'package:zipcodeph_flutter/views/areaspage.dart';
-import 'package:zipcodeph_flutter/views/favespage.dart';
-import 'package:zipcodeph_flutter/views/searchpage.dart';
+import '../helpers/ad_helper.dart';
+import '../main.dart';
+import '../views/aboutpage.dart';
+import '../views/areaspage.dart';
+import '../views/favespage.dart';
+import '../views/searchpage.dart';
 
 class MainMenu extends StatefulWidget {
   const MainMenu({Key? key}) : super(key: key);
@@ -25,11 +27,17 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
   late String currentTrivia = "";
   bool triviaPop = false;
   double _height = 110;
+
+  BannerAd? _bannerAd;
+
   @override
   void initState() {
+    super.initState();
+
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       routeObserver.subscribe(this, ModalRoute.of(context)!);
     });
+
     DefaultAssetBundle.of(context)
         .loadString("assets/json/trivias.json")
         .then((value) {
@@ -40,7 +48,21 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
         currentTrivia = trivias.isEmpty ? "" : trivias.first;
       });
     });
-    super.initState();
+
+    print("Load banner ad");
+
+    BannerAd(
+        adUnitId: AdHelper.bannerAdUnitId,
+        request: const AdRequest(),
+        size: AdSize.banner,
+        listener: BannerAdListener(onAdLoaded: (ad) {
+          setState(() {
+            _bannerAd = ad as BannerAd;
+          });
+        }, onAdFailedToLoad: (ad, err) {
+          debugPrint(err.message);
+          ad.dispose();
+        })).load();
   }
 
   @override
@@ -56,38 +78,65 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
   }
 
   @override
+  void dispose() {
+    _bannerAd?.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
-      child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              aboutButton(),
-              trivia(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [searchButton(), favoritesButton()],
-              ),
-              Expanded(
-                  child: SingleChildScrollView(
-                      child: Column(
-                children: [
-                  ncr(),
-                  divider(),
-                  luzon(),
-                  divider(),
-                  visayas(),
-                  divider(),
-                  mindanao(),
-                  divider(),
-                  enddivider()
-                ],
-              ))),
-            ],
-          )),
-    ));
+        body: FutureBuilder<void>(
+            future: _initGoogleMobileAds(),
+            builder: (BuildContext context, AsyncSnapshot<void> snapshot) {
+              if (snapshot.hasData)
+                // ignore: curly_braces_in_flow_control_structures
+                return SafeArea(
+                  child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: Stack(children: [
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            aboutButton(),
+                            trivia(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [searchButton(), favoritesButton()],
+                            ),
+                            Expanded(
+                                child: SingleChildScrollView(
+                                    child: Column(
+                              children: [
+                                ncr(),
+                                divider(),
+                                luzon(),
+                                divider(),
+                                visayas(),
+                                divider(),
+                                mindanao(),
+                                divider(),
+                                enddivider()
+                              ],
+                            ))),
+                          ],
+                        ),
+                        if (_bannerAd != null)
+                          Align(
+                              alignment: Alignment.bottomCenter,
+                              child: SizedBox(
+                                width: _bannerAd!.size.width.toDouble(),
+                                height: _bannerAd!.size.width.toDouble(),
+                                child: AdWidget(ad: _bannerAd!),
+                              ))
+                      ])),
+                );
+              else {
+                return const Center(
+                  child: Text("FUCK"),
+                );
+              }
+            }));
   }
 
   trivia() {
@@ -366,14 +415,8 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
     Share.share(currentTrivia + " #ZIPCodePH",
         subject: "Did You Know? ZIP Code PH Trivia");
   }
-}
 
-// Future<void> openUrl(String url) async {
-//   if (await canLaunch(url)) {
-//     await launch(
-//       url,
-//       forceSafariVC: false,
-//       forceWebView: false,
-//     );
-//   }
-// }
+  Future<InitializationStatus> _initGoogleMobileAds() {
+    return MobileAds.instance.initialize();
+  }
+}

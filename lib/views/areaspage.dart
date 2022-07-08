@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:zipcodeph_flutter/main.dart';
-import 'package:zipcodeph_flutter/repositories/area.dart';
-import 'package:zipcodeph_flutter/views/zipspage.dart';
+import '../main.dart';
+import '../repositories/area.dart';
+import '../views/zipspage.dart';
 
 class AreasPage extends StatefulWidget {
   final String area;

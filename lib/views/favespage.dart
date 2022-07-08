@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:zipcodeph_flutter/controllers/faves.dart';
-import 'package:zipcodeph_flutter/main.dart';
-import 'package:zipcodeph_flutter/models/zipcode.dart';
-import 'package:zipcodeph_flutter/views/searchpage.dart';
+import '../controllers/faves.dart';
+import '../main.dart';
+import '../models/zipcode.dart';
+import '../views/searchpage.dart';
 
 class FavesPage extends StatefulWidget {
   FavesPage({Key? key}) : super(key: key);

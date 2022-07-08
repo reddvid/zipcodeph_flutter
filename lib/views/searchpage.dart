@@ -3,9 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_search_bar/flutter_search_bar.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:zipcodeph_flutter/controllers/search.dart';
-import 'package:zipcodeph_flutter/main.dart';
-import 'package:zipcodeph_flutter/models/zipcode.dart';
+import '../controllers/search.dart';
+import '../main.dart';
+import '../models/zipcode.dart';
 
 class SearchPage extends StatefulWidget {
   SearchPage({Key? key}) : super(key: key);
