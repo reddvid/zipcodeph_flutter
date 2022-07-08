@@ -155,10 +155,10 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
                         });
                         final result = await showDialogAlert(
                           context: context,
-                          title: 'Did You Know',
+                          title: 'Did You Know?',
                           message: currentTrivia,
-                          actionButtonTitle: 'Share',
-                          cancelButtonTitle: 'Close',
+                          actionButtonTitle: 'SHARE',
+                          cancelButtonTitle: 'CLOSE',
                         );
                         if (result == ButtonActionType.action) {
                           _shareTrivia(currentTrivia);
@@ -209,12 +209,11 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
         alignment: Alignment.topRight,
         child: TextButton.icon(
             icon: Icon(
-                Platform.isAndroid
-                    ? Icons.info_outline
-                    : CupertinoIcons.info_circle,
-                color: Colors.black),
-            label: const Text('Help & About',
-                style: TextStyle(color: Colors.black)),
+              Platform.isAndroid
+                  ? Icons.info_outline
+                  : CupertinoIcons.info_circle,
+            ),
+            label: const Text('Help & About'),
             onPressed: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => const AboutPage()));
@@ -231,10 +230,11 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
         padding: const EdgeInsets.symmetric(vertical: 5),
         child: TextButton.icon(
             icon: Icon(
-                Platform.isAndroid ? Icons.search : CupertinoIcons.search,
-                color: Colors.black),
-            label: const Text('Search ZIP Codes',
-                style: TextStyle(color: Colors.black)),
+              Platform.isAndroid ? Icons.search : CupertinoIcons.search,
+            ),
+            label: const Text(
+              'Search ZIP Codes',
+            ),
             onPressed: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => SearchPage()));
@@ -251,12 +251,11 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
         padding: const EdgeInsets.symmetric(vertical: 5),
         child: TextButton.icon(
             icon: Icon(
-                Platform.isAndroid
-                    ? Icons.favorite_outline
-                    : CupertinoIcons.heart,
-                color: Colors.black),
-            label:
-                const Text('Favorites', style: TextStyle(color: Colors.black)),
+              Platform.isAndroid
+                  ? Icons.favorite_outline
+                  : CupertinoIcons.heart,
+            ),
+            label: const Text('Favorites'),
             onPressed: () {
               Navigator.push(context,
                   MaterialPageRoute(builder: (context) => FavesPage()));
@@ -273,6 +272,7 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
       children: [
         bgImage('assets/images/ncr.jpg'),
         ClipRRect(
+          borderRadius: BorderRadius.circular(10),
           // Clip it cleanly.
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
@@ -293,14 +293,15 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
         bgImage('assets/images/luzon.jpg'),
         ClipRRect(
             // Clip it cleanly.
+            borderRadius: BorderRadius.circular(10),
             child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
-          child: Container(
-            color: Colors.grey.withOpacity(0.1),
-            alignment: Alignment.center,
-            child: menuTitle('Luzon'),
-          ),
-        )),
+              filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
+              child: Container(
+                color: Colors.grey.withOpacity(0.1),
+                alignment: Alignment.center,
+                child: menuTitle('Luzon'),
+              ),
+            )),
       ],
     );
   }
@@ -311,6 +312,7 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
         bgImage('assets/images/visayas.jpg'),
         ClipRRect(
           // Clip it cleanly.
+          borderRadius: BorderRadius.circular(10),
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
             child: Container(
@@ -330,6 +332,7 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
         bgImage('assets/images/mindanao.jpg'),
         ClipRRect(
           // Clip it cleanly.
+          borderRadius: BorderRadius.circular(10),
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
             child: Container(
@@ -352,7 +355,7 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
 
   enddivider() {
     return const Divider(
-      height: 40,
+      height: 60,
       color: Colors.transparent,
     );
   }
@@ -399,7 +402,7 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
   }
 
   void _shareTrivia(String currentTrivia) {
-    Share.share(currentTrivia + " #ZIPCodePH",
+    Share.share("Did You Know?\n$currentTrivia #ZIPCodePH",
         subject: "Did You Know? ZIP Code PH Trivia");
   }
 }

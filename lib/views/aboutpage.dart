@@ -42,9 +42,7 @@ class _AboutPageState extends State<AboutPage> with RouteAware {
         appBar: AppBar(title: const Text("Help & About")),
         body: ListView.separated(
             itemCount: 1,
-            separatorBuilder: (context, index) => const Divider(
-                  color: Colors.black,
-                ),
+            separatorBuilder: (context, index) => const Divider(),
             itemBuilder: (context, index) => Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

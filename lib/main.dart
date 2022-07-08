@@ -4,7 +4,8 @@ import '../views/mainpage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  MobileAds.instance.initialize();
+  MobileAds.instance.updateRequestConfiguration(RequestConfiguration(
+      testDeviceIds: ["7CE071951CF053D9ACC07153C88DABE5"]));
   // MobileAds.instance.initialize();
 
   runApp(const MyApp());

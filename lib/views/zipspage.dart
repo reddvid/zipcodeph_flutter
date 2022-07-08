@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../controllers/zips.dart';
+import '../helpers/ad_helper.dart';
 import '../main.dart';
 import '../models/zipcode.dart';
 
@@ -15,35 +17,68 @@ class ZipsPage extends StatefulWidget {
 }
 
 class _ZipsPageState extends State<ZipsPage> with RouteAware {
+  BannerAd? _bannerAd;
+
   void _refreshList() {
     setState(() {});
   }
 
   @override
   void initState() {
+    super.initState();
+
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       routeObserver.subscribe(this, ModalRoute.of(context)!);
     });
-    super.initState();
+
+    BannerAd(
+        adUnitId: AdHelper.bannerAdUnitId,
+        request: const AdRequest(),
+        size: AdSize.banner,
+        listener: BannerAdListener(onAdLoaded: (ad) {
+          setState(() {
+            _bannerAd = ad as BannerAd;
+          });
+        }, onAdFailedToLoad: (ad, err) {
+          debugPrint(err.message);
+          ad.dispose();
+        })).load();
+  }
+
+  @override
+  void dispose() {
+    _bannerAd?.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-          title:
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-        Text(
-          widget.area[0],
-          style: const TextStyle(
-            fontSize: 12,
+        appBar: AppBar(
+            title:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          Text(
+            widget.area[0],
+            style: const TextStyle(
+              fontSize: 12,
+            ),
           ),
-        ),
-        Text(widget.area[1],
-            style: const TextStyle(fontWeight: FontWeight.bold)),
-      ])),
-      body: _List(widget._zipsController, widget.area[1], _refreshList),
-    );
+          Text(widget.area[1],
+              style: const TextStyle(fontWeight: FontWeight.bold)),
+        ])),
+        body: Stack(
+          children: [
+            _List(widget._zipsController, widget.area[1], _refreshList),
+            if (_bannerAd != null)
+              Align(
+                  alignment: Alignment.bottomCenter,
+                  child: SizedBox(
+                    width: _bannerAd!.size.width.toDouble(),
+                    height: _bannerAd!.size.height.toDouble(),
+                    child: AdWidget(ad: _bannerAd!),
+                  ))
+          ],
+        ));
   }
 }
 
@@ -63,10 +98,9 @@ class _List extends StatelessWidget {
                 child: Text("Can't load ZIP codes. Send Feedback"));
           } else {
             return ListView.separated(
+              padding: const EdgeInsets.only(bottom: 80),
               shrinkWrap: true,
-              separatorBuilder: (context, index) => const Divider(
-                color: Colors.grey,
-              ),
+              separatorBuilder: (context, index) => const Divider(),
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 ZipCode zipCode = snapshot.data![index];

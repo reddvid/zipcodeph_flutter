@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_search_bar/flutter_search_bar.dart';
+import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:zipcodeph_flutter/helpers/ad_helper.dart';
 import '../controllers/search.dart';
 import '../main.dart';
 import '../models/zipcode.dart';
@@ -18,16 +20,59 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> with RouteAware {
   late SearchBar searchBar;
   late String query = "";
+
+  InterstitialAd? _interstitialAd;
+  BannerAd? _bannerAd;
+
   void _refreshList() {
     setState(() {});
   }
 
   @override
   void initState() {
+    super.initState();
+
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       routeObserver.subscribe(this, ModalRoute.of(context)!);
     });
-    super.initState();
+
+    InterstitialAd.load(
+        adUnitId: AdHelper.interstitialAdUnitId,
+        request: const AdRequest(),
+        adLoadCallback:
+            InterstitialAdLoadCallback(onAdLoaded: (InterstitialAd ad) {
+          setState(() {
+            _interstitialAd = ad;
+          });
+        }, onAdFailedToLoad: (LoadAdError error) {
+          debugPrint(error.message);
+        }));
+
+    BannerAd(
+        adUnitId: AdHelper.bannerAdUnitId,
+        request: const AdRequest(),
+        size: AdSize.banner,
+        listener: BannerAdListener(onAdLoaded: (ad) {
+          setState(() {
+            _bannerAd = ad as BannerAd;
+          });
+        }, onAdFailedToLoad: (ad, err) {
+          debugPrint(err.message);
+          ad.dispose();
+        })).load();
+  }
+
+  @override
+  void didPush() {
+    debugPrint("Pushed ");
+    super.didPush();
+  }
+
+  @override
+  void dispose() {
+    _bannerAd?.dispose();
+    _interstitialAd?.dispose();
+    super.dispose();
   }
 
   AppBar buildAppBar(BuildContext context) {
@@ -65,10 +110,22 @@ class _SearchPageState extends State<SearchPage> with RouteAware {
 
   @override
   Widget build(BuildContext context) {
+    if (_interstitialAd != null) _interstitialAd!.show();
     return Scaffold(
-      appBar: searchBar.build(context),
-      body: _List(widget._searchController, query, _refreshList),
-    );
+        appBar: searchBar.build(context),
+        body: Stack(
+          children: [
+            _List(widget._searchController, query, _refreshList),
+            if (_bannerAd != null)
+              Align(
+                  alignment: Alignment.bottomCenter,
+                  child: SizedBox(
+                    width: _bannerAd!.size.width.toDouble(),
+                    height: _bannerAd!.size.height.toDouble(),
+                    child: AdWidget(ad: _bannerAd!),
+                  ))
+          ],
+        ));
   }
 }
 
@@ -106,15 +163,17 @@ class _List extends StatelessWidget {
                                   " build " +
                                   info.buildNumber);
                         },
-                        child: const Text("Send Feedback"))
+                        child: const Text(
+                          "SEND FEEDBACK",
+                          style: TextStyle(color: Colors.red),
+                        ))
                   ]),
             );
           } else {
             return ListView.separated(
               shrinkWrap: true,
-              separatorBuilder: (context, index) => const Divider(
-                color: Colors.grey,
-              ),
+              padding: const EdgeInsets.only(bottom: 80),
+              separatorBuilder: (context, index) => const Divider(),
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 ZipCode zipCode = snapshot.data![index];
