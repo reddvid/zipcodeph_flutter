@@ -6,6 +6,7 @@ import 'package:dialog_alert/dialog_alert.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:share_plus/share_plus.dart';
 import 'package:zipcodeph_flutter/main.dart';
 import 'package:zipcodeph_flutter/views/aboutpage.dart';
 import 'package:zipcodeph_flutter/views/areaspage.dart';
@@ -20,10 +21,10 @@ class MainMenu extends StatefulWidget {
 }
 
 class _MainMenuState extends State<MainMenu> with RouteAware {
-  static const double _height = 110;
   late List<dynamic> trivias = [];
   late String currentTrivia = "";
-
+  bool triviaPop = false;
+  double _height = 110;
   @override
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
@@ -39,16 +40,18 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
         currentTrivia = trivias.isEmpty ? "" : trivias.first;
       });
     });
-
     super.initState();
   }
 
   @override
   void didPopNext() {
-    setState(() {
-      trivias.shuffle();
-      currentTrivia = trivias.first;
-    });
+    if (!triviaPop) {
+      setState(() {
+        trivias.shuffle();
+        currentTrivia = trivias.first;
+      });
+    }
+    triviaPop = false;
     super.didPopNext();
   }
 
@@ -90,7 +93,7 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
   trivia() {
     return Container(
         width: double.infinity,
-        padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
+        padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -106,9 +109,14 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
               color: Colors.transparent,
             ),
             RichText(
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
                 text: TextSpan(
                     recognizer: TapGestureRecognizer()
                       ..onTap = () async {
+                        setState(() {
+                          triviaPop = true;
+                        });
                         final result = await showDialogAlert(
                           context: context,
                           title: 'Did You Know',
@@ -117,14 +125,12 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
                           cancelButtonTitle: 'Close',
                         );
                         if (result == ButtonActionType.action) {
-                          // TODO: Share Trivia
+                          _shareTrivia(currentTrivia);
                         }
                       },
                     text: currentTrivia,
-                    style: const TextStyle(color: Colors.white)))
-            // Align(
-            //     alignment: Alignment.bottomRight,
-            //     child: shareButton())
+                    style: const TextStyle(color: Colors.white))),
+            Align(alignment: Alignment.bottomRight, child: shareButton())
           ],
         ),
         decoration: const BoxDecoration(
@@ -142,17 +148,24 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
   }
 
   shareButton() {
-    return ElevatedButton.icon(
-      icon: Icon(
-        Platform.isAndroid ? Icons.share : CupertinoIcons.share,
-        size: 12.0,
-      ),
-      label: const Text('Share', style: TextStyle(fontSize: 12.0)),
-      onPressed: () {},
-      style: ElevatedButton.styleFrom(
-          primary: Colors.black.withOpacity(0.0),
-          shadowColor: Colors.transparent),
-    );
+    return SizedBox(
+        height: 35,
+        child: TextButton.icon(
+            icon: Icon(
+              Platform.isAndroid ? Icons.share : CupertinoIcons.share,
+              size: 12.0,
+              color: Colors.white,
+            ),
+            label: const Text('Share',
+                style: TextStyle(fontSize: 12.0, color: Colors.white)),
+            onPressed: () {
+              _shareTrivia(currentTrivia);
+            },
+            style: ButtonStyle(
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(18.0),
+            )))));
   }
 
   aboutButton() {
@@ -309,6 +322,7 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
   }
 
   bgImage(String imgPath) {
+    _height = MediaQuery.of(context).size.height * 0.5 * 0.25;
     return Container(
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(
@@ -346,6 +360,11 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
                         color: Colors.white)))),
       ),
     );
+  }
+
+  void _shareTrivia(String currentTrivia) {
+    Share.share(currentTrivia + " #ZIPCodePH",
+        subject: "Did You Know? ZIP Code PH Trivia");
   }
 }
 
