@@ -6,6 +6,7 @@ import 'package:dialog_alert/dialog_alert.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:share_plus/share_plus.dart';
 import '../main.dart';
 import '../views/aboutpage.dart';
@@ -164,6 +165,11 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
             label: const Text('Share',
                 style: TextStyle(fontSize: 12.0, color: Colors.white)),
             onPressed: () {
+              Clipboard.setData(ClipboardData(text: currentTrivia));
+              // var snackBar = const SnackBar(
+              //   content: Text("Trivia copied for sharing"),
+              // );
+              // ScaffoldMessenger.of(context).showSnackBar(snackBar);
               _shareTrivia(currentTrivia);
             },
             style: ButtonStyle(
@@ -371,7 +377,7 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
   }
 
   void _shareTrivia(String currentTrivia) {
-    Share.share("Did You Know?\n$currentTrivia #ZIPCodePH",
+    Share.share("Did You Know? $currentTrivia #ZIPCodePH",
         subject: "Did You Know? ZIP Code PH Trivia");
   }
 }

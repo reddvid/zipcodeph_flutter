@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../helpers/ad_helper.dart';
 import '../main.dart';
 import '../repositories/area.dart';
 import '../views/zipspage.dart';

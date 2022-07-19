@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../controllers/faves.dart';
-import '../helpers/ad_helper.dart';
 import '../main.dart';
 import '../models/zipcode.dart';
 import '../views/searchpage.dart';

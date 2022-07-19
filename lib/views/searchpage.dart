@@ -3,7 +3,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_search_bar/flutter_search_bar.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:zipcodeph_flutter/helpers/ad_helper.dart';
 import '../controllers/search.dart';
 import '../main.dart';
 import '../models/zipcode.dart';
