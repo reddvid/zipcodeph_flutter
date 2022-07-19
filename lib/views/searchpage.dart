@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_search_bar/flutter_search_bar.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zipcodeph_flutter/helpers/ad_helper.dart';
@@ -21,9 +20,6 @@ class _SearchPageState extends State<SearchPage> with RouteAware {
   late SearchBar searchBar;
   late String query = "";
 
-  InterstitialAd? _interstitialAd;
-  BannerAd? _bannerAd;
-
   void _refreshList() {
     setState(() {});
   }
@@ -35,44 +31,6 @@ class _SearchPageState extends State<SearchPage> with RouteAware {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       routeObserver.subscribe(this, ModalRoute.of(context)!);
     });
-
-    InterstitialAd.load(
-        adUnitId: AdHelper.interstitialAdUnitId,
-        request: const AdRequest(),
-        adLoadCallback:
-            InterstitialAdLoadCallback(onAdLoaded: (InterstitialAd ad) {
-          setState(() {
-            _interstitialAd = ad;
-          });
-        }, onAdFailedToLoad: (LoadAdError error) {
-          debugPrint(error.message);
-        }));
-
-    BannerAd(
-        adUnitId: AdHelper.bannerAdUnitId,
-        request: const AdRequest(),
-        size: AdSize.banner,
-        listener: BannerAdListener(onAdLoaded: (ad) {
-          setState(() {
-            _bannerAd = ad as BannerAd;
-          });
-        }, onAdFailedToLoad: (ad, err) {
-          debugPrint(err.message);
-          ad.dispose();
-        })).load();
-  }
-
-  @override
-  void didPush() {
-    debugPrint("Pushed ");
-    super.didPush();
-  }
-
-  @override
-  void dispose() {
-    _bannerAd?.dispose();
-    _interstitialAd?.dispose();
-    super.dispose();
   }
 
   AppBar buildAppBar(BuildContext context) {
@@ -110,22 +68,10 @@ class _SearchPageState extends State<SearchPage> with RouteAware {
 
   @override
   Widget build(BuildContext context) {
-    if (_interstitialAd != null) _interstitialAd!.show();
     return Scaffold(
-        appBar: searchBar.build(context),
-        body: Stack(
-          children: [
-            _List(widget._searchController, query, _refreshList),
-            if (_bannerAd != null)
-              Align(
-                  alignment: Alignment.bottomCenter,
-                  child: SizedBox(
-                    width: _bannerAd!.size.width.toDouble(),
-                    height: _bannerAd!.size.height.toDouble(),
-                    child: AdWidget(ad: _bannerAd!),
-                  ))
-          ],
-        ));
+      appBar: searchBar.build(context),
+      body: _List(widget._searchController, query, _refreshList),
+    );
   }
 }
 
@@ -141,35 +87,7 @@ class _List extends StatelessWidget {
     return FutureBuilder<List<ZipCode>?>(
         future: _searchController.findCodes(_query),
         builder: (context, snapshot) {
-          if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      'assets/images/notfound.png',
-                      width: MediaQuery.of(context).size.width * 0.6,
-                    ),
-                    Text(
-                      "Found nothing for '$_query'",
-                      style: const TextStyle(fontWeight: FontWeight.w600),
-                    ),
-                    TextButton(
-                        onPressed: () async {
-                          final info = await PackageInfo.fromPlatform();
-                          _launchUrl(
-                              "mailto:reddavidapps?subject=[FEEDBACK] ZIP Code PH&body=App version: " +
-                                  info.version +
-                                  " build " +
-                                  info.buildNumber);
-                        },
-                        child: const Text(
-                          "SEND FEEDBACK",
-                          style: TextStyle(color: Colors.red),
-                        ))
-                  ]),
-            );
-          } else {
+          if (snapshot.hasData) {
             return ListView.separated(
               shrinkWrap: true,
               padding: const EdgeInsets.only(bottom: 80),
@@ -209,6 +127,34 @@ class _List extends StatelessWidget {
                     subtitle: Text(zipCode.area),
                     title: Text(zipCode.town));
               },
+            );
+          } else {
+            return Center(
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset(
+                      'assets/images/notfound.png',
+                      width: MediaQuery.of(context).size.width * 0.6,
+                    ),
+                    Text(
+                      "Found nothing for '$_query'",
+                      style: const TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                    TextButton(
+                        onPressed: () async {
+                          final info = await PackageInfo.fromPlatform();
+                          _launchUrl(
+                              "mailto:reddavidapps?subject=[FEEDBACK] ZIP Code PH&body=App version: " +
+                                  info.version +
+                                  " build " +
+                                  info.buildNumber);
+                        },
+                        child: const Text(
+                          "SEND FEEDBACK",
+                          style: TextStyle(color: Colors.red),
+                        ))
+                  ]),
             );
           }
         });

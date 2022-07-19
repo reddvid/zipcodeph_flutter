@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../controllers/zips.dart';
 import '../helpers/ad_helper.dart';
@@ -17,8 +16,6 @@ class ZipsPage extends StatefulWidget {
 }
 
 class _ZipsPageState extends State<ZipsPage> with RouteAware {
-  BannerAd? _bannerAd;
-
   void _refreshList() {
     setState(() {});
   }
@@ -30,55 +27,25 @@ class _ZipsPageState extends State<ZipsPage> with RouteAware {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       routeObserver.subscribe(this, ModalRoute.of(context)!);
     });
-
-    BannerAd(
-        adUnitId: AdHelper.bannerAdUnitId,
-        request: const AdRequest(),
-        size: AdSize.banner,
-        listener: BannerAdListener(onAdLoaded: (ad) {
-          setState(() {
-            _bannerAd = ad as BannerAd;
-          });
-        }, onAdFailedToLoad: (ad, err) {
-          debugPrint(err.message);
-          ad.dispose();
-        })).load();
-  }
-
-  @override
-  void dispose() {
-    _bannerAd?.dispose();
-    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            title:
-                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          Text(
-            widget.area[0],
-            style: const TextStyle(
-              fontSize: 12,
-            ),
+      appBar: AppBar(
+          title:
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Text(
+          widget.area[0],
+          style: const TextStyle(
+            fontSize: 12,
           ),
-          Text(widget.area[1],
-              style: const TextStyle(fontWeight: FontWeight.bold)),
-        ])),
-        body: Stack(
-          children: [
-            _List(widget._zipsController, widget.area[1], _refreshList),
-            if (_bannerAd != null)
-              Align(
-                  alignment: Alignment.bottomCenter,
-                  child: SizedBox(
-                    width: _bannerAd!.size.width.toDouble(),
-                    height: _bannerAd!.size.height.toDouble(),
-                    child: AdWidget(ad: _bannerAd!),
-                  ))
-          ],
-        ));
+        ),
+        Text(widget.area[1],
+            style: const TextStyle(fontWeight: FontWeight.bold)),
+      ])),
+      body: _List(widget._zipsController, widget.area[1], _refreshList),
+    );
   }
 }
 

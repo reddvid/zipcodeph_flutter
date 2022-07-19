@@ -1,12 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import '../views/mainpage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  MobileAds.instance.updateRequestConfiguration(RequestConfiguration(
-      testDeviceIds: ["7CE071951CF053D9ACC07153C88DABE5"]));
-  // MobileAds.instance.initialize();
 
   runApp(const MyApp());
 }
@@ -39,6 +35,9 @@ class MyApp extends StatelessWidget {
                     : MaterialStateProperty.all<Color>(Colors.black))),
         primarySwatch: Colors.red,
         brightness: brightness,
+        backgroundColor: brightness == Brightness.dark
+            ? const Color.fromRGBO(17, 17, 17, 1.0)
+            : const Color.fromRGBO(220, 220, 220, 1.0),
         pageTransitionsTheme: const PageTransitionsTheme(builders: {
           TargetPlatform.android: CupertinoPageTransitionsBuilder(),
           TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),

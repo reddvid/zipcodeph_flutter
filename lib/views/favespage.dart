@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../controllers/faves.dart';
 import '../helpers/ad_helper.dart';
@@ -17,9 +16,6 @@ class FavesPage extends StatefulWidget {
 }
 
 class _FavesPageState extends State<FavesPage> with RouteAware {
-  InterstitialAd? _interstitialAd;
-  BannerAd? _bannerAd;
-
   void _refreshList() {
     setState(() {});
   }
@@ -55,74 +51,30 @@ class _FavesPageState extends State<FavesPage> with RouteAware {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       routeObserver.subscribe(this, ModalRoute.of(context)!);
     });
-
-    InterstitialAd.load(
-        adUnitId: AdHelper.interstitialAdUnitId,
-        request: const AdRequest(),
-        adLoadCallback:
-            InterstitialAdLoadCallback(onAdLoaded: (InterstitialAd ad) {
-          setState(() {
-            _interstitialAd = ad;
-          });
-        }, onAdFailedToLoad: (LoadAdError error) {
-          debugPrint(error.message);
-        }));
-
-    BannerAd(
-        adUnitId: AdHelper.bannerAdUnitId,
-        request: const AdRequest(),
-        size: AdSize.banner,
-        listener: BannerAdListener(onAdLoaded: (ad) {
-          setState(() {
-            _bannerAd = ad as BannerAd;
-          });
-        }, onAdFailedToLoad: (ad, err) {
-          debugPrint(err.message);
-          ad.dispose();
-        })).load();
-  }
-
-  @override
-  void dispose() {
-    _interstitialAd?.dispose();
-    _bannerAd?.dispose();
-    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_interstitialAd != null) _interstitialAd!.show();
     return Scaffold(
-        appBar: AppBar(
-          title: const Text("Favorites"),
-          actions: [
-            Padding(
-                padding: const EdgeInsets.only(right: 20.0),
-                child: GestureDetector(
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => SearchPage()));
-                  },
-                  child: const Icon(
-                    Icons.add,
-                    size: 26.0,
-                  ),
-                )),
-          ],
-        ),
-        body: Stack(
-          children: [
-            _List(widget._favesController, _refreshList),
-            if (_bannerAd != null)
-              Align(
-                  alignment: Alignment.bottomCenter,
-                  child: SizedBox(
-                    width: _bannerAd!.size.width.toDouble(),
-                    height: _bannerAd!.size.height.toDouble(),
-                    child: AdWidget(ad: _bannerAd!),
-                  ))
-          ],
-        ));
+      appBar: AppBar(
+        title: const Text("Favorites"),
+        actions: [
+          Padding(
+              padding: const EdgeInsets.only(right: 20.0),
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => SearchPage()));
+                },
+                child: const Icon(
+                  Icons.add,
+                  size: 26.0,
+                ),
+              )),
+        ],
+      ),
+      body: _List(widget._favesController, _refreshList),
+    );
   }
 }
 

@@ -6,9 +6,7 @@ import 'package:dialog_alert/dialog_alert.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:share_plus/share_plus.dart';
-import '../helpers/ad_helper.dart';
 import '../main.dart';
 import '../views/aboutpage.dart';
 import '../views/areaspage.dart';
@@ -28,8 +26,6 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
   bool triviaPop = false;
   double _height = 110;
 
-  BannerAd? _bannerAd;
-
   @override
   void initState() {
     super.initState();
@@ -48,19 +44,6 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
         currentTrivia = trivias.isEmpty ? "" : trivias.first;
       });
     });
-
-    BannerAd(
-        adUnitId: AdHelper.bannerAdUnitId,
-        request: const AdRequest(),
-        size: AdSize.banner,
-        listener: BannerAdListener(onAdLoaded: (ad) {
-          setState(() {
-            _bannerAd = ad as BannerAd;
-          });
-        }, onAdFailedToLoad: (ad, err) {
-          debugPrint(err.message);
-          ad.dispose();
-        })).load();
   }
 
   @override
@@ -73,12 +56,6 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
     }
     triviaPop = false;
     super.didPopNext();
-  }
-
-  @override
-  void dispose() {
-    _bannerAd?.dispose();
-    super.dispose();
   }
 
   @override
@@ -114,14 +91,6 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
                 ))),
               ],
             ),
-            if (_bannerAd != null)
-              Align(
-                  alignment: Alignment.bottomCenter,
-                  child: SizedBox(
-                    width: _bannerAd!.size.width.toDouble(),
-                    height: _bannerAd!.size.height.toDouble(),
-                    child: AdWidget(ad: _bannerAd!),
-                  ))
           ])),
     ));
   }

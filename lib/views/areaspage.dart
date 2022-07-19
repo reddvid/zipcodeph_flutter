@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:google_mobile_ads/google_mobile_ads.dart';
 import '../helpers/ad_helper.dart';
 import '../main.dart';
 import '../repositories/area.dart';
@@ -15,7 +14,6 @@ class AreasPage extends StatefulWidget {
 
 class _AreasPageState extends State<AreasPage> with RouteAware {
   final AreaRepository _areaRepository = AreaRepository();
-  BannerAd? _bannerAd;
 
   @override
   void initState() {
@@ -24,25 +22,6 @@ class _AreasPageState extends State<AreasPage> with RouteAware {
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       routeObserver.subscribe(this, ModalRoute.of(context)!);
     });
-
-    BannerAd(
-        adUnitId: AdHelper.bannerAdUnitId,
-        request: const AdRequest(),
-        size: AdSize.banner,
-        listener: BannerAdListener(onAdLoaded: (ad) {
-          setState(() {
-            _bannerAd = ad as BannerAd;
-          });
-        }, onAdFailedToLoad: (ad, err) {
-          debugPrint(err.message);
-          ad.dispose();
-        })).load();
-  }
-
-  @override
-  void dispose() {
-    _bannerAd?.dispose();
-    super.dispose();
   }
 
   @override
@@ -77,14 +56,6 @@ class _AreasPageState extends State<AreasPage> with RouteAware {
                     },
                   );
                 }),
-            if (_bannerAd != null)
-              Align(
-                  alignment: Alignment.bottomCenter,
-                  child: SizedBox(
-                    width: _bannerAd!.size.width.toDouble(),
-                    height: _bannerAd!.size.height.toDouble(),
-                    child: AdWidget(ad: _bannerAd!),
-                  ))
           ],
         ));
   }
