@@ -137,19 +137,19 @@ class _AboutPageState extends State<AboutPage> with RouteAware {
                             subject: "Share ZIP Code PH app");
                       },
                     ),
-                    ListTile(
-                      leading: Transform.translate(
-                          offset: const Offset(0, 0),
-                          child: const Icon(Icons.coffee_outlined)),
-                      minLeadingWidth: 0,
-                      title: Transform.translate(
-                        offset: const Offset(0, 0),
-                        child: const Text("Buy me a coffee"),
-                      ),
-                      onTap: () {
-                        _launchUrl("https://buymeacoffee.com/reddavid");
-                      },
-                    ),
+                    // ListTile(
+                    //   leading: Transform.translate(
+                    //       offset: const Offset(0, 0),
+                    //       child: const Icon(Icons.coffee_outlined)),
+                    //   minLeadingWidth: 0,
+                    //   title: Transform.translate(
+                    //     offset: const Offset(0, 0),
+                    //     child: const Text("Buy me a coffee"),
+                    //   ),
+                    //   onTap: () {
+                    //     _launchUrl("https://buymeacoffee.com/reddavid");
+                    //   },
+                    // ),
                     ListTile(
                       leading: Transform.translate(
                           offset: const Offset(0, 0),
