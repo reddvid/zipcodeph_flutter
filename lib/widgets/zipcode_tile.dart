@@ -10,11 +10,13 @@ class ZipCodeTile extends StatelessWidget {
     required this.zipCode,
     required this.refreshListCallback,
     this.isAreaSubtitleVisible = false,
+    this.trailing,
   }) : super(key: key);
 
   final ZipCode zipCode;
   final VoidCallback refreshListCallback;
   final bool? isAreaSubtitleVisible;
+  final Widget? trailing;
 
   @override
   Widget build(BuildContext context) {
@@ -41,6 +43,7 @@ class ZipCodeTile extends StatelessWidget {
           style: kTileLeadingTextStyle,
         ),
       ),
+      trailing: trailing,
       title: Text(zipCode.town),
       subtitle: isAreaSubtitleVisible == true ? Text(zipCode.area) : null,
     );

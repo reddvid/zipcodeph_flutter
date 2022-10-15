@@ -41,7 +41,8 @@ class _MainMenuState extends State<MainMenu> {
                   ),
                   label: "Help & About",
                   onPressed: () {
-                    Navigator.of(context).push(
+                    Navigator.push(
+                      context,
                       MaterialPageRoute(
                         builder: (context) => const AboutPage(),
                       ),
@@ -59,7 +60,8 @@ class _MainMenuState extends State<MainMenu> {
                     ),
                     label: "Search ZIP Codes",
                     onPressed: () {
-                      Navigator.of(context).push(
+                      Navigator.push(
+                        context,
                         MaterialPageRoute(
                           builder: (context) => SearchPage(),
                         ),
@@ -74,9 +76,10 @@ class _MainMenuState extends State<MainMenu> {
                     ),
                     label: "Favorites",
                     onPressed: () {
-                      Navigator.of(context).push(
+                      Navigator.push(
+                        context,
                         MaterialPageRoute(
-                          builder: (context) => FavesPage(),
+                          builder: (context) => FavoritesPage(),
                         ),
                       );
                     },
@@ -210,7 +213,7 @@ class _MainMenuState extends State<MainMenu> {
                 const Text('Favorites', style: TextStyle(color: Colors.black)),
             onPressed: () {
               Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => FavesPage()));
+                  MaterialPageRoute(builder: (context) => FavoritesPage()));
             },
             style: ButtonStyle(
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(

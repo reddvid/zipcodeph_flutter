@@ -1,7 +1,9 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:zipcodeph_flutter/controllers/search_controller.dart';
-import 'package:zipcodeph_flutter/controllers/zips_controller.dart';
 import 'package:zipcodeph_flutter/services/url_launcher.dart';
 import 'package:zipcodeph_flutter/widgets/not_found.dart';
 import 'package:zipcodeph_flutter/widgets/zipcode_tile.dart';
@@ -38,7 +40,6 @@ class _SearchListState extends State<SearchList> {
           );
         } else {
           final List<ZipCode> list = snapshot.data!;
-
           if (list.isEmpty) {
             return EmptyGraphics(
               image: const AssetImage("assets/images/notfound.png"),
@@ -60,6 +61,15 @@ class _SearchListState extends State<SearchList> {
                   zipCode: list[index],
                   refreshListCallback: _refreshList,
                   isAreaSubtitleVisible: true,
+                  trailing: list[index].fave == 1
+                      ? Icon(
+                          Platform.isAndroid
+                              ? Icons.favorite
+                              : CupertinoIcons.heart_solid,
+                          color: Colors.redAccent,
+                          size: 14.0,
+                        )
+                      : null,
                 );
               },
             );

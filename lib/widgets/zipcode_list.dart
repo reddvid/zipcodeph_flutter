@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zipcodeph_flutter/controllers/zips_controller.dart';
 import 'package:zipcodeph_flutter/widgets/zipcode_tile.dart';
@@ -44,6 +47,15 @@ class _ZipCodesListState extends State<ZipCodesList> {
               return ZipCodeTile(
                 zipCode: list[index],
                 refreshListCallback: _refreshList,
+                trailing: list[index].fave == 1
+                    ? Icon(
+                        Platform.isAndroid
+                            ? Icons.favorite
+                            : CupertinoIcons.heart_solid,
+                        color: Colors.redAccent,
+                        size: 14.0,
+                      )
+                    : null,
               );
             },
           );

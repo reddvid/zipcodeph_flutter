@@ -73,7 +73,7 @@ class ItemBottomSheet extends StatelessWidget {
 
               refreshListCallback();
 
-              Navigator.of(context).pop();
+              Navigator.pop(context);
 
               final SnackBar snackBar = SnackBar(
                 content: Text(
@@ -93,7 +93,7 @@ class ItemBottomSheet extends StatelessWidget {
               UrlLauncher.openUrl(
                   "https://google.com/maps/search/${zipCode.town}," +
                       zipCode.area);
-              Navigator.of(context).pop();
+              Navigator.pop(context);
             },
           ),
           const Divider(),
@@ -101,7 +101,7 @@ class ItemBottomSheet extends StatelessWidget {
             icon: const Icon(Icons.close),
             label: "Cancel",
             onTap: () {
-              Navigator.of(context).pop();
+              Navigator.pop(context);
             },
           )
         ],
