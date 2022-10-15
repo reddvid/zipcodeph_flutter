@@ -8,7 +8,7 @@ import 'package:zipcodeph_flutter/screens/search_screen.dart';
 
 class FavesPage extends StatefulWidget {
   FavesPage({Key? key}) : super(key: key);
-  final FavesController _favesController = FavesController();
+  final FavoritesController _favesController = FavoritesController();
 
   @override
   State<FavesPage> createState() => _FavesPageState();
@@ -69,7 +69,7 @@ class _FavesPageState extends State<FavesPage> with RouteAware {
 }
 
 class _List extends StatelessWidget {
-  final FavesController _favesController;
+  final FavoritesController _favesController;
   final VoidCallback _refreshList;
 
   const _List(this._favesController, this._refreshList);

@@ -1,9 +1,4 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:zipcodeph_flutter/constants.dart';
 
 import '../models/zipcode.dart';
@@ -14,27 +9,16 @@ class ZipCodeTile extends StatelessWidget {
     Key? key,
     required this.zipCode,
     required this.refreshListCallback,
-    this.isVisible = false,
+    this.isAreaSubtitleVisible = false,
   }) : super(key: key);
 
   final ZipCode zipCode;
   final VoidCallback refreshListCallback;
-  final bool? isVisible;
+  final bool? isAreaSubtitleVisible;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      onLongPress: () {
-        showModalBottomSheet<void>(
-          context: context,
-          builder: (BuildContext context) {
-            return ItemBottomSheet(
-              zipCode: zipCode,
-              refreshListCallback: refreshListCallback,
-            );
-          },
-        );
-      },
       onTap: () {
         showModalBottomSheet<void>(
           context: context,
@@ -58,7 +42,7 @@ class ZipCodeTile extends StatelessWidget {
         ),
       ),
       title: Text(zipCode.town),
-      subtitle: isVisible == true ? Text(zipCode.area) : null,
+      subtitle: isAreaSubtitleVisible == true ? Text(zipCode.area) : null,
     );
   }
 }

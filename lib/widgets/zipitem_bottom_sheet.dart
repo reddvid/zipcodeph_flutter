@@ -64,7 +64,6 @@ class ItemBottomSheet extends StatelessWidget {
             onTap: () {
               final String data =
                   "${zipCode.code} ${zipCode.town}, ${zipCode.area}";
-              late SnackBar snackBar;
 
               if (zipCode.fave != 1) {
                 _zipsController.faveItem(zipCode);
@@ -76,21 +75,11 @@ class ItemBottomSheet extends StatelessWidget {
 
               Navigator.of(context).pop();
 
-              snackBar = SnackBar(
+              final SnackBar snackBar = SnackBar(
                 content: Text(
                   zipCode.fave == 0
                       ? "Removed $data from favorites"
                       : "Added $data to favroties",
-                ),
-                action: SnackBarAction(
-                  label: "UNDO",
-                  onPressed: () {
-                    if (zipCode.fave == 1) {
-                      _zipsController.faveItem(zipCode);
-                    } else {
-                      _zipsController.unFaveItem(zipCode);
-                    }
-                  },
                 ),
               );
 

@@ -1,12 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:zipcodeph_flutter/constants.dart';
-import 'package:zipcodeph_flutter/controllers/zips_controller.dart';
-import 'package:zipcodeph_flutter/main.dart';
-import 'package:zipcodeph_flutter/models/zipcode.dart';
 import 'package:zipcodeph_flutter/widgets/zipcode_list.dart';
-import 'package:zipcodeph_flutter/widgets/zipitem_bottom_sheet.dart';
 
 class ZipsPage extends StatefulWidget {
   const ZipsPage({
