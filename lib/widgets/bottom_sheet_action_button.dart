@@ -13,14 +13,14 @@ class BottomSheetActionTile extends StatelessWidget {
 
   final Icon icon;
   final String label;
-  final Function() onTap;
+  final Function onTap;
 
   @override
   Widget build(BuildContext context) {
     return ListTile(
       leading: icon,
       title: Text(label),
-      onTap: () => onTap,
+      onTap: () => onTap(),
     );
   }
 }

@@ -3,12 +3,14 @@ import 'package:flutter/services.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:zipcodeph_flutter/constants.dart';
 import 'package:zipcodeph_flutter/controllers/zips_controller.dart';
 import 'package:zipcodeph_flutter/models/zipcode.dart';
+import 'package:zipcodeph_flutter/services/url_launcher.dart';
 import 'package:zipcodeph_flutter/widgets/bottom_sheet_action_button.dart';
 
 class ItemBottomSheet extends StatelessWidget {
-  const ItemBottomSheet({
+  ItemBottomSheet({
     Key? key,
     required this.zipCode,
     required this.refreshListCallback,
@@ -31,10 +33,7 @@ class ItemBottomSheet extends StatelessWidget {
             padding: const EdgeInsets.all(10.0),
             child: Text(
               "${zipCode.code} ${zipCode.town}, ${zipCode.area}",
-              style: const TextStyle(
-                fontSize: 16.0,
-                fontWeight: FontWeight.bold,
-              ),
+              style: kTileLeadingTextStyle,
             ),
           ),
           BottomSheetActionTile(
@@ -67,22 +66,30 @@ class ItemBottomSheet extends StatelessWidget {
                   "${zipCode.code} ${zipCode.town}, ${zipCode.area}";
               late SnackBar snackBar;
 
-              _zipsController.unFaveItem(zipCode);
-              // _refreshList();
+              if (zipCode.fave != 1) {
+                _zipsController.faveItem(zipCode);
+              } else {
+                _zipsController.unFaveItem(zipCode);
+              }
+
+              refreshListCallback();
+
               Navigator.of(context).pop();
 
               snackBar = SnackBar(
                 content: Text(
-                  zipCode.fave == 1
+                  zipCode.fave == 0
                       ? "Removed $data from favorites"
                       : "Added $data to favroties",
                 ),
                 action: SnackBarAction(
                   label: "UNDO",
                   onPressed: () {
-                    zipCode.fave = 1;
-                    _zipsController.faveItem(zipCode);
-                    zipCode.fave = 1;
+                    if (zipCode.fave == 1) {
+                      _zipsController.faveItem(zipCode);
+                    } else {
+                      _zipsController.unFaveItem(zipCode);
+                    }
                   },
                 ),
               );
@@ -90,6 +97,24 @@ class ItemBottomSheet extends StatelessWidget {
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
             },
           ),
+          BottomSheetActionTile(
+            icon: const Icon(Icons.map_outlined),
+            label: "Open in Maps",
+            onTap: () {
+              UrlLauncher.openUrl(
+                  "https://google.com/maps/search/${zipCode.town}," +
+                      zipCode.area);
+              Navigator.of(context).pop();
+            },
+          ),
+          const Divider(),
+          BottomSheetActionTile(
+            icon: const Icon(Icons.close),
+            label: "Cancel",
+            onTap: () {
+              Navigator.of(context).pop();
+            },
+          )
         ],
       ),
     );

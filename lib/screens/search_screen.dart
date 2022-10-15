@@ -60,7 +60,7 @@ class _SearchPageState extends State<SearchPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: searchBar.build(context),
-      body: _List(widget._searchController, query, _refreshList),
+      body: null, //_List(widget._searchController, query, _refreshList),
     );
   }
 }
@@ -93,11 +93,11 @@ class _List extends StatelessWidget {
                     TextButton(
                         onPressed: () async {
                           final info = await PackageInfo.fromPlatform();
-                          _launchUrl(
-                              "mailto:reddavidapps?subject=[FEEDBACK] ZIP Code PH&body=App version: " +
-                                  info.version +
-                                  " build " +
-                                  info.buildNumber);
+                          // _launchUrl(
+                          //     "mailto:reddavidapps?subject=[FEEDBACK] ZIP Code PH&body=App version: " +
+                          //         info.version +
+                          //         " build " +
+                          //         info.buildNumber);
                         },
                         child: const Text("Send Feedback"))
                   ]),
@@ -229,8 +229,6 @@ class _List extends StatelessWidget {
             leading: const Icon(Icons.map_outlined),
             title: const Text("Open in Maps"),
             onTap: () {
-              _launchUrl(
-                  "https://google.com/maps/search/${zipCode.town}, ${zipCode.area}");
               Navigator.pop(context);
             },
           ),
@@ -245,9 +243,5 @@ class _List extends StatelessWidget {
         ],
       ),
     );
-  }
-
-  void _launchUrl(String url) async {
-    if (!await launchUrl(Uri.parse(url))) throw 'Could not launch $url';
   }
 }

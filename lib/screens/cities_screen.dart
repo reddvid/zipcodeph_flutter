@@ -45,10 +45,9 @@ class _AreasPageState extends State<AreasPage> {
                 context,
                 MaterialPageRoute(
                   builder: (context) => ZipsPage(
-                    area: [
+                    area: 
                       widget.area,
-                      menu[index],
-                    ],
+                    city:  menu[index],
                   ),
                 ),
               );
