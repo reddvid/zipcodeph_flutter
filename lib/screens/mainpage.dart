@@ -3,11 +3,13 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:zipcodeph_flutter/constants.dart';
 import 'package:zipcodeph_flutter/main.dart';
-import 'package:zipcodeph_flutter/views/aboutpage.dart';
-import 'package:zipcodeph_flutter/views/areaspage.dart';
-import 'package:zipcodeph_flutter/views/favespage.dart';
-import 'package:zipcodeph_flutter/views/searchpage.dart';
+import 'package:zipcodeph_flutter/screens/aboutpage.dart';
+import 'package:zipcodeph_flutter/screens/areaspage.dart';
+import 'package:zipcodeph_flutter/screens/favespage.dart';
+import 'package:zipcodeph_flutter/screens/searchpage.dart';
+import 'package:zipcodeph_flutter/widgets/area_menu_button.dart';
 
 class MainMenu extends StatefulWidget {
   const MainMenu({Key? key}) : super(key: key);
@@ -16,22 +18,14 @@ class MainMenu extends StatefulWidget {
   _MainMenuState createState() => _MainMenuState();
 }
 
-class _MainMenuState extends State<MainMenu> with RouteAware {
+class _MainMenuState extends State<MainMenu> {
   static const double _height = 110;
-
-  @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      routeObserver.subscribe(this, ModalRoute.of(context)!);
-    });
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: SafeArea(
-      child: Container(
+      body: SafeArea(
+        child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 10),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
@@ -43,23 +37,23 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
                 children: [searchButton(), favoritesButton()],
               ),
               Expanded(
-                  child: SingleChildScrollView(
-                      child: Column(
-                children: [
-                  ncr(),
-                  divider(),
-                  luzon(),
-                  divider(),
-                  visayas(),
-                  divider(),
-                  mindanao(),
-                  divider(),
-                  enddivider()
-                ],
-              ))),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      for (var button in menuButtons) button,
+                      const Divider(
+                        height: 80.0,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ],
-          )),
-    ));
+          ),
+        ),
+      ),
+    );
   }
 
   trivia() {

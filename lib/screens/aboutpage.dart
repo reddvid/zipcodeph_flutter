@@ -22,9 +22,6 @@ class _AboutPageState extends State<AboutPage> with RouteAware {
 
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      routeObserver.subscribe(this, ModalRoute.of(context)!);
-    });
     _initPackageInfo();
     super.initState();
   }

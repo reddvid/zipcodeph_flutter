@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:zipcodeph_flutter/views/mainpage.dart';
+import 'package:zipcodeph_flutter/screens/mainpage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
-
-final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -21,17 +19,19 @@ class MyApp extends StatelessWidget {
       themeMode: ThemeMode.system,
       debugShowCheckedModeBanner: false,
       home: const MainMenu(),
-      navigatorObservers: [routeObserver],
     );
   }
 
   ThemeData _buildTheme(brightness) {
     return ThemeData(
-        primarySwatch: Colors.red,
-        brightness: brightness,
-        pageTransitionsTheme: const PageTransitionsTheme(builders: {
+      primarySwatch: Colors.red,
+      brightness: brightness,
+      pageTransitionsTheme: const PageTransitionsTheme(
+        builders: {
           TargetPlatform.android: CupertinoPageTransitionsBuilder(),
           TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-        }));
+        },
+      ),
+    );
   }
 }

@@ -1,91 +1,80 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_search_bar/flutter_search_bar.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:zipcodeph_flutter/controllers/faves.dart';
+import 'package:zipcodeph_flutter/controllers/search_controller.dart';
 import 'package:zipcodeph_flutter/main.dart';
 import 'package:zipcodeph_flutter/models/zipcode.dart';
-import 'package:zipcodeph_flutter/views/searchpage.dart';
 
-class FavesPage extends StatefulWidget {
-  FavesPage({Key? key}) : super(key: key);
-  final FavesController _favesController = FavesController();
+class SearchPage extends StatefulWidget {
+  SearchPage({Key? key}) : super(key: key);
+  final SearchController _searchController = SearchController();
 
   @override
-  State<FavesPage> createState() => _FavesPageState();
+  State<SearchPage> createState() => _SearchPageState();
 }
 
-class _FavesPageState extends State<FavesPage> with RouteAware {
+class _SearchPageState extends State<SearchPage> {
+  late SearchBar searchBar;
+  late String query = "";
   void _refreshList() {
     setState(() {});
   }
 
-  @override
-  void didPop() {
-    _refreshList();
-    super.didPop();
+  AppBar buildAppBar(BuildContext context) {
+    return AppBar(
+      title: const Text("Search"),
+      actions: [searchBar.getSearchAction(context)],
+    );
   }
 
-  @override
-  void didPush() {
-    _refreshList();
-    super.didPush();
-  }
-
-  @override
-  void didPopNext() {
-    _refreshList();
-    super.didPopNext();
-  }
-
-  @override
-  void didPushNext() {
-    _refreshList();
-    super.didPushNext();
-  }
-
-  @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      routeObserver.subscribe(this, ModalRoute.of(context)!);
-    });
-    super.initState();
+  _SearchPageState() {
+    searchBar = SearchBar(
+        inBar: false,
+        hintText: "Search towns, cities, or province",
+        setState: setState,
+        onChanged: (value) {
+          setState(() {
+            query = value;
+          });
+        },
+        onCleared: () {
+          setState(() {
+            query = "";
+          });
+        },
+        onClosed: () {
+          setState(() {
+            query = "";
+          });
+        },
+        closeOnSubmit: false,
+        clearOnSubmit: false,
+        showClearButton: true,
+        buildDefaultAppBar: buildAppBar);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Favorites"),
-        actions: [
-          Padding(
-              padding: const EdgeInsets.only(right: 20.0),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => SearchPage()));
-                },
-                child: const Icon(
-                  Icons.add,
-                  size: 26.0,
-                ),
-              )),
-        ],
-      ),
-      body: _List(widget._favesController, _refreshList),
+      appBar: searchBar.build(context),
+      body: _List(widget._searchController, query, _refreshList),
     );
   }
 }
 
 class _List extends StatelessWidget {
-  final FavesController _favesController;
+  final SearchController _searchController;
+  final String _query;
   final VoidCallback _refreshList;
 
-  const _List(this._favesController, this._refreshList);
+  const _List(this._searchController, this._query, this._refreshList);
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<ZipCode>?>(
-        future: _favesController.getFaves(),
+        future: _searchController.findCodes(_query),
         builder: (context, snapshot) {
           if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return Center(
@@ -93,22 +82,23 @@ class _List extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Image.asset(
-                      'assets/images/empty.png',
+                      'assets/images/notfound.png',
                       width: MediaQuery.of(context).size.width * 0.6,
                     ),
-                    const Text(
-                      "You have no favorites yet",
-                      style: TextStyle(fontWeight: FontWeight.w600),
+                    Text(
+                      "Found nothing for '$_query'",
+                      style: const TextStyle(fontWeight: FontWeight.w600),
                     ),
                     TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SearchPage(),
-                              ));
+                        onPressed: () async {
+                          final info = await PackageInfo.fromPlatform();
+                          _launchUrl(
+                              "mailto:reddavidapps?subject=[FEEDBACK] ZIP Code PH&body=App version: " +
+                                  info.version +
+                                  " build " +
+                                  info.buildNumber);
                         },
-                        child: const Text("Add a ZIP Code"))
+                        child: const Text("Send Feedback"))
                   ]),
             );
           } else {
@@ -193,7 +183,7 @@ class _List extends StatelessWidget {
                   title: const Text("Remove from favorites"),
                   onTap: () {
                     zipCode.fave = 0;
-                    _favesController.updateItem(zipCode);
+                    _searchController.updateItem(zipCode);
                     _refreshList();
                     Navigator.pop(context);
                     var snackBar = SnackBar(
@@ -203,7 +193,7 @@ class _List extends StatelessWidget {
                         label: 'UNDO',
                         onPressed: () {
                           zipCode.fave = 1;
-                          _favesController.updateItem(zipCode);
+                          _searchController.updateItem(zipCode);
                           _refreshList();
                         },
                       ),
@@ -216,7 +206,7 @@ class _List extends StatelessWidget {
                   title: const Text("Add to favorites"),
                   onTap: () {
                     zipCode.fave = 1;
-                    _favesController.updateItem(zipCode);
+                    _searchController.updateItem(zipCode);
                     _refreshList();
                     Navigator.pop(context);
                     var snackBar = SnackBar(
@@ -226,7 +216,7 @@ class _List extends StatelessWidget {
                         label: 'UNDO',
                         onPressed: () {
                           zipCode.fave = 0;
-                          _favesController.updateItem(zipCode);
+                          _searchController.updateItem(zipCode);
                           _refreshList();
                         },
                       ),

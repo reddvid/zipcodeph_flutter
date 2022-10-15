@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:zipcodeph_flutter/main.dart';
-import 'package:zipcodeph_flutter/repositories/area.dart';
-import 'package:zipcodeph_flutter/views/zipspage.dart';
+import 'package:zipcodeph_flutter/models/areas_data.dart';
+import 'package:zipcodeph_flutter/screens/zipspage.dart';
 
 class AreasPage extends StatefulWidget {
   final String area;
@@ -11,16 +11,8 @@ class AreasPage extends StatefulWidget {
   State<AreasPage> createState() => _AreasPageState();
 }
 
-class _AreasPageState extends State<AreasPage> with RouteAware {
+class _AreasPageState extends State<AreasPage> {
   final AreaRepository _areaRepository = AreaRepository();
-
-  @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      routeObserver.subscribe(this, ModalRoute.of(context)!);
-    });
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:zipcodeph_flutter/controllers/zips.dart';
+import 'package:zipcodeph_flutter/controllers/zips_controller.dart';
 import 'package:zipcodeph_flutter/main.dart';
 import 'package:zipcodeph_flutter/models/zipcode.dart';
 
@@ -14,17 +14,9 @@ class ZipsPage extends StatefulWidget {
   State<ZipsPage> createState() => _ZipsPageState();
 }
 
-class _ZipsPageState extends State<ZipsPage> with RouteAware {
+class _ZipsPageState extends State<ZipsPage> {
   void _refreshList() {
     setState(() {});
-  }
-
-  @override
-  void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      routeObserver.subscribe(this, ModalRoute.of(context)!);
-    });
-    super.initState();
   }
 
   @override
