@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zipcodeph_flutter/controllers/zips_controller.dart';
 import 'package:zipcodeph_flutter/widgets/zipcode_list.dart';
 
 class ZipsPage extends StatefulWidget {
@@ -16,6 +17,8 @@ class ZipsPage extends StatefulWidget {
 }
 
 class _ZipsPageState extends State<ZipsPage> {
+  final ZipsController _zipsController = ZipsController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -38,7 +41,12 @@ class _ZipsPageState extends State<ZipsPage> {
           ],
         ),
       ),
-      body: ZipCodesList(city: widget.city),
+      body: ZipCodesList(
+        city: widget.city,
+        showTrailing: true,
+        future: _zipsController.getAreaCodes(widget.city),
+        errorText: "Error loading ZIP codes.",
+      ),
     );
   }
 }

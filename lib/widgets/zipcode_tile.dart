@@ -1,22 +1,25 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zipcodeph_flutter/constants.dart';
 
 import '../models/zipcode.dart';
-import 'zipitem_bottom_sheet.dart';
+import 'tile_bottom_sheet.dart';
 
 class ZipCodeTile extends StatelessWidget {
   const ZipCodeTile({
     Key? key,
     required this.zipCode,
     required this.refreshListCallback,
-    this.isAreaSubtitleVisible = false,
-    this.trailing,
+    this.showSubtitle = false,
+    this.showTrailing = false,
   }) : super(key: key);
 
   final ZipCode zipCode;
   final VoidCallback refreshListCallback;
-  final bool? isAreaSubtitleVisible;
-  final Widget? trailing;
+  final bool? showSubtitle;
+  final bool? showTrailing;
 
   @override
   Widget build(BuildContext context) {
@@ -24,7 +27,7 @@ class ZipCodeTile extends StatelessWidget {
       onTap: () {
         showModalBottomSheet<void>(
           context: context,
-          builder: (BuildContext context) {
+          builder: (context) {
             return ItemBottomSheet(
               zipCode: zipCode,
               refreshListCallback: refreshListCallback,
@@ -32,7 +35,7 @@ class ZipCodeTile extends StatelessWidget {
           },
         );
       },
-      visualDensity: const VisualDensity(vertical: -4.0),
+      visualDensity: kTileVisualDensity,
       leading: Container(
         width: 48.0,
         height: double.infinity,
@@ -43,9 +46,19 @@ class ZipCodeTile extends StatelessWidget {
           style: kTileLeadingTextStyle,
         ),
       ),
-      trailing: trailing,
+      trailing: (showTrailing == true)
+          ? zipCode.fave == 1
+              ? Icon(
+                  Platform.isAndroid
+                      ? Icons.favorite
+                      : CupertinoIcons.heart_solid,
+                  color: Colors.redAccent,
+                  size: 14.0,
+                )
+              : null
+          : null,
       title: Text(zipCode.town),
-      subtitle: isAreaSubtitleVisible == true ? Text(zipCode.area) : null,
+      subtitle: showSubtitle == true ? Text(zipCode.area) : null,
     );
   }
 }

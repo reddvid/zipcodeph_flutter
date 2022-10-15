@@ -3,19 +3,32 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zipcodeph_flutter/controllers/zips_controller.dart';
+import 'package:zipcodeph_flutter/widgets/not_found.dart';
 import 'package:zipcodeph_flutter/widgets/zipcode_tile.dart';
 
 import '../models/zipcode.dart';
 
 class ZipCodesList extends StatefulWidget {
-  const ZipCodesList({
+  // ignore: prefer_const_constructors_in_immutables
+  ZipCodesList({
     Key? key,
-    required this.city,
-    this.isVisible = false,
+    this.city,
+    required this.future,
+    required this.errorText,
+    this.showSubtitle = false,
+    this.emptyGraphics,
+    this.showTrailing = false,
+    this.refreshCallback,
   }) : super(key: key);
 
-  final String city;
-  final bool? isVisible;
+  final String? city;
+  final Future<List<ZipCode>?> future;
+  final String errorText;
+  final bool? showSubtitle;
+
+  final EmptyGraphics? emptyGraphics;
+  final bool? showTrailing;
+  final VoidCallback? refreshCallback;
 
   @override
   State<ZipCodesList> createState() => _ZipCodesListState();
@@ -23,15 +36,13 @@ class ZipCodesList extends StatefulWidget {
 
 class _ZipCodesListState extends State<ZipCodesList> {
   void _refreshList() {
-    setState(() {});
+    widget.refreshCallback?.call();
   }
-
-  final ZipsController _zipsController = ZipsController();
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<ZipCode>?>(
-      future: _zipsController.getAreaCodes(widget.city),
+      future: widget.future,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
           return const Center(
@@ -39,26 +50,24 @@ class _ZipCodesListState extends State<ZipCodesList> {
           );
         } else {
           final List<ZipCode> list = snapshot.data!;
-          return ListView.separated(
-            shrinkWrap: true,
-            separatorBuilder: (_, index) => const Divider(),
-            itemCount: list.length,
-            itemBuilder: (context, index) {
-              return ZipCodeTile(
-                zipCode: list[index],
-                refreshListCallback: _refreshList,
-                trailing: list[index].fave == 1
-                    ? Icon(
-                        Platform.isAndroid
-                            ? Icons.favorite
-                            : CupertinoIcons.heart_solid,
-                        color: Colors.redAccent,
-                        size: 14.0,
-                      )
-                    : null,
-              );
-            },
-          );
+          debugPrint(list.length.toString());
+          if (list.isEmpty && widget.emptyGraphics != null) {
+            return widget.emptyGraphics!;
+          } else {
+            return ListView.separated(
+              shrinkWrap: true,
+              separatorBuilder: (_, index) => const Divider(),
+              itemCount: list.length,
+              itemBuilder: (context, index) {
+                return ZipCodeTile(
+                  zipCode: list[index],
+                  refreshListCallback: _refreshList,
+                  showTrailing: widget.showTrailing,
+                  showSubtitle: widget.showSubtitle,
+                );
+              },
+            );
+          }
         }
       },
     );
