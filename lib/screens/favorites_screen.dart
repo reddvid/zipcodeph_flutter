@@ -4,7 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:zipcodeph_flutter/controllers/faves_controller.dart';
 import 'package:zipcodeph_flutter/main.dart';
 import 'package:zipcodeph_flutter/models/zipcode.dart';
-import 'package:zipcodeph_flutter/screens/searchpage.dart';
+import 'package:zipcodeph_flutter/screens/search_screen.dart';
 
 class FavesPage extends StatefulWidget {
   FavesPage({Key? key}) : super(key: key);

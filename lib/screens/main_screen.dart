@@ -5,11 +5,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zipcodeph_flutter/constants.dart';
 import 'package:zipcodeph_flutter/main.dart';
-import 'package:zipcodeph_flutter/screens/aboutpage.dart';
-import 'package:zipcodeph_flutter/screens/areaspage.dart';
-import 'package:zipcodeph_flutter/screens/favespage.dart';
-import 'package:zipcodeph_flutter/screens/searchpage.dart';
+import 'package:zipcodeph_flutter/screens/about_screen.dart';
+import 'package:zipcodeph_flutter/screens/cities_screen.dart';
+import 'package:zipcodeph_flutter/screens/favorites_screen.dart';
+import 'package:zipcodeph_flutter/screens/search_screen.dart';
 import 'package:zipcodeph_flutter/widgets/area_menu_button.dart';
+import 'package:zipcodeph_flutter/widgets/icon_button.dart';
 
 class MainMenu extends StatefulWidget {
   const MainMenu({Key? key}) : super(key: key);
@@ -30,11 +31,57 @@ class _MainMenuState extends State<MainMenu> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              aboutButton(),
+              Align(
+                alignment: Alignment.topRight,
+                child: ActionIconButton(
+                  icon: Icon(
+                    Platform.isAndroid
+                        ? Icons.info_outline
+                        : CupertinoIcons.info_circle,
+                  ),
+                  label: "Help & About",
+                  onPressed: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => const AboutPage(),
+                      ),
+                    );
+                  },
+                ),
+              ),
               trivia(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [searchButton(), favoritesButton()],
+                children: [
+                  ActionIconButton(
+                    icon: Icon(
+                      Platform.isAndroid ? Icons.search : CupertinoIcons.search,
+                    ),
+                    label: "Search ZIP Codes",
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => SearchPage(),
+                        ),
+                      );
+                    },
+                  ),
+                  ActionIconButton(
+                    icon: Icon(
+                      Platform.isAndroid
+                          ? Icons.favorite_outline
+                          : CupertinoIcons.heart,
+                    ),
+                    label: "Favorites",
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => FavesPage(),
+                        ),
+                      );
+                    },
+                  ),
+                ],
               ),
               Expanded(
                 child: SingleChildScrollView(

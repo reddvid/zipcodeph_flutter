@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:zipcodeph_flutter/screens/mainpage.dart';
+import 'package:zipcodeph_flutter/screens/main_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
