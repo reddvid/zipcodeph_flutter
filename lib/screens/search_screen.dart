@@ -8,14 +8,15 @@ import 'package:zipcodeph_flutter/main.dart';
 import 'package:zipcodeph_flutter/models/zipcode.dart';
 
 class SearchPage extends StatefulWidget {
-  SearchPage({Key? key}) : super(key: key);
-  final SearchController _searchController = SearchController();
+  const SearchPage({Key? key}) : super(key: key);
 
   @override
   State<SearchPage> createState() => _SearchPageState();
 }
 
 class _SearchPageState extends State<SearchPage> {
+  final SearchController _searchController = SearchController();
+
   late SearchBar searchBar;
   late String query = "";
   void _refreshList() {

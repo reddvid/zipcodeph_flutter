@@ -9,7 +9,13 @@ class ZipsController {
     return _zipRepo.getAreaCodes(area);
   }
 
-  Future<void> updateItem(ZipCode zipCode) {
+  Future<void> unFaveItem(ZipCode zipCode) {
+    zipCode.fave = 0;
+    return _zipRepo.update(zipCode);
+  }
+
+  Future<void> faveItem(ZipCode zipCode) {
+    zipCode.fave = 1;
     return _zipRepo.update(zipCode);
   }
 }

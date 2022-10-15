@@ -5,6 +5,8 @@ import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
+import '../screens/cities_screen.dart';
+
 class AreaMenuButton extends StatelessWidget {
   const AreaMenuButton({
     Key? key,
@@ -50,7 +52,14 @@ class AreaMenuButton extends StatelessWidget {
                     customBorder: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
                     ),
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => AreasPage(area: label),
+                        ),
+                      );
+                    },
                     child: SizedBox(
                       width: double.infinity,
                       height: _height,

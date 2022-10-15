@@ -6,9 +6,12 @@ import 'package:zipcodeph_flutter/main.dart';
 import 'package:zipcodeph_flutter/models/zipcode.dart';
 
 class ZipsPage extends StatefulWidget {
+  const ZipsPage({
+    Key? key,
+    required this.area,
+  }) : super(key: key);
+
   final List<String> area;
-  final ZipsController _zipsController = ZipsController();
-  ZipsPage({Key? key, required this.area}) : super(key: key);
 
   @override
   State<ZipsPage> createState() => _ZipsPageState();
@@ -20,6 +23,8 @@ class _ZipsPageState extends State<ZipsPage> {
   }
 
   @override
+  final ZipsController _zipsController = ZipsController();
+
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -34,7 +39,7 @@ class _ZipsPageState extends State<ZipsPage> {
         Text(widget.area[1],
             style: const TextStyle(fontWeight: FontWeight.bold)),
       ])),
-      body: _List(widget._zipsController, widget.area[1], _refreshList),
+      body: _List(_zipsController, widget.area[1], _refreshList),
     );
   }
 }
@@ -112,7 +117,10 @@ class _List extends StatelessWidget {
             padding: const EdgeInsets.all(10),
             child: Text(
               "${zipCode.code} ${zipCode.town}, ${zipCode.area}",
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           ListTile(
