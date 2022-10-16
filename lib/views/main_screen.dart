@@ -1,16 +1,14 @@
 import 'dart:io';
-import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zipcodeph_flutter/constants.dart';
-import 'package:zipcodeph_flutter/main.dart';
 import 'package:zipcodeph_flutter/views/about_screen.dart';
-import 'package:zipcodeph_flutter/views/cities_screen.dart';
 import 'package:zipcodeph_flutter/views/favorites_screen.dart';
 import 'package:zipcodeph_flutter/views/search_screen.dart';
-import 'package:zipcodeph_flutter/widgets/area_menu_button.dart';
 import 'package:zipcodeph_flutter/widgets/icon_button.dart';
+
+import '../widgets/trivia_box.dart';
 
 class MainMenu extends StatefulWidget {
   const MainMenu({Key? key}) : super(key: key);
@@ -50,7 +48,7 @@ class _MainMenuState extends State<MainMenu> {
                   },
                 ),
               ),
-              trivia(),
+              TriviaBox(),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -63,7 +61,7 @@ class _MainMenuState extends State<MainMenu> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => SearchPage(),
+                          builder: (context) => const SearchPage(),
                         ),
                       );
                     },
@@ -102,43 +100,5 @@ class _MainMenuState extends State<MainMenu> {
         ),
       ),
     );
-  }
-
-  trivia() {
-    return Container(
-        width: double.infinity,
-        padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: const [
-            Text(
-              'Did You Know?',
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                  fontSize: 16),
-            ),
-            Divider(
-              height: 5,
-              color: Colors.transparent,
-            ),
-            Text('Text', style: TextStyle(color: Colors.white))
-            // Align(
-            //     alignment: Alignment.bottomRight,
-            //     child: shareButton())
-          ],
-        ),
-        decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(
-              Radius.circular(10),
-            ),
-            gradient: LinearGradient(
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-              colors: [
-                Colors.blue,
-                Colors.red,
-              ],
-            )));
   }
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:url_launcher/url_launcher.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:zipcodeph_flutter/constants.dart';
 import 'package:zipcodeph_flutter/widgets/tile_icon.dart';
@@ -14,7 +13,12 @@ class AboutPage extends StatefulWidget {
 }
 
 class _AboutPageState extends State<AboutPage> {
-  late PackageInfo _packageInfo;
+  PackageInfo _packageInfo = PackageInfo(
+    appName: "",
+    packageName: "",
+    version: "",
+    buildNumber: "",
+  );
 
   @override
   void initState() {
