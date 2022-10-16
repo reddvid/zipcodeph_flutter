@@ -32,3 +32,22 @@ const List<String> sampleFormatText = [
   "J.P. Laurel Street",
   "1005 San Miguel, Manila",
 ];
+
+const List<Set<String>> kAttributions = [
+  {
+    "Makati City during Night by Sean Yoro",
+    "https://unsplash.com/@seanyoro?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText",
+  },
+  {
+    "Mayon Volcano by Camille San Vicente",
+    "https://unsplash.com/es/@camillesanvicente?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText",
+  },
+  {
+    "Bohol Chocolate Hills by Robin P",
+    "https://unsplash.com/@rob1p?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText",
+  },
+  {
+    "Kawhagan Island by Alejandro Luengo",
+    "https://unsplash.com/es/@aluengo91?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText",
+  },
+];

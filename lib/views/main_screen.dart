@@ -5,10 +5,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zipcodeph_flutter/constants.dart';
 import 'package:zipcodeph_flutter/main.dart';
-import 'package:zipcodeph_flutter/screens/about_screen.dart';
-import 'package:zipcodeph_flutter/screens/cities_screen.dart';
-import 'package:zipcodeph_flutter/screens/favorites_screen.dart';
-import 'package:zipcodeph_flutter/screens/search_screen.dart';
+import 'package:zipcodeph_flutter/views/about_screen.dart';
+import 'package:zipcodeph_flutter/views/cities_screen.dart';
+import 'package:zipcodeph_flutter/views/favorites_screen.dart';
+import 'package:zipcodeph_flutter/views/search_screen.dart';
 import 'package:zipcodeph_flutter/widgets/area_menu_button.dart';
 import 'package:zipcodeph_flutter/widgets/icon_button.dart';
 

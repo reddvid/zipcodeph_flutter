@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:zipcodeph_flutter/controllers/faves_controller.dart';
-import 'package:zipcodeph_flutter/screens/search_screen.dart';
+import 'package:zipcodeph_flutter/views/search_screen.dart';
 import 'package:zipcodeph_flutter/widgets/not_found.dart';
 import 'package:zipcodeph_flutter/widgets/zipcode_list.dart';
 
