@@ -3,6 +3,7 @@ import 'package:zipcodeph_flutter/screens/main_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   runApp(const MyApp());
 }
 
