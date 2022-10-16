@@ -1,8 +1,9 @@
-import 'package:zipcodeph_flutter/db/zip_db.dart';
 import 'package:zipcodeph_flutter/models/zipcode.dart';
-import 'package:zipcodeph_flutter/repositories/zip.dart';
 
-class FavesController {
+import '../models/zipcodes_data.dart';
+import '../services/zip_brain.dart';
+
+class FavoritesController {
   final ZipRepository _zipRepo = ZipRepository(ZipDB());
 
   Future<List<ZipCode>?> getFaves() {

@@ -16,10 +16,10 @@ publish_to: "none" # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 2.0.1+2022070801
+version: 2.0.1+2022072401
 
 environment:
-  sdk: ">=2.12.0 <3.0.0"
+  sdk: ">=2.17.0 <3.0.0"
 
 # Dependencies specify other packages that your package needs in order to work.
 # To automatically upgrade your package dependencies to the latest versions
@@ -39,13 +39,14 @@ dependencies:
   cupertino_icons: ^1.0.2
   url_launcher: ^6.1.4
   google_fonts: ^3.0.1
-  package_info_plus: ^1.4.2
+  package_info_plus: ^1.4.3+1
   share_plus: ^4.0.10
   flutter_search_bar: ^3.0.0-dev.1
   path_provider: ^2.0.11
-  flutter_svg: ^1.1.1+1
+  dialog_alert: ^0.0.3
 
 dev_dependencies:
+  flutter_launcher_icons: ^0.9.3
   flutter_test:
     sdk: flutter
 
@@ -55,6 +56,11 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/icon_nopad.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -77,6 +83,7 @@ flutter:
     - assets/images/notfound_only.png
     - assets/images/notfound.svg
     - assets/zips_ph.db
+    - assets/json/trivias.json
 
   #   - images/a_dot_ham.jpeg
 

@@ -1,6 +1,6 @@
-import 'package:zipcodeph_flutter/db/zip_db.dart';
+import 'package:zipcodeph_flutter/services/zip_brain.dart';
 import 'package:zipcodeph_flutter/models/zipcode.dart';
-import 'package:zipcodeph_flutter/repositories/zip_interface.dart';
+import 'package:zipcodeph_flutter/services/zip_interface.dart';
 
 class ZipRepository implements IZipRepository {
   late final ZipDB _db;
