@@ -100,7 +100,7 @@ class ItemBottomSheet extends StatelessWidget {
           const Divider(),
           BottomSheetActionTile(
             icon: const Icon(Icons.close),
-            label: "Cancel",
+            label: "Close",
             onTap: () {
               Navigator.pop(context);
             },

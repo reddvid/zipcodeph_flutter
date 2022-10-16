@@ -19,6 +19,7 @@ class BottomSheetActionTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       leading: icon,
+      minLeadingWidth: 0,
       title: Text(label),
       onTap: () => onTap(),
     );
