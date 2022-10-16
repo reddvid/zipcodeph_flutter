@@ -25,3 +25,10 @@ const List<AreaMenuButton> menuButtons = [
     label: "Mindanao",
   ),
 ];
+
+const List<String> sampleFormatText = [
+  "Mr. Juan Dela Cruz",
+  "Malacañan Complex",
+  "J.P. Laurel Street",
+  "1005 San Miguel, Manila",
+];

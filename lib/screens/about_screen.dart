@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:zipcodeph_flutter/constants.dart';
 
 class AboutPage extends StatefulWidget {
   const AboutPage({Key? key}) : super(key: key);
@@ -56,9 +57,9 @@ class _AboutPageState extends State<AboutPage> with RouteAware {
                 ),
               ),
               ListTile(
-                  title: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
+                title: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
                     Text(
                         "In the Philippines, the ZIP Code is used by the Philippine Postal Corporation (PhilPost) to simplify the distribution of mail.",
                         style: Theme.of(context).textTheme.bodyMedium),
@@ -84,31 +85,21 @@ class _AboutPageState extends State<AboutPage> with RouteAware {
                       )),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
-                            "Mr. Juan Dela Cruz",
-                            style: TextStyle(
-                                fontSize: 14, fontStyle: FontStyle.italic),
-                          ),
-                          Text(
-                            "Malacañang Complex",
-                            style: TextStyle(
-                                fontSize: 14, fontStyle: FontStyle.italic),
-                          ),
-                          Text(
-                            "J.P. Laurel Street",
-                            style: TextStyle(
-                                fontSize: 14, fontStyle: FontStyle.italic),
-                          ),
-                          Text(
-                            "1005 San Miguel, Manila",
-                            style: TextStyle(
-                                fontSize: 14, fontStyle: FontStyle.italic),
-                          )
+                        children: [
+                          for (String text in sampleFormatText)
+                            Text(
+                              text,
+                              style: const TextStyle(
+                                fontSize: 14.0,
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
                         ],
                       ),
                     ),
-                  ])),
+                  ],
+                ),
+              ),
               ListTile(
                 leading: Transform.translate(
                     offset: const Offset(0, 0),
