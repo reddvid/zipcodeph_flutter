@@ -47,6 +47,11 @@ class _AboutPageState extends State<AboutPage> {
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            const ListTile(
+              title: Text("Sign in"),
+              leading: Icon(Icons.account_box_rounded),
+              onTap: null,
+            ),
             ListTile(
               title: Padding(
                 padding: const EdgeInsets.only(bottom: 10.0),
