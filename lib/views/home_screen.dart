@@ -25,8 +25,33 @@ class HomeScreen extends StatelessWidget {
         top: 30.0,
       ),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
+          Row(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: const [
+                  Text("FRI, DEC 9"),
+                  Text(
+                    "Hello!",
+                    style: TextStyle(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
+              ),
+              const Spacer(),
+              InkWell(
+                child: const CircleAvatar(),
+                onTap: () {
+                  // TODO: Open Login Screen
+                },
+              ),
+            ],
+          ),
+          const SizedBox(height: 16.0),
           TriviaBox(),
           const SizedBox(height: 20.0),
           Expanded(
