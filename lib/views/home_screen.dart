@@ -1,15 +1,10 @@
-import 'dart:io';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:zipcodeph_flutter/views/login_screen.dart';
 import 'package:zipcodeph_flutter/widgets/area_menu_button.dart';
 
 import '../constants.dart';
-import '../widgets/icon_button.dart';
 import '../widgets/trivia_box.dart';
-import 'about_screen.dart';
-import 'favorites_screen.dart';
-import 'search_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({
@@ -47,6 +42,12 @@ class HomeScreen extends StatelessWidget {
                 child: const CircleAvatar(),
                 onTap: () {
                   // TODO: Open Login Screen
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const LoginScreen(),
+                    ),
+                  );
                 },
               ),
             ],
