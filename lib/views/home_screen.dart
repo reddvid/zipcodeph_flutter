@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:zipcodeph_flutter/views/login_screen.dart';
 import 'package:zipcodeph_flutter/widgets/area_menu_button.dart';
@@ -6,13 +6,20 @@ import 'package:zipcodeph_flutter/widgets/area_menu_button.dart';
 import '../constants.dart';
 import '../widgets/trivia_box.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({
     Key? key,
   }) : super(key: key);
 
   @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  @override
   Widget build(BuildContext context) {
+    User? user = FirebaseAuth.instance.currentUser;
+
     return Container(
       padding: const EdgeInsets.only(
         left: 20.0,
@@ -39,7 +46,11 @@ class HomeScreen extends StatelessWidget {
               ),
               const Spacer(),
               InkWell(
-                child: const CircleAvatar(),
+                child: user != null
+                    ? CircleAvatar(
+                        backgroundImage: NetworkImage(user!.photoURL!),
+                      )
+                    : const Icon(Icons.account_circle_outlined),
                 onTap: () {
                   // TODO: Open Login Screen
                   Navigator.push(

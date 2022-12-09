@@ -1,4 +1,3 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:zipcodeph_flutter/widgets/google_signin_button.dart';
@@ -14,7 +13,6 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    User? result = FirebaseAuth.instance.currentUser;
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
