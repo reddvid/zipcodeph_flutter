@@ -16,10 +16,26 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  String _buildGreeting(DateTime currentTime) {
+    debugPrint("Time" + currentTime.hour.toString());
+
+    if (FirebaseAuth.instance.currentUser != null) {
+      if (currentTime.hour >= 4 && currentTime.hour < 12) {
+        return "Good morning, ";
+      } else if (currentTime.hour >= 12 && currentTime.hour <= 17) {
+        return "Good afternoon, ";
+      } else {
+        return "Good evening, ";
+      }
+    } else {
+      return "Hello!";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     User? user = FirebaseAuth.instance.currentUser;
-
+    final currentTime = DateTime.now();
     return Container(
       padding: const EdgeInsets.only(
         left: 20.0,
@@ -33,13 +49,23 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  Text("FRI, DEC 9"),
-                  Text(
-                    "Hello!",
+                children: [
+                  const Text(
+                    "FRI, DEC 9",
                     style: TextStyle(
-                      fontSize: 24,
+                      fontSize: 12.0,
+                      color: Colors.grey,
+                    ),
+                  ),
+                  Text(
+                    user == null
+                        ? "Hello!"
+                        : _buildGreeting(currentTime) +
+                            user!.displayName!.split(' ')[0].toString(),
+                    style: const TextStyle(
+                      fontSize: 24.0,
                       fontWeight: FontWeight.bold,
+                      overflow: TextOverflow.fade,
                     ),
                   ),
                 ],

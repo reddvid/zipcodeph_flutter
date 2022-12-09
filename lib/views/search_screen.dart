@@ -54,6 +54,7 @@ class _SearchPageState extends State<SearchPage> {
       showClearButton: true,
       buildDefaultAppBar: (context) => AppBar(
         title: const Text("Search"),
+        automaticallyImplyLeading: false,
         actions: [
           searchBar.getSearchAction(context),
         ],

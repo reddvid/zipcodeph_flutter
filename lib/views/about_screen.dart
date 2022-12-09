@@ -3,6 +3,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:zipcodeph_flutter/constants.dart';
+import 'package:zipcodeph_flutter/views/onboarding/onboarding_screen.dart';
 import 'package:zipcodeph_flutter/widgets/tile_icon.dart';
 
 class AboutPage extends StatefulWidget {
@@ -37,6 +38,7 @@ class _AboutPageState extends State<AboutPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text("Help & About"),
       ),
       body: SingleChildScrollView(
@@ -110,6 +112,17 @@ class _AboutPageState extends State<AboutPage> {
                   ),
                 ],
               ),
+            ),
+            TileIcon(
+              iconData: Icons.start,
+              label: "View intro again",
+              onTap: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => const OnBoardingScreen(),
+                  ),
+                );
+              },
             ),
             TileIcon(
               iconData: Icons.share,
