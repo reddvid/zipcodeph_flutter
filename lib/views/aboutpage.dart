@@ -57,7 +57,7 @@ class _AboutPageState extends State<AboutPage> with RouteAware {
                             padding: const EdgeInsets.only(bottom: 10),
                             child: Text(
                               "What is a ZIP Code?",
-                              style: Theme.of(context).textTheme.headline6,
+                              style: Theme.of(context).textTheme.titleLarge,
                             )),
                         Text(
                             "ZIP (Zone Identification Plan) Codes are a system of postal codes first used by the United States Postal Services (USPS) in 1963 - so that the mail travels more efficiently, and therefore more quickly, when senders use the code in the postal address.",
@@ -76,7 +76,7 @@ class _AboutPageState extends State<AboutPage> with RouteAware {
                               padding: const EdgeInsets.only(bottom: 10),
                               child: Text(
                                 "Where to put the ZIP Code?",
-                                style: Theme.of(context).textTheme.headline6,
+                                style: Theme.of(context).textTheme.titleLarge,
                               )),
                           Text(
                               "The ZIP Code is usually placed at the left-hand corner of the last line where the city/town is written:",
@@ -91,9 +91,9 @@ class _AboutPageState extends State<AboutPage> with RouteAware {
                               right: BorderSide(width: 1, color: Colors.grey),
                               bottom: BorderSide(width: 1, color: Colors.grey),
                             )),
-                            child: Column(
+                            child: const Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              children: const [
+                              children: [
                                 Text(
                                   "Mr. Juan Dela Cruz",
                                   style: TextStyle(
@@ -161,10 +161,7 @@ class _AboutPageState extends State<AboutPage> with RouteAware {
                       ),
                       onTap: () {
                         _launchUrl(
-                            "mailto:reddavidapps?subject=[FEEDBACK] ZIP Code PH&body=App version: " +
-                                _packageInfo.version +
-                                " build " +
-                                _packageInfo.buildNumber);
+                            "mailto:reddavidapps?subject=[FEEDBACK] ZIP Code PH&body=App version: ${_packageInfo.version} build ${_packageInfo.buildNumber}");
                       },
                     ),
                     const SizedBox(
@@ -220,10 +217,7 @@ class _AboutPageState extends State<AboutPage> with RouteAware {
                     Padding(
                         padding: const EdgeInsets.fromLTRB(15, 20, 10, 20),
                         child: Text(
-                          "version " +
-                              _packageInfo.version +
-                              "b" +
-                              _packageInfo.buildNumber,
+                          "version ${_packageInfo.version}b${_packageInfo.buildNumber}",
                           style: const TextStyle(
                               fontSize: 12.0, color: Colors.grey),
                         ))
