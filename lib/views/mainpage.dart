@@ -76,6 +76,8 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
 
   @override
   Widget build(BuildContext context) {
+    _height = ResponsiveBreakpoints.of(context).largerThan(MOBILE) ? 180 : 110;
+    debugPrint(_height.toString());
     return Container(
       // padding: const EdgeInsets.symmetric(horizontal: 10),
       padding: ResponsiveValue<EdgeInsets>(context,
@@ -116,7 +118,7 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
                         divider(),
                         luzon(),
                         divider(),
-                        visayas(40.0),
+                        visayas(),
                         divider(),
                         mindanao(),
                         divider(),
@@ -154,7 +156,7 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
-                          child: visayas(40.0),
+                          child: visayas(),
                         ),
                         const SizedBox(width: 20.0),
                         Expanded(
@@ -424,7 +426,7 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
     );
   }
 
-  visayas(double? height) {
+  visayas() {
     return Stack(
       children: [
         bgImage('assets/images/visayas.jpg'),
@@ -434,7 +436,6 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
             child: Container(
-              height: height ?? 40.0,
               color: Colors.grey.withOpacity(0.1),
               alignment: Alignment.center,
               child: menuTitle('Visayas'),
@@ -480,7 +481,7 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
   }
 
   bgImage(String imgPath) {
-    _height = MediaQuery.of(context).size.height * 0.5 * 0.25;
+    // _height = MediaQuery.of(context).size.height * 0.5 * 0.25;
     return Container(
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(
