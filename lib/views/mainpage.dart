@@ -1,13 +1,14 @@
-import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:ui';
 
-import 'package:dialog_alert/dialog_alert.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:zipcodeph_flutter2/views/alaminpage.dart';
 import '../main.dart';
@@ -16,7 +17,6 @@ import '../views/areaspage.dart';
 import '../views/favespage.dart';
 import '../views/searchpage.dart';
 import 'package:http/http.dart' as http;
-import 'package:shimmer/shimmer.dart';
 
 class MainMenu extends StatefulWidget {
   const MainMenu({Key? key}) : super(key: key);
@@ -60,7 +60,7 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
       }
     } on SocketException catch (e) {
       // Not Connected
-      debugPrint("Reading local trivias\n" + e.message);
+      debugPrint("Reading local trivias\n${e.message}");
       DefaultAssetBundle.of(context)
           .loadString("assets/json/trivias.json")
           .then((value) {
@@ -76,214 +76,312 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: SafeArea(
-      child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 10),
-          child: Stack(children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                aboutButton(),
-                trivia(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [searchButton(), favoritesButton()],
-                ),
-                Expanded(
-                    child: SingleChildScrollView(
-                        child: Column(
-                  children: [
-                    ncr(),
-                    divider(),
-                    luzon(),
-                    divider(),
-                    visayas(),
-                    divider(),
-                    mindanao(),
-                    divider(),
-                    divider(),
-                    alamin(),
-                    enddivider()
-                  ],
-                ))),
-              ],
+    return Container(
+      // padding: const EdgeInsets.symmetric(horizontal: 10),
+      padding: ResponsiveValue<EdgeInsets>(context,
+          defaultValue: const EdgeInsets.symmetric(horizontal: 30.0),
+          conditionalValues: [
+            const Condition.smallerThan(
+              name: TABLET,
+              value: EdgeInsets.symmetric(horizontal: 0.0),
             ),
-          ])),
-    ));
+          ]).value,
+      child: Stack(
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              ResponsiveVisibility(
+                visible: false,
+                hiddenConditions: const [Condition.largerThan(name: MOBILE)],
+                child: aboutButton(),
+              ),
+              trivia(),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  searchButton(),
+                  favoritesButton(),
+                ],
+              ),
+              ResponsiveVisibility(
+                visible: false,
+                hiddenConditions: const [Condition.largerThan(name: MOBILE)],
+                child: Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        ncr(),
+                        divider(),
+                        luzon(),
+                        divider(),
+                        visayas(40.0),
+                        divider(),
+                        mindanao(),
+                        divider(),
+                        divider(),
+                        alamin(),
+                        enddivider()
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              ResponsiveVisibility(
+                visible: true,
+                visibleConditions: const [Condition.largerThan(name: MOBILE)],
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: ncr(),
+                        ),
+                        const SizedBox(width: 20.0),
+                        Expanded(
+                          child: luzon(),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 20.0),
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: visayas(40.0),
+                        ),
+                        const SizedBox(width: 20.0),
+                        Expanded(
+                          child: mindanao(),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 
   alamin() {
     return Container(
-        child: ListTile(
-          onTap: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const AlaminPage()));
-          },
-          title: const Text("Test Your Knowledge"),
-          subtitle: const Text("Learn Philippine history and general facts"),
-          trailing: const Icon(Icons.chevron_right),
+      width: double.infinity,
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.all(
+          Radius.circular(10),
         ),
-        width: double.infinity,
-        decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(
-              Radius.circular(10),
+        gradient: LinearGradient(
+          begin: Alignment.topRight,
+          end: Alignment.bottomLeft,
+          colors: [
+            Colors.yellow,
+            Colors.red,
+            Colors.blue,
+          ],
+        ),
+      ),
+      child: ListTile(
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AlaminPage(),
             ),
-            gradient: LinearGradient(
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-              colors: [
-                Colors.yellow,
-                Colors.red,
-                Colors.blue,
-              ],
-            )));
+          );
+        },
+        title: const Text("Test Your Knowledge"),
+        subtitle: const Text("Learn Philippine history and general facts"),
+        trailing: const Icon(Icons.chevron_right),
+      ),
+    );
   }
 
   trivia() {
     return Container(
-        width: double.infinity,
-        padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text(
-              'Did You Know?',
-              style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                  fontSize: 16),
-            ),
-            const Divider(
-              height: 5,
-              color: Colors.transparent,
-            ),
-            RichText(
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-                text: TextSpan(
-                    recognizer: TapGestureRecognizer()
-                      ..onTap = () async {
-                        setState(() {
-                          triviaPop = true;
-                        });
-                        final result = await showDialogAlert(
-                          context: context,
-                          title: 'Did You Know?',
-                          message: currentTrivia,
-                          actionButtonTitle: 'SHARE',
-                          cancelButtonTitle: 'CLOSE',
-                        );
-                        if (result == ButtonActionType.action) {
-                          _shareTrivia(currentTrivia);
-                        }
-                      },
-                    text: currentTrivia,
-                    style: const TextStyle(color: Colors.white))),
-            Align(alignment: Alignment.bottomRight, child: shareButton())
+      width: double.infinity,
+      padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
+      decoration: const BoxDecoration(
+        borderRadius: BorderRadius.all(
+          Radius.circular(10),
+        ),
+        gradient: LinearGradient(
+          begin: Alignment.topRight,
+          end: Alignment.bottomLeft,
+          colors: [
+            Colors.blue,
+            Colors.red,
           ],
         ),
-        decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(
-              Radius.circular(10),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Did You Know?',
+            style: TextStyle(
+                fontWeight: FontWeight.bold, color: Colors.white, fontSize: 16),
+          ),
+          const Divider(
+            height: 5,
+            color: Colors.transparent,
+          ),
+          RichText(
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
+            text: TextSpan(
+              recognizer: TapGestureRecognizer()
+                ..onTap = () async {
+                  setState(() {
+                    triviaPop = true;
+                  });
+                  // final result = await showDialogAlert(
+                  //   context: context,
+                  //   title: 'Did You Know?',
+                  //   message: currentTrivia,
+                  //   actionButtonTitle: 'SHARE',
+                  //   cancelButtonTitle: 'CLOSE',
+                  // );
+                  // if (result == ButtonActionType.action) {
+                  //   _shareTrivia(currentTrivia);
+                  // }
+                },
+              text: currentTrivia,
+              style: const TextStyle(color: Colors.white),
             ),
-            gradient: LinearGradient(
-              begin: Alignment.topRight,
-              end: Alignment.bottomLeft,
-              colors: [
-                Colors.blue,
-                Colors.red,
-              ],
-            )));
+          ),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: shareButton(),
+          )
+        ],
+      ),
+    );
   }
 
   shareButton() {
     return SizedBox(
-        height: 35,
-        child: TextButton.icon(
-            icon: Icon(
-              Platform.isAndroid ? Icons.share : CupertinoIcons.share,
-              size: 12.0,
-              color: Colors.white,
-            ),
-            label: const Text('Share',
-                style: TextStyle(fontSize: 12.0, color: Colors.white)),
-            onPressed: () {
-              Clipboard.setData(ClipboardData(text: currentTrivia));
-              // var snackBar = const SnackBar(
-              //   content: Text("Trivia copied for sharing"),
-              // );
-              // ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              _shareTrivia(currentTrivia);
-            },
-            style: ButtonStyle(
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
+      height: 35,
+      child: TextButton.icon(
+        icon: Icon(
+          Platform.isAndroid ? Icons.share : CupertinoIcons.share,
+          size: 12.0,
+          color: Colors.white,
+        ),
+        label: const Text(
+          'Share',
+          style: TextStyle(fontSize: 12.0, color: Colors.white),
+        ),
+        onPressed: () {
+          Clipboard.setData(
+            ClipboardData(text: currentTrivia),
+          );
+          // var snackBar = const SnackBar(
+          //   content: Text("Trivia copied for sharing"),
+          // );
+          // ScaffoldMessenger.of(context).showSnackBar(snackBar);
+          _shareTrivia(currentTrivia);
+        },
+        style: ButtonStyle(
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(18.0),
-            )))));
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   aboutButton() {
     return Align(
-        alignment: Alignment.topRight,
-        child: TextButton.icon(
-            icon: Icon(
-              Platform.isAndroid
-                  ? Icons.info_outline
-                  : CupertinoIcons.info_circle,
+      alignment: Alignment.topRight,
+      child: TextButton.icon(
+        icon: Icon(
+          Platform.isAndroid ? Icons.info_outline : CupertinoIcons.info_circle,
+        ),
+        label: const Text('Help & About'),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const AboutPage(),
             ),
-            label: const Text('Help & About'),
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const AboutPage()));
-            },
-            style: ButtonStyle(
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
+          );
+        },
+        style: ButtonStyle(
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(18.0),
-            )))));
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   searchButton() {
     return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 5),
-        child: TextButton.icon(
-            icon: Icon(
-              Platform.isAndroid ? Icons.search : CupertinoIcons.search,
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      child: TextButton.icon(
+        icon: Icon(
+          Platform.isAndroid ? Icons.search : CupertinoIcons.search,
+        ),
+        label: const Text(
+          'Search ZIP Codes',
+        ),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SearchPage(),
             ),
-            label: const Text(
-              'Search ZIP Codes',
-            ),
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => SearchPage()));
-            },
-            style: ButtonStyle(
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
+          );
+        },
+        style: ButtonStyle(
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(18.0),
-            )))));
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   favoritesButton() {
     return Padding(
-        padding: const EdgeInsets.symmetric(vertical: 5),
-        child: TextButton.icon(
-            icon: Icon(
-              Platform.isAndroid
-                  ? Icons.favorite_outline
-                  : CupertinoIcons.heart,
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      child: TextButton.icon(
+        icon: Icon(
+          Platform.isAndroid ? Icons.favorite_outline : CupertinoIcons.heart,
+        ),
+        label: const Text('Favorites'),
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => FavesPage(),
             ),
-            label: const Text('Favorites'),
-            onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => FavesPage()));
-            },
-            style: ButtonStyle(
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
+          );
+        },
+        style: ButtonStyle(
+          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(18.0),
-            )))));
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   ncr() {
@@ -311,21 +409,22 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
       children: [
         bgImage('assets/images/luzon.jpg'),
         ClipRRect(
-            // Clip it cleanly.
-            borderRadius: BorderRadius.circular(10),
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
-              child: Container(
-                color: Colors.grey.withOpacity(0.1),
-                alignment: Alignment.center,
-                child: menuTitle('Luzon'),
-              ),
-            )),
+          // Clip it cleanly.
+          borderRadius: BorderRadius.circular(10),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
+            child: Container(
+              color: Colors.grey.withOpacity(0.1),
+              alignment: Alignment.center,
+              child: menuTitle('Luzon'),
+            ),
+          ),
+        ),
       ],
     );
   }
 
-  visayas() {
+  visayas(double? height) {
     return Stack(
       children: [
         bgImage('assets/images/visayas.jpg'),
@@ -335,6 +434,7 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
             child: Container(
+              height: height ?? 40.0,
               color: Colors.grey.withOpacity(0.1),
               alignment: Alignment.center,
               child: menuTitle('Visayas'),
@@ -404,24 +504,34 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
           borderRadius: BorderRadius.circular(10),
         ),
         onTap: () {
-          Navigator.push(context,
-              MaterialPageRoute(builder: (context) => AreasPage(area: title)));
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AreasPage(area: title),
+            ),
+          );
         },
         child: SizedBox(
-            width: double.infinity,
-            height: _height,
-            child: Center(
-                child: Text(title,
-                    style: const TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white)))),
+          width: double.infinity,
+          height: _height,
+          child: Center(
+            child: Text(
+              title,
+              style: const TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+            ),
+          ),
+        ),
       ),
     );
   }
 
   void _shareTrivia(String currentTrivia) {
-    Share.share("Did You Know? $currentTrivia #ZIPCodePH",
-        subject: "Did You Know? ZIP Code PH Trivia");
+    Share.share(
+      "Did You Know? $currentTrivia #ZIPCodePH",
+      subject: "Did You Know? ZIP Code PH Trivia",
+    );
   }
 }

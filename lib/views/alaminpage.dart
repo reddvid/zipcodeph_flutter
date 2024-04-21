@@ -2,8 +2,6 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:http/http.dart' as http;
 import 'package:lottie/lottie.dart';
 
@@ -44,7 +42,7 @@ class _AlaminPageState extends State<AlaminPage> with RouteAware {
         });
         return jsonDecode(response.body)["quiz"];
       }
-    } on SocketException catch (e) {
+    } on SocketException {
       return [];
     }
     return [];
@@ -136,7 +134,7 @@ class _AlaminPageState extends State<AlaminPage> with RouteAware {
                                       .showSnackBar(snackBar);
                                 },
                                 title: Text(o.toString()))),
-                      Spacer(),
+                      const Spacer(),
                     ],
                   );
                 } else {
