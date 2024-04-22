@@ -1,4 +1,4 @@
-name: zipcodeph_flutter2
+name: zipcodeph_flutter
 description: "ZIP Code PH built on Flutter"
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -14,15 +14,15 @@ dependencies:
   path:
 
   cupertino_icons: ^1.0.8
-  connectivity_plus: ^5.0.2
+  connectivity_plus: ^6.0.2
   fluentui_system_icons: ^1.1.226
   flutter_search_bar: ^3.0.0
   google_fonts: ^6.1.0
   lottie: ^3.0.0
-  package_info_plus: ^5.0.1
+  package_info_plus: ^7.0.0
   path_provider: ^2.1.2
   responsive_framework: ^1.4.0
-  share_plus: ^7.2.2
+  share_plus: ^8.0.3
   shimmer: ^3.0.0
   sqflite: ^2.3.3
   url_launcher: ^6.2.4
@@ -32,7 +32,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_lints: ^2.0.0
+  flutter_lints: ^3.0.2
 
 flutter:
   uses-material-design: true

@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import '../views/cities_screen.dart';
+
+import '../views/areaspage.dart';
 
 class AreaMenuButton extends StatelessWidget {
   const AreaMenuButton({

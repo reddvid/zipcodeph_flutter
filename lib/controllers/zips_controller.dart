@@ -5,17 +5,17 @@ import 'package:zipcodeph_flutter/models/zipcodes_data.dart';
 class ZipsController {
   final ZipRepository _zipRepo = ZipRepository(ZipDB());
 
-  Future<List<ZipCode>?> getAreaCodes(String area) {
-    return _zipRepo.getAreaCodes(area);
+  Future<List<ZipCode>?> getAreaCodes(String area) async {
+    return await _zipRepo.getAreaCodes(area);
   }
 
-  Future<void> unFaveItem(ZipCode zipCode) {
+  Future<void> unFaveItem(ZipCode zipCode) async {
     zipCode.fave = 0;
-    return _zipRepo.update(zipCode);
+    return await _zipRepo.update(zipCode);
   }
 
-  Future<void> faveItem(ZipCode zipCode) {
+  Future<void> faveItem(ZipCode zipCode) async {
     zipCode.fave = 1;
-    return _zipRepo.update(zipCode);
+    return await _zipRepo.update(zipCode);
   }
 }

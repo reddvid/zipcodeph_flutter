@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
-import '../controllers/faves.dart';
+import '../controllers/faves_controller.dart';
 import '../main.dart';
 import '../models/zipcode.dart';
 import '../views/searchpage.dart';
 
 class FavesPage extends StatefulWidget {
   FavesPage({super.key});
-  final FavesController _favesController = FavesController();
+  final FavoritesController _favesController = FavoritesController();
 
   @override
   State<FavesPage> createState() => _FavesPageState();
@@ -78,7 +78,7 @@ class _FavesPageState extends State<FavesPage> with RouteAware {
 }
 
 class _List extends StatelessWidget {
-  final FavesController _favesController;
+  final FavoritesController _favesController;
   final VoidCallback _refreshList;
 
   const _List(this._favesController, this._refreshList);
