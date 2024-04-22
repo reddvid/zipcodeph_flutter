@@ -34,27 +34,45 @@ class _AreasPageState extends State<AreasPage> with RouteAware {
       ),
       body: Stack(
         children: [
-          ListView.separated(
-            shrinkWrap: true,
-            padding: const EdgeInsets.only(bottom: 80),
-            separatorBuilder: (context, index) => const Divider(),
-            itemCount: menu.length,
-            itemBuilder: (context, index) {
-              return ListTile(
-                visualDensity: const VisualDensity(vertical: -4), // to compact
-                trailing: const Icon(Icons.chevron_right),
-                title: Text(
-                  menu[index],
+          Container(
+            alignment: Alignment.topCenter,
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: Container(
+                constraints: const BoxConstraints(minWidth: 800, maxWidth: 800),
+                child: ListView.separated(
+                  shrinkWrap: true,
+                  padding: const EdgeInsets.only(bottom: 80),
+                  separatorBuilder: (context, index) => const Divider(),
+                  itemCount: menu.length,
+                  itemBuilder: (context, index) {
+                    return Center(
+                      child: ListTile(
+                        visualDensity: const VisualDensity(vertical: -4),
+                        // to compact
+                        trailing: const Icon(Icons.chevron_right),
+                        title: Text(
+                          menu[index],
+                        ),
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ZipsPage(
+                                area: [
+                                  widget.area,
+                                  menu[index],
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    );
+                  },
                 ),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              ZipsPage(area: [widget.area, menu[index]])));
-                },
-              );
-            },
+              ),
+            ),
           ),
         ],
       ),

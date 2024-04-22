@@ -172,8 +172,7 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
                 // GRID
                 ResponsiveVisibility(
                   visibleConditions: const [
-                    Condition.between(
-                        start: 1201, end: 1920),
+                    Condition.between(start: 1201, end: 1920),
                   ],
                   hiddenConditions: const [
                     Condition.between(start: 0, end: 1200),
@@ -448,86 +447,6 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
     );
   }
 
-  ncr() {
-    return Stack(
-      children: [
-        bgImage('assets/images/ncr.jpg'),
-        ClipRRect(
-          borderRadius: BorderRadius.circular(10),
-          // Clip it cleanly.
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
-            child: Container(
-              color: Colors.grey.withOpacity(0.1),
-              alignment: Alignment.center,
-              child: menuTitle('Metro Manila'),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  luzon() {
-    return Stack(
-      children: [
-        bgImage('assets/images/luzon.jpg'),
-        ClipRRect(
-          // Clip it cleanly.
-          borderRadius: BorderRadius.circular(10),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
-            child: Container(
-              color: Colors.grey.withOpacity(0.1),
-              alignment: Alignment.center,
-              child: menuTitle('Luzon'),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  visayas() {
-    return Stack(
-      children: [
-        bgImage('assets/images/visayas.jpg'),
-        ClipRRect(
-          // Clip it cleanly.
-          borderRadius: BorderRadius.circular(10),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
-            child: Container(
-              color: Colors.grey.withOpacity(0.1),
-              alignment: Alignment.center,
-              child: menuTitle('Visayas'),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  mindanao() {
-    return Stack(
-      children: [
-        bgImage('assets/images/mindanao.jpg'),
-        ClipRRect(
-          // Clip it cleanly.
-          borderRadius: BorderRadius.circular(10),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
-            child: Container(
-              color: Colors.grey.withOpacity(0.1),
-              alignment: Alignment.center,
-              child: menuTitle('Mindanao'),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
   divider() {
     return const Divider(
       height: 10,
@@ -539,55 +458,6 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
     return const Divider(
       height: 60,
       color: Colors.transparent,
-    );
-  }
-
-  bgImage(String imgPath) {
-    // _height = MediaQuery.of(context).size.height * 0.5 * 0.25;
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: const BorderRadius.all(
-          Radius.circular(10),
-        ),
-        image: DecorationImage(
-          image: AssetImage(imgPath),
-          fit: BoxFit.fitWidth,
-        ),
-      ),
-      width: double.infinity,
-      height: _height,
-    );
-  }
-
-  menuTitle(String title) {
-    return Material(
-      type: MaterialType.transparency,
-      child: InkWell(
-        customBorder: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => AreasPage(area: title),
-            ),
-          );
-        },
-        child: SizedBox(
-          width: double.infinity,
-          height: _height,
-          child: Center(
-            child: Text(
-              title,
-              style: const TextStyle(
-                  fontSize: 24,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-            ),
-          ),
-        ),
-      ),
     );
   }
 
