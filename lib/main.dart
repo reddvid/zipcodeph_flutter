@@ -21,18 +21,18 @@ class MyApp extends StatelessWidget {
       builder: (context, widget) => ResponsiveBreakpoints.builder(
         child: ClampingScrollWrapper.builder(context, widget!),
         breakpoints: [
-          const Breakpoint(start: 0, end: 450, name: MOBILE),
+          const Breakpoint(start: 0, end: 800, name: MOBILE),
           const Breakpoint(start: 0, end: 1200, name: TABLET),
           const Breakpoint(start: 0, end: 1920, name: DESKTOP),
         ],
       ),
       home: Scaffold(
         body: SafeArea(
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Container(
-              constraints: const BoxConstraints(maxWidth: 1920, minWidth: 1920),
-              child: const Padding(
+          child: Container(
+            alignment: Alignment.topCenter,
+            child: const Align(
+              alignment: Alignment.topCenter,
+              child: Padding(
                 padding: EdgeInsets.only(top: 40.0),
                 child: MainMenu(),
               ),
