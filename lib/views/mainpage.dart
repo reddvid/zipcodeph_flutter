@@ -11,6 +11,7 @@ import 'package:flutter/widgets.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:zipcodeph_flutter2/views/alaminpage.dart';
+import 'package:zipcodeph_flutter2/widgets/navigation/sidebar_container.dart';
 import '../main.dart';
 import '../views/aboutpage.dart';
 import '../views/areaspage.dart';
@@ -90,81 +91,110 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
           ]).value,
       child: Stack(
         children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
+          Row(
             children: [
-              ResponsiveVisibility(
-                visible: false,
-                hiddenConditions: const [Condition.largerThan(name: MOBILE)],
-                child: aboutButton(),
-              ),
-              trivia(),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  searchButton(),
-                  favoritesButton(),
-                ],
-              ),
-              ResponsiveVisibility(
-                visible: false,
-                hiddenConditions: const [Condition.largerThan(name: MOBILE)],
+              const ResponsiveVisibility(
+                visibleConditions: [Condition.between(start: 1920, end: 1920, landscapeValue: true)],
+                hiddenConditions: [Condition.between(start: 0, end: 1200)],
                 child: Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      children: [
-                        ncr(),
-                        divider(),
-                        luzon(),
-                        divider(),
-                        visayas(),
-                        divider(),
-                        mindanao(),
-                        divider(),
-                        divider(),
-                        alamin(),
-                        enddivider()
-                      ],
-                    ),
-                  ),
+                  flex: 1,
+                  child: SizedBox(),
                 ),
               ),
-              ResponsiveVisibility(
-                visible: true,
-                visibleConditions: const [Condition.largerThan(name: MOBILE)],
+              Expanded(
+                flex: 4,
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
+                    ResponsiveVisibility(
+                      visible: false,
+                      hiddenConditions: const [
+                        Condition.largerThan(name: MOBILE)
+                      ],
+                      child: aboutButton(),
+                    ),
+                    trivia(),
                     Row(
-                      mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Expanded(
-                          child: ncr(),
-                        ),
-                        const SizedBox(width: 20.0),
-                        Expanded(
-                          child: luzon(),
-                        ),
+                        searchButton(),
+                        favoritesButton(),
                       ],
                     ),
-                    const SizedBox(height: 20.0),
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: visayas(),
-                        ),
-                        const SizedBox(width: 20.0),
-                        Expanded(
-                          child: mindanao(),
-                        ),
+                    ResponsiveVisibility(
+                      visible: false,
+                      hiddenConditions: const [
+                        Condition.largerThan(name: MOBILE)
                       ],
+                      child: Expanded(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              ncr(),
+                              divider(),
+                              luzon(),
+                              divider(),
+                              visayas(),
+                              divider(),
+                              mindanao(),
+                              divider(),
+                              divider(),
+                              alamin(),
+                              enddivider()
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    ResponsiveVisibility(
+                      visible: true,
+                      visibleConditions: const [
+                        Condition.largerThan(name: MOBILE)
+                      ],
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: ncr(),
+                              ),
+                              const SizedBox(width: 20.0),
+                              Expanded(
+                                child: luzon(),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 20.0),
+                          Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Expanded(
+                                child: visayas(),
+                              ),
+                              const SizedBox(width: 20.0),
+                              Expanded(
+                                child: mindanao(),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
                   ],
+                ),
+              ),
+              const ResponsiveVisibility(
+                visibleConditions: [Condition.between(start: 1920, end: 1920, landscapeValue: true)],
+                hiddenConditions: [Condition.between(start: 0, end: 1200)],
+                child: Expanded(
+                  flex: 1,
+                  child: SizedBox(),
                 ),
               ),
             ],
