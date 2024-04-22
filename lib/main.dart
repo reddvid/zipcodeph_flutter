@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import '../views/mainpage.dart';
 
@@ -11,11 +12,16 @@ void main() async {
 final RouteObserver<ModalRoute> routeObserver = RouteObserver<ModalRoute>();
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
+      statusBarBrightness: Brightness.light,
+      statusBarIconBrightness: Brightness.light,//
+      statusBarColor: Colors.transparent,// or set color with: Color(0xFF0000FF)
+    ));
     return MaterialApp(
       title: 'ZIP Code PH',
       builder: (context, widget) => ResponsiveBreakpoints.builder(
@@ -42,6 +48,9 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       navigatorObservers: [routeObserver],
+      themeMode: ThemeMode.system,
+      theme: ThemeData.dark(),
+      darkTheme: ThemeData.dark(),
     );
   }
 }

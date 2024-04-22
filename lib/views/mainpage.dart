@@ -21,14 +21,14 @@ import '../views/searchpage.dart';
 import 'package:http/http.dart' as http;
 
 class MainMenu extends StatefulWidget {
-  const MainMenu({Key? key}) : super(key: key);
+  const MainMenu({super.key});
 
   @override
-  _MainMenuState createState() => _MainMenuState();
+  State<MainMenu> createState() => _MainMenuState();
 }
 
 class _MainMenuState extends State<MainMenu> with RouteAware {
-  late List<dynamic> trivias = [];
+  late List<dynamic> triviaList = [];
   late String currentTrivia = "";
   bool triviaPop = false;
   double _height = 110;
@@ -55,9 +55,9 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
         debugPrint("Getting trivias online");
         final jsonResult = jsonDecode(response.body)['trivias'];
         setState(() {
-          trivias = jsonResult;
-          trivias.shuffle();
-          currentTrivia = trivias.isEmpty ? "" : trivias.first;
+          triviaList = jsonResult;
+          triviaList.shuffle();
+          currentTrivia = triviaList.isEmpty ? "" : triviaList.first;
         });
       }
     } on SocketException catch (e) {
@@ -68,9 +68,9 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
           .then((value) {
         final jsonResult = jsonDecode(value)['trivias'];
         setState(() {
-          trivias = jsonResult;
-          trivias.shuffle();
-          currentTrivia = trivias.isEmpty ? "" : trivias.first;
+          triviaList = jsonResult;
+          triviaList.shuffle();
+          currentTrivia = triviaList.isEmpty ? "" : triviaList.first;
         });
       });
     }
@@ -104,7 +104,7 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
                   hiddenConditions: const [Condition.largerThan(name: MOBILE)],
                   child: aboutButton(),
                 ),
-                trivia(),
+                triviaContainer(),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -270,7 +270,7 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
     );
   }
 
-  trivia() {
+  triviaContainer() {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
