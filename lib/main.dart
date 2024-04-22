@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         child: ClampingScrollWrapper.builder(context, widget!),
         breakpoints: [
           const Breakpoint(start: 0, end: 450, name: MOBILE),
-          const Breakpoint(start: 0, end: 800, name: TABLET),
+          const Breakpoint(start: 0, end: 1200, name: TABLET),
           const Breakpoint(start: 0, end: 1920, name: DESKTOP),
         ],
       ),
