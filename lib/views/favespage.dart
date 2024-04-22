@@ -161,7 +161,7 @@ class _List extends StatelessWidget {
   }
 
   bottomSheet(
-      BuildContext context, ZipCode zipCode, VoidCallback _refreshList) {
+      BuildContext context, ZipCode zipCode, VoidCallback refreshList) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
@@ -197,7 +197,7 @@ class _List extends StatelessWidget {
                   onTap: () {
                     zipCode.fave = 0;
                     _favesController.updateItem(zipCode);
-                    _refreshList();
+                    refreshList();
                     Navigator.pop(context);
                     var snackBar = SnackBar(
                       content: Text(
@@ -207,7 +207,7 @@ class _List extends StatelessWidget {
                         onPressed: () {
                           zipCode.fave = 1;
                           _favesController.updateItem(zipCode);
-                          _refreshList();
+                          refreshList();
                         },
                       ),
                     );
@@ -220,7 +220,7 @@ class _List extends StatelessWidget {
                   onTap: () {
                     zipCode.fave = 1;
                     _favesController.updateItem(zipCode);
-                    _refreshList();
+                    refreshList();
                     Navigator.pop(context);
                     var snackBar = SnackBar(
                       content: Text(
@@ -230,7 +230,7 @@ class _List extends StatelessWidget {
                         onPressed: () {
                           zipCode.fave = 0;
                           _favesController.updateItem(zipCode);
-                          _refreshList();
+                          refreshList();
                         },
                       ),
                     );

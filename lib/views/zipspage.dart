@@ -8,6 +8,7 @@ import '../models/zipcode.dart';
 class ZipsPage extends StatefulWidget {
   final List<String> area;
   final ZipsController _zipsController = ZipsController();
+
   ZipsPage({Key? key, required this.area}) : super(key: key);
 
   @override
@@ -52,6 +53,7 @@ class _List extends StatelessWidget {
   final ZipsController _zipsController;
   final VoidCallback _refreshList;
   final String _area;
+
   const _List(this._zipsController, this._area, this._refreshList);
 
   @override
@@ -63,52 +65,66 @@ class _List extends StatelessWidget {
             return const Center(
                 child: Text("Can't load ZIP codes. Send Feedback"));
           } else {
-            return ListView.separated(
-              padding: const EdgeInsets.only(bottom: 80),
-              shrinkWrap: true,
-              separatorBuilder: (context, index) => const Divider(),
-              itemCount: snapshot.data!.length,
-              itemBuilder: (context, index) {
-                ZipCode zipCode = snapshot.data![index];
-                return ListTile(
-                    onLongPress: () {
-                      showModalBottomSheet<void>(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return bottomSheet(
-                                context, snapshot.data![index], _refreshList);
-                          });
-                    },
-                    onTap: () {
-                      showModalBottomSheet<void>(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return bottomSheet(
-                                context, snapshot.data![index], _refreshList);
-                          });
-                    },
-                    visualDensity:
-                        const VisualDensity(vertical: -4), // to compact
-                    leading: Container(
-                        width: 48,
-                        height: double.infinity,
-                        alignment: Alignment.center,
-                        child: Text(
-                          zipCode.code.toString(),
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        )),
-                    subtitle: Text(zipCode.area),
-                    title: Text(zipCode.town));
-              },
+            return Align(
+              alignment: Alignment.topCenter,
+              child: Container(
+                constraints: const BoxConstraints(minWidth: 800, maxWidth: 800),
+                child: ListView.separated(
+                  padding: const EdgeInsets.only(bottom: 80),
+                  shrinkWrap: true,
+                  separatorBuilder: (context, index) => const Divider(),
+                  itemCount: snapshot.data!.length,
+                  itemBuilder: (context, index) {
+                    ZipCode zipCode = snapshot.data![index];
+                    return ListTile(
+                      onLongPress: () {
+                        showModalBottomSheet<void>(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return bottomSheet(
+                                context,
+                                snapshot.data![index],
+                                _refreshList,
+                              );
+                            });
+                      },
+                      onTap: () {
+                        showModalBottomSheet<void>(
+                            context: context,
+                            builder: (BuildContext context) {
+                              return bottomSheet(
+                                context,
+                                snapshot.data![index],
+                                _refreshList,
+                              );
+                            });
+                      },
+                      visualDensity: const VisualDensity(vertical: -4),
+                      // to compact
+                      leading: Container(
+                          width: 64.0,
+                          height: double.infinity,
+                          alignment: Alignment.center,
+                          child: Text(
+                            zipCode.code.toString(),
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: 20.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          )),
+                      subtitle: Text(zipCode.area),
+                      title: Text(zipCode.town),
+                    );
+                  },
+                ),
+              ),
             );
           }
         });
   }
 
-  bottomSheet(
-      BuildContext context, ZipCode zipCode, VoidCallback _refreshList) {
+  bottomSheet(BuildContext context, ZipCode zipCode, VoidCallback refreshList) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
@@ -144,7 +160,7 @@ class _List extends StatelessWidget {
                   onTap: () {
                     zipCode.fave = 0;
                     _zipsController.updateItem(zipCode);
-                    _refreshList();
+                    refreshList();
                     Navigator.pop(context);
                     var snackBar = SnackBar(
                       content: Text(
@@ -154,7 +170,7 @@ class _List extends StatelessWidget {
                         onPressed: () {
                           zipCode.fave = 1;
                           _zipsController.updateItem(zipCode);
-                          _refreshList();
+                          refreshList();
                         },
                       ),
                     );
@@ -167,7 +183,7 @@ class _List extends StatelessWidget {
                   onTap: () {
                     zipCode.fave = 1;
                     _zipsController.updateItem(zipCode);
-                    _refreshList();
+                    refreshList();
                     Navigator.pop(context);
                     var snackBar = SnackBar(
                       content: Text(
@@ -177,7 +193,7 @@ class _List extends StatelessWidget {
                         onPressed: () {
                           zipCode.fave = 0;
                           _zipsController.updateItem(zipCode);
-                          _refreshList();
+                          refreshList();
                         },
                       ),
                     );

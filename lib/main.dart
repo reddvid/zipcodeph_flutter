@@ -1,9 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:responsive_framework/responsive_framework.dart';
 import '../views/mainpage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   runApp(const MyApp());
 }
 
@@ -17,30 +18,30 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'ZIP Code PH',
-      theme: _buildTheme(Brightness.light),
-      darkTheme: _buildTheme(Brightness.dark),
-      themeMode: ThemeMode.system,
+      builder: (context, widget) => ResponsiveBreakpoints.builder(
+        child: ClampingScrollWrapper.builder(context, widget!),
+        breakpoints: [
+          const Breakpoint(start: 0, end: 800, name: MOBILE),
+          const Breakpoint(start: 0, end: 1200, name: TABLET),
+          const Breakpoint(start: 0, end: 1920, name: DESKTOP),
+        ],
+      ),
+      home: Scaffold(
+        body: SafeArea(
+          child: Container(
+            alignment: Alignment.topCenter,
+            child: const Align(
+              alignment: Alignment.topCenter,
+              child: Padding(
+                padding: EdgeInsets.only(top: 40.0),
+                child: MainMenu(),
+              ),
+            ),
+          ),
+        ),
+      ),
       debugShowCheckedModeBanner: false,
-      home: const MainMenu(),
       navigatorObservers: [routeObserver],
     );
-  }
-
-  ThemeData _buildTheme(brightness) {
-    return ThemeData(
-        textButtonTheme: TextButtonThemeData(
-            style: ButtonStyle(
-                foregroundColor: (brightness == Brightness.dark)
-                    ? MaterialStateProperty.all<Color>(Colors.white)
-                    : MaterialStateProperty.all<Color>(Colors.black))),
-        primarySwatch: Colors.red,
-        brightness: brightness,
-        backgroundColor: brightness == Brightness.dark
-            ? const Color.fromRGBO(17, 17, 17, 1.0)
-            : const Color.fromRGBO(220, 220, 220, 1.0),
-        pageTransitionsTheme: const PageTransitionsTheme(builders: {
-          TargetPlatform.android: CupertinoPageTransitionsBuilder(),
-          TargetPlatform.iOS: CupertinoPageTransitionsBuilder(),
-        }));
   }
 }
