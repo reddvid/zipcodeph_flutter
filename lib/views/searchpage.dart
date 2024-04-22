@@ -1,3 +1,4 @@
+import 'package:anim_search_bar/anim_search_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -17,6 +18,7 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> with RouteAware {
   late SearchBar searchBar;
+  late AnimSearchBar newSearchBar;
   late String query = "";
 
   void _refreshList() {
@@ -32,15 +34,16 @@ class _SearchPageState extends State<SearchPage> with RouteAware {
     });
   }
 
-  AppBar buildAppBar(BuildContext context) {
-    return AppBar(
-      title: const Text("Search"),
-      actions: [searchBar],
-    );
-  }
-
   _SearchPageState() {
     searchBar = SearchBar(
+      elevation: MaterialStateProperty.all(2),
+      constraints: const BoxConstraints(
+        maxWidth: 420,
+        minWidth: 280,
+        minHeight: 40,
+        maxHeight: 48,
+      ),
+      autoFocus: true,
       hintText: "Search towns, cities, or province",
       onChanged: (value) {
         setState(() {
@@ -53,7 +56,13 @@ class _SearchPageState extends State<SearchPage> with RouteAware {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(actions: [searchBar]),
+      appBar: AppBar(
+        actions: [Padding(
+          padding: const EdgeInsets.only(right: 20),
+          child: searchBar,
+        )],
+        title: const Text('Search'),
+      ),
       body: _List(
         widget._searchController,
         query,
@@ -84,36 +93,40 @@ class _List extends StatelessWidget {
             itemBuilder: (context, index) {
               ZipCode zipCode = snapshot.data![index];
               return ListTile(
-                  onLongPress: () {
-                    showModalBottomSheet<void>(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return bottomSheet(
-                              context, snapshot.data![index], _refreshList);
-                        });
-                  },
-                  onTap: () {
-                    showModalBottomSheet<void>(
-                        context: context,
-                        builder: (BuildContext context) {
-                          return bottomSheet(
-                              context, snapshot.data![index], _refreshList);
-                        });
-                  },
-                  visualDensity: const VisualDensity(vertical: -4),
-                  // to compact
-                  leading: Container(
-                      width: 48,
-                      height: double.infinity,
-                      alignment: Alignment.center,
-                      child: Text(
-                        zipCode.code.toString(),
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                            fontSize: 16, fontWeight: FontWeight.bold),
-                      )),
-                  subtitle: Text(zipCode.area),
-                  title: Text(zipCode.town));
+                onLongPress: () {
+                  showModalBottomSheet<void>(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return bottomSheet(
+                            context, snapshot.data![index], _refreshList);
+                      });
+                },
+                onTap: () {
+                  showModalBottomSheet<void>(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return bottomSheet(
+                            context, snapshot.data![index], _refreshList);
+                      });
+                },
+                visualDensity: const VisualDensity(vertical: -4),
+                // to compact
+                leading: Container(
+                  width: 64,
+                  height: double.infinity,
+                  alignment: Alignment.center,
+                  child: Text(
+                    zipCode.code.toString(),
+                    textAlign: TextAlign.center,
+                    style: const TextStyle(
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                subtitle: Text(zipCode.area),
+                title: Text(zipCode.town),
+              );
             },
           );
         } else {
