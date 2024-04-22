@@ -11,6 +11,7 @@ import 'package:flutter/widgets.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:zipcodeph_flutter2/views/alaminpage.dart';
+import 'package:zipcodeph_flutter2/widgets/menu/group_menu_button.dart';
 import 'package:zipcodeph_flutter2/widgets/navigation/sidebar_container.dart';
 import '../main.dart';
 import '../views/aboutpage.dart';
@@ -80,6 +81,7 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
     _height = ResponsiveBreakpoints.of(context).largerThan(MOBILE) ? 180 : 110;
     debugPrint(_height.toString());
     return Container(
+      constraints: const BoxConstraints(minWidth: 800, maxWidth: 800),
       // padding: const EdgeInsets.symmetric(horizontal: 10),
       padding: ResponsiveValue<EdgeInsets>(context,
           defaultValue: const EdgeInsets.symmetric(horizontal: 30.0),
@@ -91,113 +93,143 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
           ]).value,
       child: Stack(
         children: [
-          Row(
-            children: [
-              const ResponsiveVisibility(
-                visibleConditions: [Condition.between(start: 1920, end: 1920, landscapeValue: true)],
-                hiddenConditions: [Condition.between(start: 0, end: 1200)],
-                child: Expanded(
-                  flex: 1,
-                  child: SizedBox(),
+          Align(
+            alignment: Alignment.topCenter,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ResponsiveVisibility(
+                  visible: false,
+                  hiddenConditions: const [Condition.largerThan(name: MOBILE)],
+                  child: aboutButton(),
                 ),
-              ),
-              Expanded(
-                flex: 4,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  mainAxisSize: MainAxisSize.min,
+                trivia(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    ResponsiveVisibility(
-                      visible: false,
-                      hiddenConditions: const [
-                        Condition.largerThan(name: MOBILE)
-                      ],
-                      child: aboutButton(),
+                    searchButton(),
+                    favoritesButton(),
+                  ],
+                ),
+                // LIST
+                ResponsiveVisibility(
+                  visibleConditions: const [
+                    Condition.between(
+                      start: 0,
+                      end: 1200,
                     ),
-                    trivia(),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  ],
+                  hiddenConditions: const [
+                    Condition.between(
+                      start: 1201,
+                      end: 1920,
+                    ),
+                  ],
+                  child: Expanded(
+                    child: Column(
                       children: [
-                        searchButton(),
-                        favoritesButton(),
-                      ],
-                    ),
-                    ResponsiveVisibility(
-                      visible: false,
-                      hiddenConditions: const [
-                        Condition.largerThan(name: MOBILE)
-                      ],
-                      child: Expanded(
-                        child: SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              ncr(),
-                              divider(),
-                              luzon(),
-                              divider(),
-                              visayas(),
-                              divider(),
-                              mindanao(),
-                              divider(),
-                              divider(),
-                              alamin(),
-                              enddivider()
-                            ],
-                          ),
+                        GroupMenuButton(
+                          title: 'Metro Manila',
+                          backgroundImagePath: 'assets/images/ncr.jpg',
+                          height: _height,
                         ),
-                      ),
-                    ),
-                    ResponsiveVisibility(
-                      visible: true,
-                      visibleConditions: const [
-                        Condition.largerThan(name: MOBILE)
+                        const Divider(
+                          height: 10,
+                          color: Colors.transparent,
+                        ),
+                        GroupMenuButton(
+                          title: 'Luzon',
+                          backgroundImagePath: 'assets/images/luzon.jpg',
+                          height: _height,
+                        ),
+                        const Divider(
+                          height: 10,
+                          color: Colors.transparent,
+                        ),
+                        GroupMenuButton(
+                          title: 'Visayas',
+                          backgroundImagePath: 'assets/images/visayas.jpg',
+                          height: _height,
+                        ),
+                        const Divider(
+                          height: 10,
+                          color: Colors.transparent,
+                        ),
+                        GroupMenuButton(
+                          title: 'Mindanao',
+                          backgroundImagePath: 'assets/images/mindanao.jpg',
+                          height: _height,
+                        ),
+                        const Divider(
+                          height: 10,
+                          color: Colors.transparent,
+                        ),
                       ],
-                      child: Column(
+                    ),
+                  ),
+                ),
+                // GRID
+                ResponsiveVisibility(
+                  visibleConditions: const [
+                    Condition.between(
+                        start: 1201, end: 1920),
+                  ],
+                  hiddenConditions: const [
+                    Condition.between(start: 0, end: 1200),
+                  ],
+                  child: Column(
+                    children: [
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: ncr(),
-                              ),
-                              const SizedBox(width: 20.0),
-                              Expanded(
-                                child: luzon(),
-                              ),
-                            ],
+                          Expanded(
+                            child: GroupMenuButton(
+                              title: 'Metro Manila',
+                              backgroundImagePath: 'assets/images/ncr.jpg',
+                              height: _height,
+                            ),
                           ),
-                          const SizedBox(height: 20.0),
-                          Row(
-                            mainAxisSize: MainAxisSize.min,
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Expanded(
-                                child: visayas(),
-                              ),
-                              const SizedBox(width: 20.0),
-                              Expanded(
-                                child: mindanao(),
-                              ),
-                            ],
+                          const SizedBox(width: 20.0),
+                          Expanded(
+                            child: GroupMenuButton(
+                              title: 'Luzon',
+                              backgroundImagePath: 'assets/images/luzon.jpg',
+                              height: _height,
+                            ),
                           ),
                         ],
                       ),
-                    ),
-                  ],
+                      const SizedBox(height: 20.0),
+                      Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            child: GroupMenuButton(
+                              title: 'Visayas',
+                              backgroundImagePath: 'assets/images/visayas.jpg',
+                              height: _height,
+                            ),
+                          ),
+                          const SizedBox(width: 20.0),
+                          Expanded(
+                            child: GroupMenuButton(
+                              title: 'Mindanao',
+                              backgroundImagePath: 'assets/images/mindanao.jpg',
+                              height: _height,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
                 ),
-              ),
-              const ResponsiveVisibility(
-                visibleConditions: [Condition.between(start: 1920, end: 1920, landscapeValue: true)],
-                hiddenConditions: [Condition.between(start: 0, end: 1200)],
-                child: Expanded(
-                  flex: 1,
-                  child: SizedBox(),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ],
       ),
