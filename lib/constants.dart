@@ -10,6 +10,10 @@ const kTileLeadingTextStyle = TextStyle(
   fontSize: 16.0,
   fontWeight: FontWeight.bold,
 );
+const kTileLargerLeadingTextStyle = TextStyle(
+  fontSize: 20.0,
+  fontWeight: FontWeight.bold,
+);
 
 const List<AreaMenuButton> menuButtons = [
   AreaMenuButton(

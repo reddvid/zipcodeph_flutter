@@ -1,8 +1,10 @@
 import 'package:anim_search_bar/anim_search_bar.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:zipcodeph_flutter/widgets/zipcode_tile.dart';
 import '../controllers/search_controller.dart';
 import '../main.dart';
 import '../models/zipcode.dart';
@@ -38,8 +40,8 @@ class _SearchPageState extends State<SearchPage> with RouteAware {
     searchBar = SearchBar(
       elevation: MaterialStateProperty.all(2),
       constraints: const BoxConstraints(
-        maxWidth: 420,
-        minWidth: 280,
+        maxWidth: 480,
+        minWidth: 320,
         minHeight: 40,
         maxHeight: 48,
       ),
@@ -57,10 +59,12 @@ class _SearchPageState extends State<SearchPage> with RouteAware {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        actions: [Padding(
-          padding: const EdgeInsets.only(right: 20),
-          child: searchBar,
-        )],
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 20),
+            child: searchBar,
+          )
+        ],
         title: const Text('Search'),
       ),
       body: _List(
@@ -85,63 +89,44 @@ class _List extends StatelessWidget {
       future: _searchController.findCodes(_query),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
-          return ListView.separated(
-            shrinkWrap: true,
-            padding: const EdgeInsets.only(bottom: 80),
-            separatorBuilder: (context, index) => const Divider(),
-            itemCount: snapshot.data!.length,
-            itemBuilder: (context, index) {
-              ZipCode zipCode = snapshot.data![index];
-              return ListTile(
-                onLongPress: () {
-                  showModalBottomSheet<void>(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return bottomSheet(
-                            context, snapshot.data![index], _refreshList);
-                      });
+          return Align(
+            alignment: Alignment.topCenter,
+            child: Container(
+              constraints: const BoxConstraints(minWidth: 800, maxWidth: 800),
+              child: ListView.separated(
+                shrinkWrap: true,
+                padding: const EdgeInsets.only(bottom: 80),
+                separatorBuilder: (context, index) => const Divider(),
+                itemCount: snapshot.data!.length,
+                itemBuilder: (context, index) {
+                  ZipCode zipCode = snapshot.data![index];
+                  return ZipCodeTile(
+                    zipCode: zipCode,
+                    refreshListCallback: null,
+                    showSubtitle: true,
+                  );
                 },
-                onTap: () {
-                  showModalBottomSheet<void>(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return bottomSheet(
-                            context, snapshot.data![index], _refreshList);
-                      });
-                },
-                visualDensity: const VisualDensity(vertical: -4),
-                // to compact
-                leading: Container(
-                  width: 64,
-                  height: double.infinity,
-                  alignment: Alignment.center,
-                  child: Text(
-                    zipCode.code.toString(),
-                    textAlign: TextAlign.center,
-                    style: const TextStyle(
-                      fontSize: 20.0,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ),
-                subtitle: Text(zipCode.area),
-                title: Text(zipCode.town),
-              );
-            },
+              ),
+            ),
           );
         } else {
           return Center(
-            child:
-                Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-              Image.asset(
-                'assets/images/notfound.png',
-                width: MediaQuery.of(context).size.width * 0.6,
-              ),
-              Text(
-                "Found nothing for '$_query'",
-                style: const TextStyle(fontWeight: FontWeight.w600),
-              ),
-              TextButton(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Expanded(
+                  child: Image.asset(
+                    'assets/images/notfound.png',
+                    width: MediaQuery.of(context).size.width > 800
+                        ? MediaQuery.of(context).size.width * 0.6
+                        : MediaQuery.of(context).size.height * 0.4,
+                  ),
+                ),
+                Text(
+                  "Found nothing for '$_query'",
+                  style: const TextStyle(fontWeight: FontWeight.w600),
+                ),
+                TextButton(
                   onPressed: () async {
                     final info = await PackageInfo.fromPlatform();
                     _launchUrl(
@@ -150,8 +135,10 @@ class _List extends StatelessWidget {
                   child: const Text(
                     "SEND FEEDBACK",
                     style: TextStyle(color: Colors.red),
-                  ))
-            ]),
+                  ),
+                )
+              ],
+            ),
           );
         }
       },

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:zipcodeph_flutter/constants.dart';
 
 import '../models/zipcode.dart';
@@ -9,15 +10,15 @@ import 'tile_bottom_sheet.dart';
 
 class ZipCodeTile extends StatelessWidget {
   const ZipCodeTile({
-    Key? key,
+    super.key,
     required this.zipCode,
-    required this.refreshListCallback,
+    this.refreshListCallback,
     this.showSubtitle = false,
     this.showTrailing = false,
-  }) : super(key: key);
+  });
 
   final ZipCode zipCode;
-  final VoidCallback refreshListCallback;
+  final VoidCallback? refreshListCallback;
   final bool? showSubtitle;
   final bool? showTrailing;
 
@@ -25,25 +26,36 @@ class ZipCodeTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: () {
+        Clipboard.setData(ClipboardData(
+            text: "${zipCode.code} ${zipCode.town}, ${zipCode.area}"));
+        var snackBar = SnackBar(
+          content:
+              Text("Copied ${zipCode.code} ${zipCode.town}, ${zipCode.area}"),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      },
+      onLongPress: () {
         showModalBottomSheet<void>(
           context: context,
           builder: (context) {
             return ItemBottomSheet(
               zipCode: zipCode,
-              refreshListCallback: refreshListCallback,
+              refreshListCallback: refreshListCallback!,
             );
           },
         );
       },
       visualDensity: kTileVisualDensity,
       leading: Container(
-        width: 48.0,
+        width: MediaQuery.of(context).size.width > 800 ? 64 : 48.0,
         height: double.infinity,
         alignment: Alignment.center,
         child: Text(
           "${zipCode.code}",
           textAlign: TextAlign.center,
-          style: kTileLeadingTextStyle,
+          style: MediaQuery.of(context).size.width > 800
+              ? kTileLargerLeadingTextStyle
+              : kTileLeadingTextStyle,
         ),
       ),
       trailing: (showTrailing == true)
