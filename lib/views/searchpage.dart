@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:zipcodeph_flutter/widgets/zipcode_card.dart';
 import 'package:zipcodeph_flutter/widgets/zipcode_tile.dart';
 import '../controllers/search_controller.dart';
 import '../main.dart';
@@ -92,21 +93,40 @@ class _List extends StatelessWidget {
           return Align(
             alignment: Alignment.topCenter,
             child: Container(
-              constraints: const BoxConstraints(minWidth: 800, maxWidth: 800),
-              child: ListView.separated(
-                shrinkWrap: true,
-                padding: const EdgeInsets.only(bottom: 80),
-                separatorBuilder: (context, index) => const Divider(),
-                itemCount: snapshot.data!.length,
-                itemBuilder: (context, index) {
-                  ZipCode zipCode = snapshot.data![index];
-                  return ZipCodeTile(
-                    zipCode: zipCode,
-                    refreshListCallback: null,
-                    showSubtitle: true,
-                  );
-                },
-              ),
+              // constraints: const BoxConstraints(minWidth: 800, maxWidth: 800),
+              child: MediaQuery.of(context).size.width < 800
+                  ? ListView.separated(
+                      shrinkWrap: true,
+                      padding: const EdgeInsets.only(bottom: 80),
+                      separatorBuilder: (context, index) => const Divider(),
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, index) {
+                        ZipCode zipCode = snapshot.data![index];
+                        return ZipCodeTile(
+                          zipCode: zipCode,
+                          refreshListCallback: null,
+                          showSubtitle: true,
+                        );
+                      },
+                    )
+                  : Padding(
+                      padding: const EdgeInsets.all(20.0),
+                      child: GridView.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithMaxCrossAxisExtent(
+                                maxCrossAxisExtent: 320,
+                                childAspectRatio: 2.5 / 1,
+                                crossAxisSpacing: 10,
+                                mainAxisSpacing: 10),
+                        itemBuilder: (context, index) {
+                          ZipCode zipCode = snapshot.data![index];
+                          return ZipCodeCard(
+                            zipCode: zipCode,
+                            showSubtitle: true,
+                          );
+                        },
+                      ),
+                    ),
             ),
           );
         } else {
