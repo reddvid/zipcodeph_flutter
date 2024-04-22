@@ -1,5 +1,7 @@
 import 'dart:io' as io;
+import 'dart:io';
 
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
@@ -15,9 +17,11 @@ class ZipDB {
   static const columnFave = 'fave';
 
   ZipDB._privateConstructor();
+
   static final ZipDB instance = ZipDB._privateConstructor();
 
   static Database? _database;
+
   Future<Database?> get database async {
     if (_database != null) return _database;
     _database = await _initDatabase();
@@ -27,8 +31,15 @@ class ZipDB {
   _initDatabase() async {
     io.Directory applicationDirectory =
         await getApplicationDocumentsDirectory();
-    String path = join(applicationDirectory.path, 'zips_ph.db');
+    String path = join(
+      Platform.isWindows
+          ? '${Platform.resolvedExecutable.toString().replaceAll('zipcodeph_flutter.exe', "")}data\\flutter_assets\\assets\\'
+          : applicationDirectory.path,
+      'zips_ph.db',
+    );
+    debugPrint(path);
     bool dbExists = await io.File(path).exists();
+    print(dbExists);
     if (!dbExists) {
       ByteData data = await rootBundle.load(join('assets', 'zips_ph.db'));
       List<int> bytes =

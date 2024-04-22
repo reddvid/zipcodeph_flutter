@@ -26,6 +26,7 @@ dependencies:
   share_plus: ^8.0.3
   shimmer: ^3.0.0
   sqflite: ^2.3.3
+  sqflite_common_ffi:
   url_launcher: ^6.2.4
   anim_search_bar: ^2.0.3
 

@@ -9,6 +9,7 @@ class ZipRepository implements IZipRepository {
   @override
   Future<List<ZipCode>?> getAll() async {
     var items = await _db.list();
+    print(items?.length.toString());
     return items?.map((item) => ZipCode.fromMap(item)).toList();
   }
 
