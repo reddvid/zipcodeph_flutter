@@ -127,45 +127,47 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
                     ),
                   ],
                   child: Expanded(
-                    child: Column(
-                      children: [
-                        GroupMenuButton(
-                          title: 'Metro Manila',
-                          backgroundImagePath: 'assets/images/ncr.jpg',
-                          height: _height,
-                        ),
-                        const Divider(
-                          height: 10,
-                          color: Colors.transparent,
-                        ),
-                        GroupMenuButton(
-                          title: 'Luzon',
-                          backgroundImagePath: 'assets/images/luzon.jpg',
-                          height: _height,
-                        ),
-                        const Divider(
-                          height: 10,
-                          color: Colors.transparent,
-                        ),
-                        GroupMenuButton(
-                          title: 'Visayas',
-                          backgroundImagePath: 'assets/images/visayas.jpg',
-                          height: _height,
-                        ),
-                        const Divider(
-                          height: 10,
-                          color: Colors.transparent,
-                        ),
-                        GroupMenuButton(
-                          title: 'Mindanao',
-                          backgroundImagePath: 'assets/images/mindanao.jpg',
-                          height: _height,
-                        ),
-                        const Divider(
-                          height: 10,
-                          color: Colors.transparent,
-                        ),
-                      ],
+                    child: SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          GroupMenuButton(
+                            title: 'Metro Manila',
+                            backgroundImagePath: 'assets/images/ncr.jpg',
+                            height: _height,
+                          ),
+                          const Divider(
+                            height: 10,
+                            color: Colors.transparent,
+                          ),
+                          GroupMenuButton(
+                            title: 'Luzon',
+                            backgroundImagePath: 'assets/images/luzon.jpg',
+                            height: _height,
+                          ),
+                          const Divider(
+                            height: 10,
+                            color: Colors.transparent,
+                          ),
+                          GroupMenuButton(
+                            title: 'Visayas',
+                            backgroundImagePath: 'assets/images/visayas.jpg',
+                            height: _height,
+                          ),
+                          const Divider(
+                            height: 10,
+                            color: Colors.transparent,
+                          ),
+                          GroupMenuButton(
+                            title: 'Mindanao',
+                            backgroundImagePath: 'assets/images/mindanao.jpg',
+                            height: _height,
+                          ),
+                          const Divider(
+                            height: 10,
+                            color: Colors.transparent,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
