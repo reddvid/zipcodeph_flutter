@@ -3,7 +3,7 @@ description: "ZIP Code PH built on Flutter"
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 2.1.0+2023120401
+version: 3.0.1+2024230402 #2023120401
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
@@ -14,16 +14,16 @@ dependencies:
   path:
 
   cupertino_icons: ^1.0.8
-  connectivity_plus: ^6.0.2
-  fluentui_system_icons: ^1.1.226
+  connectivity_plus: ^6.0.3
+  fluentui_system_icons: ^1.1.236
   flutter_launcher_icons: ^0.13.1
   flutter_search_bar: ^3.0.0
   google_fonts: ^6.1.0
   lottie: ^3.0.0
-  package_info_plus: ^7.0.0
+  package_info_plus: ^8.0.0
   path_provider: ^2.1.2
   responsive_framework: ^1.4.0
-  share_plus: ^8.0.3
+  share_plus: ^9.0.0
   shimmer: ^3.0.0
   sqflite: ^2.3.3
   sqflite_common_ffi:
