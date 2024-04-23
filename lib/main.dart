@@ -8,7 +8,7 @@ import 'package:responsive_framework/responsive_framework.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:zipcodeph_flutter/controllers/zips_controller.dart';
 import 'package:zipcodeph_flutter/db/zip_db.dart';
-import '../views/mainpage.dart';
+import 'views/main_screen.dart';
 import 'dart:io' as io;
 import 'dart:io';
 

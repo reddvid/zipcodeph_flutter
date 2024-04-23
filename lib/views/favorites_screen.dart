@@ -4,7 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../controllers/faves_controller.dart';
 import '../main.dart';
 import '../models/zipcode.dart';
-import '../views/searchpage.dart';
+import 'search_screen.dart';
 
 class FavesPage extends StatefulWidget {
   FavesPage({super.key});

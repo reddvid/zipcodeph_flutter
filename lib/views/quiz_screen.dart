@@ -8,7 +8,7 @@ import 'package:lottie/lottie.dart';
 import '../main.dart';
 
 class AlaminPage extends StatefulWidget {
-  const AlaminPage({Key? key}) : super(key: key);
+  const AlaminPage({super.key});
 
   @override
   State<AlaminPage> createState() => _AlaminPageState();

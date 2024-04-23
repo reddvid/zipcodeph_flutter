@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import '../main.dart';
 import '../repositories/area.dart';
-import '../views/zipspage.dart';
+import 'zipcodes_screen.dart';
 
 class AreasPage extends StatefulWidget {
   final String area;
 
-  const AreasPage({Key? key, required this.area}) : super(key: key);
+  const AreasPage({super.key, required this.area});
 
   @override
   State<AreasPage> createState() => _AreasPageState();

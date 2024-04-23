@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:zipcodeph_flutter/views/aboutpage.dart';
-import 'package:zipcodeph_flutter/views/favespage.dart';
-import 'package:zipcodeph_flutter/views/mainpage.dart';
-import 'package:zipcodeph_flutter/views/searchpage.dart';
+import 'package:zipcodeph_flutter/views/about_screen.dart';
+import 'package:zipcodeph_flutter/views/favorites_screen.dart';
+import 'package:zipcodeph_flutter/views/main_screen.dart';
+import 'package:zipcodeph_flutter/views/search_screen.dart';
 import 'package:zipcodeph_flutter/widgets/area_menu_button.dart';
 
 const kTileVisualDensity = VisualDensity(vertical: -4.0);

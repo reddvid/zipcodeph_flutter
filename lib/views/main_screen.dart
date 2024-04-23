@@ -1,23 +1,17 @@
 import 'dart:convert';
 import 'dart:io';
-import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/painting.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/widgets.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:zipcodeph_flutter/views/alaminpage.dart';
+import 'package:zipcodeph_flutter/views/quiz_screen.dart';
 import 'package:zipcodeph_flutter/widgets/menu/group_menu_button.dart';
-import 'package:zipcodeph_flutter/widgets/navigation/sidebar_container.dart';
 import '../main.dart';
-import '../views/aboutpage.dart';
-import '../views/areaspage.dart';
-import '../views/favespage.dart';
-import '../views/searchpage.dart';
+import 'about_screen.dart';
+import 'favorites_screen.dart';
+import 'search_screen.dart';
 import 'package:http/http.dart' as http;
 
 class MainMenu extends StatefulWidget {
