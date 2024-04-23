@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:logger/logger.dart';
 import 'package:responsive_framework/responsive_framework.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:zipcodeph_flutter/views/quiz_screen.dart';
@@ -15,7 +16,9 @@ import 'search_screen.dart';
 import 'package:http/http.dart' as http;
 
 class MainMenu extends StatefulWidget {
-  const MainMenu({super.key});
+  final Logger logger;
+
+  const MainMenu({super.key, required this.logger});
 
   @override
   State<MainMenu> createState() => _MainMenuState();
@@ -23,7 +26,7 @@ class MainMenu extends StatefulWidget {
 
 class _MainMenuState extends State<MainMenu> with RouteAware {
   late List<dynamic> triviaList = [];
-  late String currentTrivia = "";
+  late String currentTrivia = "Loading content";
   bool triviaPop = false;
   double _height = 110;
 
@@ -35,38 +38,41 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
       routeObserver.subscribe(this, ModalRoute.of(context)!);
     });
 
-    loadTrivias();
+    loadTriviaList();
   }
 
-  void loadTrivias() async {
+  Future<void> loadTriviaList() async {
     try {
-      final response = await http
-          .get(Uri.parse("https://api.npoint.io/25a6f8775d3cb3d8f24c/"));
-      // debugPrint(response.body);
+      const endpoint = "https://api.npoint.io/25a6f8775d3cb3d8f24c/";
+      widget.logger.i("Loading trivia list from $endpoint");
+
+      final response = await http.get(Uri.parse(endpoint));
 
       if (response.statusCode == 200) {
-        // Connected
-        debugPrint("Getting trivias online");
+        widget.logger.i("Response ${response.statusCode}");
+        widget.logger.i("Loading trivia");
         final jsonResult = jsonDecode(response.body)['trivias'];
         setState(() {
           triviaList = jsonResult;
           triviaList.shuffle();
           currentTrivia = triviaList.isEmpty ? "" : triviaList.first;
         });
+      } else {
+        widget.logger.e("HTTP response not valid ${response.statusCode}");
       }
     } on SocketException catch (e) {
-      // Not Connected
-      debugPrint("Reading local trivias\n${e.message}");
-      DefaultAssetBundle.of(context)
-          .loadString("assets/json/trivias.json")
-          .then((value) {
-        final jsonResult = jsonDecode(value)['trivias'];
-        setState(() {
-          triviaList = jsonResult;
-          triviaList.shuffle();
-          currentTrivia = triviaList.isEmpty ? "" : triviaList.first;
-        });
-      });
+      widget.logger.e(e.message);
+      widget.logger.i("Reading local trivia");
+      rootBundle.loadString("assets/json/trivias.json").then(
+        (value) {
+          final jsonResult = jsonDecode(value)['trivias'];
+          setState(() {
+            triviaList = jsonResult;
+            triviaList.shuffle();
+            currentTrivia = triviaList.isEmpty ? "" : triviaList.first;
+          });
+        },
+      );
     }
   }
 
@@ -96,6 +102,7 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
                 ResponsiveVisibility(
                   visible: false,
                   hiddenConditions: const [Condition.largerThan(name: MOBILE)],
+                  visibleConditions: const [Condition.between(start: 0, end: 800)],
                   child: aboutButton(),
                 ),
                 triviaContainer(),
@@ -157,7 +164,7 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
                             height: _height,
                           ),
                           const Divider(
-                            height: 10,
+                            height: 40,
                             color: Colors.transparent,
                           ),
                         ],
@@ -293,28 +300,31 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
             height: 5,
             color: Colors.transparent,
           ),
-          RichText(
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            text: TextSpan(
-              recognizer: TapGestureRecognizer()
-                ..onTap = () async {
-                  setState(() {
-                    triviaPop = true;
-                  });
-                  // final result = await showDialogAlert(
-                  //   context: context,
-                  //   title: 'Did You Know?',
-                  //   message: currentTrivia,
-                  //   actionButtonTitle: 'SHARE',
-                  //   cancelButtonTitle: 'CLOSE',
-                  // );
-                  // if (result == ButtonActionType.action) {
-                  //   _shareTrivia(currentTrivia);
-                  // }
-                },
-              text: currentTrivia,
-              style: const TextStyle(color: Colors.white),
+          SizedBox(
+            height: 40,
+            child: RichText(
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              text: TextSpan(
+                recognizer: TapGestureRecognizer()
+                  ..onTap = () async {
+                    setState(() {
+                      triviaPop = true;
+                    });
+                    // final result = await showDialogAlert(
+                    //   context: context,
+                    //   title: 'Did You Know?',
+                    //   message: currentTrivia,
+                    //   actionButtonTitle: 'SHARE',
+                    //   cancelButtonTitle: 'CLOSE',
+                    // );
+                    // if (result == ButtonActionType.action) {
+                    //   _shareTrivia(currentTrivia);
+                    // }
+                  },
+                text: currentTrivia ?? "Failed to load content",
+                style: const TextStyle(color: Colors.white),
+              ),
             ),
           ),
           Align(

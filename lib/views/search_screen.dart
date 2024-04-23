@@ -2,6 +2,7 @@ import 'package:anim_search_bar/anim_search_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:zipcodeph_flutter/widgets/zipcode_card.dart';
@@ -23,6 +24,9 @@ class _SearchPageState extends State<SearchPage> with RouteAware {
   late SearchBar searchBar;
   late AnimSearchBar newSearchBar;
   late String query = "";
+  late double width = 200;
+
+  final textController = TextEditingController();
 
   void _refreshList() {
     setState(() {});
@@ -40,9 +44,9 @@ class _SearchPageState extends State<SearchPage> with RouteAware {
   _SearchPageState() {
     searchBar = SearchBar(
       elevation: MaterialStateProperty.all(2),
+      controller: textController,
       constraints: const BoxConstraints(
-        maxWidth: 480,
-        minWidth: 320,
+        maxWidth: 600,
         minHeight: 40,
         maxHeight: 48,
       ),
@@ -51,19 +55,50 @@ class _SearchPageState extends State<SearchPage> with RouteAware {
       onChanged: (value) {
         setState(() {
           query = value;
+          textController.text = value;
         });
       },
+      // leading: const Icon(Icons.arrow_back_outlined),
+      trailing: [
+        Visibility(
+          child: Ink(
+            decoration: const ShapeDecoration(
+              shape: CircleBorder(),
+            ),
+            child: IconButton(
+              icon: const Icon(
+                Icons.clear,
+                size: 16.0,
+              ),
+              onPressed: () {
+                setState(() {
+                  textController.text = '';
+                  query = '';
+                });
+              },
+            ),
+          ),
+        ),
+      ],
     );
   }
 
   @override
   Widget build(BuildContext context) {
+    late double _width = MediaQuery.of(context).size.width;
     return Scaffold(
       appBar: AppBar(
         actions: [
           Padding(
-            padding: const EdgeInsets.only(right: 20),
-            child: searchBar,
+            padding: _width > 800
+                ? const EdgeInsets.only(right: 20)
+                : const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Container(
+              constraints: _width > 800
+                  ? const BoxConstraints(maxWidth: 480)
+                  : BoxConstraints(maxWidth: _width * 0.8),
+              child: searchBar,
+            ),
           )
         ],
         title: const Text('Search'),
@@ -104,7 +139,7 @@ class _List extends StatelessWidget {
                         ZipCode zipCode = snapshot.data![index];
                         return ZipCodeTile(
                           zipCode: zipCode,
-                          refreshListCallback: null,
+                          refreshListCallback: _refreshList,
                           showSubtitle: true,
                         );
                       },

@@ -7,7 +7,7 @@ import '../models/zipcode.dart';
 class ZipCodesList extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables
   ZipCodesList({
-    Key? key,
+    super.key,
     this.city,
     required this.future,
     required this.errorText,
@@ -15,7 +15,7 @@ class ZipCodesList extends StatefulWidget {
     this.emptyGraphics,
     this.showTrailing = false,
     this.refreshCallback,
-  }) : super(key: key);
+  });
 
   final String? city;
   final Future<List<ZipCode>?> future;

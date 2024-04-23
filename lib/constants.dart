@@ -34,12 +34,7 @@ const List<AreaMenuButton> menuButtons = [
   ),
 ];
 
-List<Widget> pages = [
-  const MainMenu(),
-  SearchPage(),
-  FavesPage(),
-  const AboutPage(),
-];
+
 
 const List<String> sampleFormatText = [
   "Mr. Juan Dela Cruz",
