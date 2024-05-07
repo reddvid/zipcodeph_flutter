@@ -67,7 +67,7 @@ class ZipCodeTile extends StatelessWidget {
                   color: Colors.redAccent,
                   size: 14.0,
                 )
-              : null
+              : const SizedBox()
           : null,
       title: Text(zipCode.town),
       subtitle: showSubtitle == true ? Text(zipCode.area) : null,
