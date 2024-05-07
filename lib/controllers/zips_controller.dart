@@ -1,6 +1,8 @@
-import 'package:zipcodeph_flutter/services/zip_brain.dart';
-import 'package:zipcodeph_flutter/models/zipcode.dart';
-import 'package:zipcodeph_flutter/models/zipcodes_data.dart';
+
+
+import '../db/zip_db.dart';
+import '../models/zipcode.dart';
+import '../models/zipcodes_data.dart';
 
 class ZipsController {
   final ZipRepository _zipRepo = ZipRepository(ZipDB());

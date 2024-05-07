@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:zipcodeph_flutter2/views/areaspage.dart';
+
+import '../../views/cities_screen.dart';
 
 class MenuInkwell extends StatelessWidget {
   const MenuInkwell({

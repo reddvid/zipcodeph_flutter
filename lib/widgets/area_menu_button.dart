@@ -14,7 +14,7 @@ class AreaMenuButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double _height = MediaQuery.of(context).size.height / 7.0;
+    final double _height = MediaQuery.of(context).size.height / 6.5;
     return Container(
       margin: const EdgeInsets.only(bottom: 10.0),
       child: Stack(

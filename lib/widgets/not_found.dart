@@ -17,22 +17,32 @@ class EmptyGraphics extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+      child: Stack(
+        alignment: Alignment.center,
         children: [
           Image(
             image: image,
             width: MediaQuery.of(context).size.width * 0.6,
           ),
-          Text(
-            promptText,
-            style: const TextStyle(
-              fontWeight: FontWeight.bold,
+          Padding(
+            padding: const EdgeInsets.only(top: 180.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  promptText,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                // const SizedBox(height: 10.0),
+                // ElevatedButton(
+                //   onPressed: () => onPressed(),
+                //   child: Text(buttonLabel),
+                // ),
+              ],
             ),
-          ),
-          ElevatedButton(
-            onPressed: () => onPressed(),
-            child: Text(buttonLabel),
           ),
         ],
       ),

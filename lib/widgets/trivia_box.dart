@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -12,7 +13,7 @@ class TriviaBox extends StatefulWidget {
 }
 
 class _TriviaBoxState extends State<TriviaBox> with RouteAware {
-  List<dynamic> trivias = [];
+  List<dynamic> triviaList = [];
   String currentTrivia = "";
   bool showTrivia = false;
   int maxLines = 1;
@@ -27,8 +28,8 @@ class _TriviaBoxState extends State<TriviaBox> with RouteAware {
   void didPopNext() {
     if (!showTrivia) {
       setState(() {
-        trivias.shuffle();
-        currentTrivia = trivias.first;
+        triviaList.shuffle();
+        currentTrivia = triviaList.first;
       });
     }
     super.didPopNext();
@@ -40,10 +41,10 @@ class _TriviaBoxState extends State<TriviaBox> with RouteAware {
         .then((value) {
       final jsonResult = jsonDecode(value)["trivias"];
       setState(() {
-        trivias = jsonResult;
-        trivias.shuffle();
-        currentTrivia = trivias.isNotEmpty
-            ? trivias.first
+        triviaList = jsonResult;
+        triviaList.shuffle();
+        currentTrivia = triviaList.isNotEmpty
+            ? triviaList.first
             : "this app was made by one person";
       });
     });
@@ -56,25 +57,7 @@ class _TriviaBoxState extends State<TriviaBox> with RouteAware {
         setState(() {
           showTrivia = true;
         });
-        maxLines = maxLines == 1 ? 3 : 1;
-
-        // showDialogAlert(
-        //   context: context,
-        //   title: "Did You Know",
-        //   message: currentTrivia,
-        //   actionButtonTitle: "Share",
-        //   cancelButtonTitle: "Close",
-        // ).then(
-        //   (result) {
-        //     debugPrint(result.toString());
-        //     if (result == ButtonActionType.action) {
-        //       Share.share(
-        //         "Did you know? $currentTrivia #ZIPCodePH",
-        //         subject: "Did You Know? ZIP Code PH Trivia",
-        //       );
-        //     }
-        //   },
-        // );
+        maxLines = maxLines == 1 ? 5 : 1;
       },
       child: AnimatedSize(
         alignment: Alignment.topCenter,
@@ -117,17 +100,25 @@ class _TriviaBoxState extends State<TriviaBox> with RouteAware {
                   style: const TextStyle(color: Colors.white),
                 ),
               ),
+              const SizedBox(height: 5.0),
               Visibility(
-                visible: maxLines == 3,
+                visible: maxLines == 5,
                 child: Align(
-                  alignment: Alignment.bottomRight,
-                  child: InkWell(
-                    child: const Icon(
-                      Icons.share,
-                      color: Colors.white,
-                      size: 14.0,
+                  alignment: Alignment.topRight,
+                  child: FilledButton.tonal(
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                         Icon(
+                          Icons.share,
+                          size: 16.0,
+                        ),
+                        SizedBox(width: 5.0),
+                        Text("Share"),
+                      ],
                     ),
-                    onTap: () {
+                    onPressed: () {
                       Share.share(
                         "Did you know? $currentTrivia #ZIPCodePH",
                         subject: "Did You Know? ZIP Code PH Trivia",

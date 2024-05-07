@@ -1,9 +1,9 @@
-name: zipcodeph_flutter2
+name: zipcodeph_flutter
 description: "ZIP Code PH built on Flutter"
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 
-version: 2.1.0+2023120401
+version: 2.2.0+2024080501
 
 environment:
   sdk: '>=3.3.0 <4.0.0'
@@ -21,7 +21,6 @@ dependencies:
   lottie: ^3.0.0
   package_info_plus: ^5.0.1
   path_provider: ^2.1.2
-  responsive_framework: ^1.4.0
   share_plus: ^7.2.2
   shimmer: ^3.0.0
   sqflite: ^2.3.3

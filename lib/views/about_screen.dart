@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
-import 'package:zipcodeph_flutter/constants.dart';
-import 'package:zipcodeph_flutter/widgets/tile_icon.dart';
+
+import '../constants.dart';
+import '../widgets/tile_icon.dart';
 
 class AboutPage extends StatefulWidget {
   const AboutPage({Key? key}) : super(key: key);
@@ -52,7 +53,7 @@ class _AboutPageState extends State<AboutPage> {
                 padding: const EdgeInsets.only(bottom: 10.0),
                 child: Text(
                   "What is a ZIP Code?",
-                  style: Theme.of(context).textTheme.headline6,
+                  style: Theme.of(context).textTheme.titleLarge,
                 ),
               ),
               subtitle: Text(
@@ -65,7 +66,7 @@ class _AboutPageState extends State<AboutPage> {
                 padding: const EdgeInsets.only(bottom: 10.0),
                 child: Text(
                   "Where to put the ZIP Code?",
-                  style: Theme.of(context).textTheme.headline6,
+                  style: Theme.of(context).textTheme.titleLarge,
                 ),
               ),
               subtitle: Column(
@@ -125,10 +126,7 @@ class _AboutPageState extends State<AboutPage> {
               label: "Send feedback",
               onTap: () {
                 launchUrlString(
-                    "mailto:reddavidapps?subject=[FEEDBACK] ZIP Code PH&body=App version: " +
-                        _packageInfo.version +
-                        " build " +
-                        _packageInfo.buildNumber);
+                    "mailto:hi@reddavid.me?subject=[FEEDBACK] ZIP Code PH Pro&body=App version: ${_packageInfo.version} build ${_packageInfo.buildNumber}");
               },
             ),
             const Padding(

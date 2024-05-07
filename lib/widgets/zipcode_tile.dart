@@ -2,8 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:zipcodeph_flutter/constants.dart';
 
+import '../constants.dart';
 import '../models/zipcode.dart';
 import 'tile_bottom_sheet.dart';
 
@@ -26,6 +26,7 @@ class ZipCodeTile extends StatelessWidget {
     return ListTile(
       onTap: () {
         showModalBottomSheet<void>(
+          showDragHandle: true,
           context: context,
           builder: (context) {
             return ItemBottomSheet(

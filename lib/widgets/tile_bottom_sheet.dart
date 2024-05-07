@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:zipcodeph_flutter/constants.dart';
-import 'package:zipcodeph_flutter/controllers/zips_controller.dart';
-import 'package:zipcodeph_flutter/models/zipcode.dart';
-import 'package:zipcodeph_flutter/services/url_launcher.dart';
-import 'package:zipcodeph_flutter/widgets/bottom_sheet_action_button.dart';
+
+import '../constants.dart';
+import '../controllers/zips_controller.dart';
+import '../models/zipcode.dart';
+import '../services/url_launcher.dart';
+import 'bottom_sheet_action_button.dart';
 
 class ItemBottomSheet extends StatelessWidget {
   ItemBottomSheet({
@@ -26,11 +27,13 @@ class ItemBottomSheet extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Padding(
-            padding: const EdgeInsets.all(10.0),
-            child: Text(
-              "${zipCode.code} ${zipCode.town}, ${zipCode.area}",
-              style: kTileLeadingTextStyle,
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.all(14.0),
+              child: Text(
+                "${zipCode.code} ${zipCode.town}, ${zipCode.area}",
+                style: kTileLeadingTextStyle,
+              ),
             ),
           ),
           BottomSheetActionTile(
@@ -45,6 +48,7 @@ class ItemBottomSheet extends StatelessWidget {
               Navigator.of(context).pop();
               final SnackBar snackBar = SnackBar(
                 content: Text("Copied $data"),
+                behavior: SnackBarBehavior.floating,
               );
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
             },
@@ -88,8 +92,7 @@ class ItemBottomSheet extends StatelessWidget {
             label: "Open in Maps",
             onTap: () {
               UrlLauncher.openUrl(
-                  "https://google.com/maps/search/${zipCode.town}," +
-                      zipCode.area);
+                  "https://google.com/maps/search/${zipCode.town}, ${zipCode.area}");
               Navigator.pop(context);
             },
           ),

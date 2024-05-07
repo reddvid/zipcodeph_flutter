@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_search_bar/flutter_search_bar.dart';
+import 'package:flutter_search_bar/flutter_search_bar.dart' as sb;
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:zipcodeph_flutter/controllers/search_controller.dart';
-import 'package:zipcodeph_flutter/services/url_launcher.dart';
-import 'package:zipcodeph_flutter/widgets/not_found.dart';
-import 'package:zipcodeph_flutter/widgets/zipcode_list.dart';
+
+import '../controllers/search_controller.dart';
+import '../services/url_launcher.dart';
+import '../widgets/not_found.dart';
+import '../widgets/zipcode_list.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -14,10 +15,10 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  late SearchBar searchBar;
+  late sb.SearchBar searchBar;
   String query = "";
 
-  final SearchController _searchController = SearchController();
+  final _searchController = SearchZipsController();
 
   @override
   void initState() {
@@ -30,8 +31,8 @@ class _SearchPageState extends State<SearchPage> {
   }
 
   void createSearchBar() {
-    searchBar = SearchBar(
-      inBar: false,
+    searchBar = sb.SearchBar(
+      inBar: true,
       hintText: "Search towns, cities, or province",
       setState: setState,
       onChanged: (value) {

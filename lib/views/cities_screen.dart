@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:zipcodeph_flutter/models/areas_data.dart';
 import 'package:zipcodeph_flutter/views/zipcodes_screen.dart';
+
+import '../models/areas_data.dart';
 
 class AreasPage extends StatefulWidget {
   const AreasPage({

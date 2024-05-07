@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:zipcodeph_flutter/widgets/not_found.dart';
 import 'package:zipcodeph_flutter/widgets/zipcode_tile.dart';
 
 import '../models/zipcode.dart';
+import 'not_found.dart';
 
 class ZipCodesList extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables

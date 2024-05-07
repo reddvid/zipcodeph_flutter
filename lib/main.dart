@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:responsive_framework/responsive_framework.dart';
-import '../views/mainpage.dart';
+import 'package:flutter/services.dart';
+import 'package:zipcodeph_flutter/views/main_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,16 +15,17 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    Brightness theme = MediaQuery.of(context).platformBrightness;
+
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarBrightness: (theme == Brightness.dark) ? Brightness.dark : Brightness.light,
+      statusBarIconBrightness: (theme == Brightness.dark) ? Brightness.light : Brightness.dark, //
+      statusBarColor:
+          Colors.transparent, // or set color with: Color(0xFF0000FF)
+    ));
+
     return MaterialApp(
       title: 'ZIP Code PH',
-      builder: (context, widget) => ResponsiveBreakpoints.builder(
-        child: ClampingScrollWrapper.builder(context, widget!),
-        breakpoints: [
-          const Breakpoint(start: 0, end: 800, name: MOBILE),
-          const Breakpoint(start: 0, end: 1200, name: TABLET),
-          const Breakpoint(start: 0, end: 1920, name: DESKTOP),
-        ],
-      ),
       home: Scaffold(
         body: SafeArea(
           child: Container(
@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
             child: const Align(
               alignment: Alignment.topCenter,
               child: Padding(
-                padding: EdgeInsets.only(top: 40.0),
+                padding: EdgeInsets.only(top: 0.0),
                 child: MainMenu(),
               ),
             ),
@@ -42,6 +42,9 @@ class MyApp extends StatelessWidget {
       ),
       debugShowCheckedModeBanner: false,
       navigatorObservers: [routeObserver],
+      themeMode: ThemeMode.system,
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
     );
   }
 }
