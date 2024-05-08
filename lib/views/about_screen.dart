@@ -7,7 +7,7 @@ import '../constants.dart';
 import '../widgets/tile_icon.dart';
 
 class AboutPage extends StatefulWidget {
-  const AboutPage({Key? key}) : super(key: key);
+  const AboutPage({super.key});
 
   @override
   State<AboutPage> createState() => _AboutPageState();

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:zipcodeph_flutter/constants.dart';
-import 'package:zipcodeph_flutter/views/search_screen.dart';
+import '/constants.dart';
+import '/views/search_screen.dart';
 
 import '../controllers/faves_controller.dart';
 import '../widgets/not_found.dart';
@@ -8,7 +8,7 @@ import '../widgets/zipcode_list.dart';
 
 class FavoritesPage extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables
-  const FavoritesPage({Key? key}) : super(key: key);
+  const FavoritesPage({super.key});
 
   @override
   State<FavoritesPage> createState() => _FavoritesPageState();

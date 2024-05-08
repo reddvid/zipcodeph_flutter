@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:zipcodeph_flutter/widgets/zipcode_tile.dart';
+import '/widgets/zipcode_tile.dart';
 
 import '../models/zipcode.dart';
 import 'not_found.dart';

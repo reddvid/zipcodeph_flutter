@@ -1,16 +1,14 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:zipcodeph_flutter/constants.dart';
-
+import '../constants.dart';
 import '../controllers/zips_controller.dart';
 import '../widgets/zipcode_list.dart';
 
 class ZipsPage extends StatefulWidget {
   const ZipsPage({
-    Key? key,
+    super.key,
     required this.area,
     required this.city,
-  }) : super(key: key);
+  });
 
   final String area;
   final String city;

@@ -4,10 +4,10 @@ import '../views/cities_screen.dart';
 
 class AreaMenuButton extends StatelessWidget {
   const AreaMenuButton({
-    Key? key,
+    super.key,
     required this.bgImage,
     required this.label,
-  }) : super(key: key);
+  });
 
   final AssetImage bgImage;
   final String label;

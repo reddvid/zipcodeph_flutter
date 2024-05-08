@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:zipcodeph_flutter/constants.dart';
-import 'package:zipcodeph_flutter/views/zipcodes_screen.dart';
+import '/constants.dart';
+import '/views/zipcodes_screen.dart';
 
 import '../models/areas_data.dart';
 
 class AreasPage extends StatefulWidget {
   const AreasPage({
-    Key? key,
+    super.key,
     required this.area,
-  }) : super(key: key);
+  });
 
   final String area;
   @override

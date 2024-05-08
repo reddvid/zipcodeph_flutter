@@ -1,8 +1,5 @@
-import 'package:anim_search_bar/anim_search_bar.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import '../constants.dart';
 import '../controllers/search_controller.dart';
@@ -19,7 +16,6 @@ class SearchPage extends StatefulWidget {
 
 class _SearchPageState extends State<SearchPage> {
   late SearchBar searchBar;
-  late AnimSearchBar aSearchBar;
   String query = "";
   final textController = TextEditingController();
   final _searchController = SearchZipsController();

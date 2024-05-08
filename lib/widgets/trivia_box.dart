@@ -1,9 +1,6 @@
 import 'dart:convert';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
-import 'package:zipcodeph_flutter/constants.dart';
 
 class TriviaBox extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 class EmptyGraphics extends StatelessWidget {
   const EmptyGraphics({
-    Key? key,
+    super.key,
     required this.image,
     required this.promptText,
     required this.onPressed,
     required this.buttonLabel,
-  }) : super(key: key);
+  });
 
   final AssetImage image;
   final String promptText;

@@ -9,12 +9,12 @@ import 'tile_bottom_sheet.dart';
 
 class ZipCodeTile extends StatelessWidget {
   const ZipCodeTile({
-    Key? key,
+    super.key,
     required this.zipCode,
     required this.refreshListCallback,
     this.showSubtitle = false,
     this.showTrailing = false,
-  }) : super(key: key);
+  });
 
   final ZipCode zipCode;
   final VoidCallback refreshListCallback;

@@ -6,10 +6,10 @@ class MainMenu extends StatefulWidget {
   const MainMenu({super.key});
 
   @override
-  _MainMenuState createState() => _MainMenuState();
+  MainMenuState createState() => MainMenuState();
 }
 
-class _MainMenuState extends State<MainMenu> {
+class MainMenuState extends State<MainMenu> {
   final _pages = pages;
   int _selectedIndex = 0;
   Map<int, GlobalKey<NavigatorState>> navigatorKeys = {

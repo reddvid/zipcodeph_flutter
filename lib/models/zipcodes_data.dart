@@ -1,4 +1,4 @@
-import 'package:zipcodeph_flutter/models/zipcode.dart';
+import '/models/zipcode.dart';
 
 import '../db/zip_db.dart';
 import '../repositories/zip_interface.dart';

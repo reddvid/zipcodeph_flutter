@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:zipcodeph_flutter/widgets/navigation/sidebar_button.dart';
+import '/widgets/navigation/sidebar_button.dart';
 
 class SideBar extends StatelessWidget {
   const SideBar({super.key});

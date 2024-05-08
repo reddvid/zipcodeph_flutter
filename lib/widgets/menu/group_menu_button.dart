@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:zipcodeph_flutter/widgets/menu/menu_button_text.dart';
+import '/widgets/menu/menu_button_text.dart';
 
 class GroupMenuButton extends StatelessWidget {
   const GroupMenuButton({

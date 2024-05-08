@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 class BottomSheetActionTile extends StatelessWidget {
   const BottomSheetActionTile({
-    Key? key,
+    super.key,
     required this.icon,
     required this.label,
     required this.onTap,
-  }) : super(key: key);
+  });
 
   final Icon icon;
   final String label;

@@ -1,11 +1,9 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
-import 'package:zipcodeph_flutter/views/about_screen.dart';
-import 'package:zipcodeph_flutter/views/favorites_screen.dart';
-import 'package:zipcodeph_flutter/views/home_screen.dart';
-import 'package:zipcodeph_flutter/views/search_screen.dart';
-import 'package:zipcodeph_flutter/widgets/area_menu_button.dart';
+import 'views/about_screen.dart';
+import 'views/favorites_screen.dart';
+import 'views/home_screen.dart';
+import 'views/search_screen.dart';
+import 'widgets/area_menu_button.dart';
 
 const kTileVisualDensity = VisualDensity(vertical: -4.0);
 const kTileLeadingTextStyle = TextStyle(

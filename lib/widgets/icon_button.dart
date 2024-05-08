@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 class ActionIconButton extends StatelessWidget {
   const ActionIconButton({
-    Key? key,
+    super.key,
     required this.icon,
     required this.label,
     required this.onPressed,
-  }) : super(key: key);
+  });
 
   final String label;
   final Icon icon;
