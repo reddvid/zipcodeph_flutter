@@ -18,7 +18,7 @@ class MenuInkwell extends StatelessWidget {
       type: MaterialType.transparency,
       child: InkWell(
         customBorder: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(12.0),
         ),
         onTap: () {
           Navigator.push(

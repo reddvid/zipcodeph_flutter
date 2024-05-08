@@ -28,7 +28,7 @@ class _MainMenuState extends State<MainMenu> {
           onGenerateRoute: (RouteSettings settings) {
             return MaterialPageRoute(
               builder: (_) => _pages.elementAt(_selectedIndex),
-              maintainState: false,
+              maintainState: true,
             );
           },
         ),

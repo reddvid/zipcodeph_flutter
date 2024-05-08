@@ -21,7 +21,7 @@ class ItemBottomSheet extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 10.0),
+      padding: const EdgeInsets.symmetric(vertical: 16.0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -31,7 +31,11 @@ class ItemBottomSheet extends StatelessWidget {
             flex: 0,
             child: Center(
               child: Padding(
-                padding: const EdgeInsets.only(bottom: 20.0, left: 20.0, right: 20.0,),
+                padding: const EdgeInsets.only(
+                  bottom: 24.0,
+                  left: 24.0,
+                  right: 24.0,
+                ),
                 child: Text(
                   "${zipCode.code} ${zipCode.town}, ${zipCode.area}",
                   style: kTileLeadingTextStyle,

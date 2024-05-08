@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:package_info_plus/package_info_plus.dart';
+import '../constants.dart';
 import '../controllers/search_controller.dart';
 import '../services/url_launcher.dart';
 import '../widgets/not_found.dart';
@@ -48,28 +49,28 @@ class _SearchPageState extends State<SearchPage> {
         }
       },
       // leading: const Icon(Icons.arrow_back_outlined),
-      trailing: [
-        Visibility(
-          child: Ink(
-            decoration: const ShapeDecoration(
-              shape: CircleBorder(),
-            ),
-            child: IconButton(
-              icon: const Icon(
-                Icons.clear,
-                size: 16.0,
-              ),
-              onPressed: () {
-                setState(() {
-                  textController.text = '';
-                  query = '';
-                  isSearchOpen = false;
-                });
-              },
-            ),
-          ),
-        ),
-      ],
+      // trailing: [
+      //   Visibility(
+      //     child: Ink(
+      //       decoration: const ShapeDecoration(
+      //         shape: CircleBorder(),
+      //       ),
+      //       child: IconButton(
+      //         icon: const Icon(
+      //           Icons.clear,
+      //           size: 16.0,
+      //         ),
+      //         onPressed: () {
+      //           setState(() {
+      //             textController.text = '';
+      //             query = '';
+      //             isSearchOpen = false;
+      //           });
+      //         },
+      //       ),
+      //     ),
+      //   ),
+      // ],
     );
   }
 
@@ -81,18 +82,21 @@ class _SearchPageState extends State<SearchPage> {
     }
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Search"),
+        title: Text(
+          "Search".toUpperCase(),
+          style: kAppBarTitleStyle,
+        ),
         actions: [
           Visibility(
             visible: isSearchOpen,
             child: Padding(
               padding: width > 800
-                  ? const EdgeInsets.only(right: 20)
-                  : const EdgeInsets.symmetric(horizontal: 20.0),
+                  ? const EdgeInsets.only(right: 24.0)
+                  : const EdgeInsets.only(left: 16.0),
               child: Container(
                 constraints: width > 800
                     ? const BoxConstraints(maxWidth: 480)
-                    : BoxConstraints(maxWidth: width - 40.0),
+                    : BoxConstraints(maxWidth: width - 64.0),
                 child: searchBar,
               ),
             ),
@@ -102,10 +106,25 @@ class _SearchPageState extends State<SearchPage> {
             child: IconButton(
               onPressed: () {
                 setState(() {
+                  textController.text = '';
+                  query = '';
                   isSearchOpen = true;
                 });
               },
               icon: const Icon(Icons.search),
+            ),
+          ),
+          Visibility(
+            visible: isSearchOpen,
+            child: IconButton(
+              onPressed: () {
+                setState(() {
+                  textController.text = '';
+                  query = '';
+                  isSearchOpen = false;
+                });
+              },
+              icon: const Icon(Icons.close),
             ),
           ),
         ],

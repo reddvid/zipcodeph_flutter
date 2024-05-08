@@ -22,7 +22,7 @@ class GroupMenuButton extends StatelessWidget {
         Container(
           decoration: BoxDecoration(
             borderRadius: const BorderRadius.all(
-              Radius.circular(10.0),
+              Radius.circular(16.0),
             ),
             image: DecorationImage(
               image: AssetImage(backgroundImagePath),
@@ -33,7 +33,7 @@ class GroupMenuButton extends StatelessWidget {
           height: height,
         ),
         ClipRRect(
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(16.0),
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
             child: Container(

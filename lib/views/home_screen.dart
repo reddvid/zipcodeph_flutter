@@ -12,22 +12,22 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(
-        left: 10.0,
-        right: 10.0,
-        top: 20.0,
+        left: 16.0,
+        right: 16.0,
+        top: 24.0,
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           TriviaBox(),
-          const SizedBox(height: 20.0),
+          const SizedBox(height: 24.0),
           Expanded(
             child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   for (AreaMenuButton button in menuButtons) button,
-                  const SizedBox(height: 20.0),
+                  const SizedBox(height: 24.0),
                 ],
               ),
             ),

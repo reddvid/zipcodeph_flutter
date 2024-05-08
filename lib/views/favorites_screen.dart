@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zipcodeph_flutter/constants.dart';
 import 'package:zipcodeph_flutter/views/search_screen.dart';
 
 import '../controllers/faves_controller.dart';
@@ -24,7 +25,10 @@ class _FavoritesPageState extends State<FavoritesPage> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Favorites"),
+        title: Text(
+          "Favorites".toUpperCase(),
+          style: kAppBarTitleStyle,
+        ),
         actions: [
           IconButton(
             tooltip: "Add",

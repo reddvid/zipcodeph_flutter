@@ -38,25 +38,28 @@ class _AboutPageState extends State<AboutPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Help & About"),
+        title: Text(
+          "Help & About".toUpperCase(),
+          style: kAppBarTitleStyle,
+        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.only(
-          top: 10.0,
+          top: 16.0,
         ),
         child: Column(
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Card(
                 elevation: 2,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: ListTile(
                     title: Padding(
-                      padding: const EdgeInsets.only(bottom: 10.0),
+                      padding: const EdgeInsets.only(bottom: 16.0),
                       child: Text(
                         "What is a ZIP Code?",
                         style: Theme.of(context).textTheme.titleLarge,
@@ -70,16 +73,16 @@ class _AboutPageState extends State<AboutPage> {
                 ),
               ),
             ),
-            const SizedBox(height: 10.0),
+            const SizedBox(height: 16.0),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Card(
                 elevation: 2,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  padding: const EdgeInsets.symmetric(vertical: 16.0),
                   child: ListTile(
                     title: Padding(
-                      padding: const EdgeInsets.only(bottom: 10.0),
+                      padding: const EdgeInsets.only(bottom: 16.0),
                       child: Text(
                         "Where to put the ZIP Code?",
                         style: Theme.of(context).textTheme.titleLarge,
@@ -93,11 +96,11 @@ class _AboutPageState extends State<AboutPage> {
                             style: Theme.of(context).textTheme.bodyMedium),
                         Container(
                           width: double.infinity,
-                          margin: const EdgeInsets.only(top: 10.0),
+                          margin: const EdgeInsets.only(top: 16.0),
                           padding: const EdgeInsets.only(
-                            top: 20.0,
-                            left: 20.0,
-                            right: 20.0,
+                            top: 24.0,
+                            left: 24.0,
+                            right: 24.0,
                             bottom: 40.0,
                           ),
                           decoration: BoxDecoration(
@@ -136,7 +139,7 @@ class _AboutPageState extends State<AboutPage> {
                 ),
               ),
             ),
-            const SizedBox(height: 10.0),
+            const SizedBox(height: 12.0),
             TileIcon(
               iconData: Icons.share,
               label: "Share this app",
@@ -156,10 +159,10 @@ class _AboutPageState extends State<AboutPage> {
             ),
             const Padding(
               padding: EdgeInsets.only(
-                top: 20.0,
-                left: 15.0,
-                right: 20.0,
-                bottom: 10.0,
+                top: 24.0,
+                left: 16.0,
+                right: 16.0,
+                bottom: 16.0,
               ),
               child: Text(
                 "Photo/Image Attributions:",
@@ -193,7 +196,7 @@ class _AboutPageState extends State<AboutPage> {
             Center(
               child: Padding(
                 padding: const EdgeInsets.symmetric(
-                    vertical: 20.0, horizontal: 10.0),
+                    vertical: 24.0, horizontal: 16.0),
                 child: Text(
                   "version ${_packageInfo.version} build ${_packageInfo.buildNumber}",
                   style: const TextStyle(

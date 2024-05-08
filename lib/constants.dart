@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:zipcodeph_flutter/views/about_screen.dart';
 import 'package:zipcodeph_flutter/views/favorites_screen.dart';
@@ -11,7 +13,16 @@ const kTileLeadingTextStyle = TextStyle(
   fontWeight: FontWeight.bold,
 );
 
-const kSnackBarMargin = EdgeInsets.only(bottom: 64.0);
+const kSnackBarMargin = EdgeInsets.only(
+  left: 8.0,
+  right: 8.0,
+  bottom: 64.0,
+);
+
+const kAppBarTitleStyle = TextStyle(
+  fontSize: 16.0,
+  fontWeight: FontWeight.bold,
+);
 
 const List<AreaMenuButton> menuButtons = [
   AreaMenuButton(

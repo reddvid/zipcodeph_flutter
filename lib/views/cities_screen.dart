@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:zipcodeph_flutter/constants.dart';
 import 'package:zipcodeph_flutter/views/zipcodes_screen.dart';
 
 import '../models/areas_data.dart';
@@ -25,8 +26,8 @@ class _AreasPageState extends State<AreasPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          widget.area,
-          style: const TextStyle(fontWeight: FontWeight.bold),
+          widget.area.toUpperCase(),
+          style: kAppBarTitleStyle,
         ),
       ),
       body: ListView.separated(

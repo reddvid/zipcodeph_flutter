@@ -1,4 +1,6 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:zipcodeph_flutter/constants.dart';
 
 import '../controllers/zips_controller.dart';
 import '../widgets/zipcode_list.dart';
@@ -28,16 +30,14 @@ class _ZipsPageState extends State<ZipsPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              widget.area,
+              widget.area.toUpperCase(),
               style: const TextStyle(
-                fontSize: 12.0,
+                fontSize: 10.0,
               ),
             ),
             Text(
-              widget.city,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-              ),
+              widget.city.toUpperCase(),
+              style: kAppBarTitleStyle,
             ),
           ],
         ),

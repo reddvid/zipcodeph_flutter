@@ -14,15 +14,15 @@ class AreaMenuButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double _height = MediaQuery.of(context).size.height / 6.5;
+    final double height = MediaQuery.of(context).size.height / 6.5;
     return Container(
-      margin: const EdgeInsets.only(bottom: 10.0),
+      margin: const EdgeInsets.only(bottom: 12.0),
       child: Stack(
         children: [
           Container(
             decoration: BoxDecoration(
               borderRadius: const BorderRadius.all(
-                Radius.circular(10.0),
+                Radius.circular(16.0),
               ),
               image: DecorationImage(
                 image: bgImage,
@@ -30,7 +30,7 @@ class AreaMenuButton extends StatelessWidget {
               ),
             ),
             width: double.infinity,
-            height: _height,
+            height: height,
           ),
           ClipRRect(
             child: BackdropFilter(
@@ -45,7 +45,7 @@ class AreaMenuButton extends StatelessWidget {
                   type: MaterialType.transparency,
                   child: InkWell(
                     customBorder: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
+                      borderRadius: BorderRadius.circular(16.0),
                     ),
                     onTap: () {
                       Navigator.push(
@@ -57,7 +57,7 @@ class AreaMenuButton extends StatelessWidget {
                     },
                     child: SizedBox(
                       width: double.infinity,
-                      height: _height,
+                      height: height,
                       child: Center(
                         child: Text(
                           label,
