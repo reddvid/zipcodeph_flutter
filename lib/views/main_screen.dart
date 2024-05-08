@@ -27,7 +27,9 @@ class _MainMenuState extends State<MainMenu> {
           key: navigatorKeys[_selectedIndex],
           onGenerateRoute: (RouteSettings settings) {
             return MaterialPageRoute(
-                builder: (_) => _pages.elementAt(_selectedIndex));
+              builder: (_) => _pages.elementAt(_selectedIndex),
+              maintainState: false,
+            );
           },
         ),
       ),
@@ -38,7 +40,7 @@ class _MainMenuState extends State<MainMenu> {
             MediaQuery.of(context).platformBrightness == Brightness.light
                 ? const Color.fromRGBO(235, 235, 235, 1)
                 : const Color.fromRGBO(17, 17, 17, 1),
-        onTap: (value)  {
+        onTap: (value) {
           setState(() {
             _selectedIndex = value;
           });

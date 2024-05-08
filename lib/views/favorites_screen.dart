@@ -34,9 +34,7 @@ class _FavoritesPageState extends State<FavoritesPage> {
                 MaterialPageRoute(
                   builder: (context) => const SearchPage(),
                 ),
-              ).then((value) {
-                setState(() {});
-              });
+              );
             },
             icon: const Icon(Icons.add),
           ),

@@ -7,6 +7,10 @@ import '../models/zipcodes_data.dart';
 class ZipsController {
   final ZipRepository _zipRepo = ZipRepository(ZipDB());
 
+  Future<List<ZipCode>?> find(String area) {
+    return _zipRepo.find(area);
+  }
+
   Future<List<ZipCode>?> getAreaCodes(String area) {
     return _zipRepo.getAreaCodes(area);
   }

@@ -126,7 +126,7 @@ class _AboutPageState extends State<AboutPage> {
               label: "Send feedback",
               onTap: () {
                 launchUrlString(
-                    "mailto:hi@reddavid.me?subject=[FEEDBACK] ZIP Code PH Pro&body=App version: ${_packageInfo.version} build ${_packageInfo.buildNumber}");
+                    "mailto:hi@reddavid.me?subject=[FEEDBACK] ZIP Code PH (Pro)&body=App version: ${_packageInfo.version} build ${_packageInfo.buildNumber}");
               },
             ),
             const Padding(
