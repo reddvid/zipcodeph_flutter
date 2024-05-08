@@ -7,7 +7,7 @@ import 'not_found.dart';
 class ZipCodesList extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables
   ZipCodesList({
-    Key? key,
+    super.key,
     this.city,
     required this.future,
     required this.errorText,
@@ -15,7 +15,7 @@ class ZipCodesList extends StatefulWidget {
     this.emptyGraphics,
     this.showTrailing = false,
     this.refreshCallback,
-  }) : super(key: key);
+  });
 
   final String? city;
   final Future<List<ZipCode>?> future;
@@ -41,16 +41,24 @@ class _ZipCodesListState extends State<ZipCodesList> {
       future: widget.future,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return const Center(
-            child: Text("Error loading ZIP codes."),
-          );
+          if (snapshot.connectionState == ConnectionState.done) {
+            return const Center(
+              child: Text("Error loading ZIP codes."),
+            );
+          } else {
+            return const Center(
+              child: Text("Loading ZIP codes."),
+            );
+          }
         } else {
           final List<ZipCode> list = snapshot.data!;
+          list.sort((a,b) => a.town.compareTo(b.town));
           debugPrint(list.length.toString());
           if (list.isEmpty && widget.emptyGraphics != null) {
             return widget.emptyGraphics!;
           } else {
             return ListView.separated(
+              padding: const EdgeInsets.only(bottom: 80.0),
               shrinkWrap: true,
               separatorBuilder: (_, index) => const Divider(),
               itemCount: list.length,

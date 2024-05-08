@@ -26,6 +26,8 @@ class ZipCodeTile extends StatelessWidget {
     return ListTile(
       onTap: () {
         showModalBottomSheet<void>(
+          useRootNavigator: true,
+          useSafeArea: true,
           showDragHandle: true,
           context: context,
           builder: (context) {
@@ -42,7 +44,7 @@ class ZipCodeTile extends StatelessWidget {
         height: double.infinity,
         alignment: Alignment.center,
         child: Text(
-          "${zipCode.code}",
+          zipCode.code,
           textAlign: TextAlign.center,
           style: kTileLeadingTextStyle,
         ),

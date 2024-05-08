@@ -48,70 +48,95 @@ class _AboutPageState extends State<AboutPage> {
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            ListTile(
-              title: Padding(
-                padding: const EdgeInsets.only(bottom: 10.0),
-                child: Text(
-                  "What is a ZIP Code?",
-                  style: Theme.of(context).textTheme.titleLarge,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: Card(
+                elevation: 2,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  child: ListTile(
+                    title: Padding(
+                      padding: const EdgeInsets.only(bottom: 10.0),
+                      child: Text(
+                        "What is a ZIP Code?",
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
+                    ),
+                    subtitle: Text(
+                      "ZIP (Zone Identification Plan) Codes are a system of postal codes first used by the United States Postal Services (USPS) in 1963 - so that the mail travels more efficiently, and therefore more quickly, when senders use the code in the postal address.\n\nIn the Philippines, the ZIP Code is used by the Philippine Postal Corporation (PhilPost) to simplify the distribution of mail.",
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                  ),
                 ),
-              ),
-              subtitle: Text(
-                "ZIP (Zone Identification Plan) Codes are a system of postal codes first used by the United States Postal Services (USPS) in 1963 - so that the mail travels more efficiently, and therefore more quickly, when senders use the code in the postal address.\n\nIn the Philippines, the ZIP Code is used by the Philippine Postal Corporation (PhilPost) to simplify the distribution of mail.",
-                style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
-            ListTile(
-              title: Padding(
-                padding: const EdgeInsets.only(bottom: 10.0),
-                child: Text(
-                  "Where to put the ZIP Code?",
-                  style: Theme.of(context).textTheme.titleLarge,
-                ),
-              ),
-              subtitle: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                children: [
-                  Text(
-                      "The ZIP Code is usually placed at the left-hand corner of the last line where the city/town is written:",
-                      style: Theme.of(context).textTheme.bodyMedium),
-                  Container(
-                    width: double.infinity,
-                    margin: const EdgeInsets.only(top: 10.0),
-                    padding: const EdgeInsets.all(20.0),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        width: 1.0,
-                        color: const Color(0xFFAAAAAA),
+            const SizedBox(height: 10.0),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: Card(
+                elevation: 2,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 10.0),
+                  child: ListTile(
+                    title: Padding(
+                      padding: const EdgeInsets.only(bottom: 10.0),
+                      child: Text(
+                        "Where to put the ZIP Code?",
+                        style: Theme.of(context).textTheme.titleLarge,
                       ),
-                      color: Colors.brown.shade100,
-                      borderRadius: BorderRadius.circular(5.0),
-                      boxShadow: const [
-                        BoxShadow(
-                          color: Color(0x33000000),
-                          blurRadius: 6.0,
+                    ),
+                    subtitle: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Text(
+                            "The ZIP Code is usually placed at the left-hand corner of the last line where the city/town is written:",
+                            style: Theme.of(context).textTheme.bodyMedium),
+                        Container(
+                          width: double.infinity,
+                          margin: const EdgeInsets.only(top: 10.0),
+                          padding: const EdgeInsets.only(
+                            top: 20.0,
+                            left: 20.0,
+                            right: 20.0,
+                            bottom: 40.0,
+                          ),
+                          decoration: BoxDecoration(
+                            border: Border.all(
+                              width: 1.0,
+                              color: const Color(0xFFEAD0A5),
+                            ),
+                            color: Colors.brown.shade100,
+                            borderRadius: BorderRadius.circular(5.0),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Color(0x33000000),
+                                blurRadius: 6.0,
+                              ),
+                            ],
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              for (String text in sampleFormatText)
+                                Text(
+                                  text,
+                                  style: const TextStyle(
+                                    fontSize: 10.0,
+                                    fontStyle: FontStyle.italic,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        for (String text in sampleFormatText)
-                          Text(
-                            text,
-                            style: const TextStyle(
-                              fontSize: 14.0,
-                              fontStyle: FontStyle.italic,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.black,
-                            ),
-                          ),
-                      ],
-                    ),
                   ),
-                ],
+                ),
               ),
             ),
+            const SizedBox(height: 10.0),
             TileIcon(
               iconData: Icons.share,
               label: "Share this app",

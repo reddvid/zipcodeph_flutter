@@ -9,10 +9,10 @@ import 'bottom_sheet_action_button.dart';
 
 class ItemBottomSheet extends StatelessWidget {
   ItemBottomSheet({
-    Key? key,
+    super.key,
     required this.zipCode,
     required this.refreshListCallback,
-  }) : super(key: key);
+  });
 
   final ZipCode zipCode;
   final VoidCallback refreshListCallback;
@@ -27,12 +27,17 @@ class ItemBottomSheet extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.all(14.0),
-              child: Text(
-                "${zipCode.code} ${zipCode.town}, ${zipCode.area}",
-                style: kTileLeadingTextStyle,
+          Expanded(
+            flex: 0,
+            child: Center(
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 20.0, left: 20.0, right: 20.0,),
+                child: Text(
+                  "${zipCode.code} ${zipCode.town}, ${zipCode.area}",
+                  style: kTileLeadingTextStyle,
+                  maxLines: 2,
+                  textAlign: TextAlign.center,
+                ),
               ),
             ),
           ),
@@ -47,6 +52,7 @@ class ItemBottomSheet extends StatelessWidget {
               );
               Navigator.of(context).pop();
               final SnackBar snackBar = SnackBar(
+                margin: kSnackBarMargin,
                 content: Text("Copied $data"),
                 behavior: SnackBarBehavior.floating,
               );
@@ -77,10 +83,11 @@ class ItemBottomSheet extends StatelessWidget {
               Navigator.pop(context);
 
               final SnackBar snackBar = SnackBar(
+                margin: kSnackBarMargin,
                 content: Text(
                   zipCode.fave == 0
                       ? "Removed $data from favorites"
-                      : "Added $data to favroties",
+                      : "Added $data to favorites",
                 ),
               );
 
@@ -96,14 +103,14 @@ class ItemBottomSheet extends StatelessWidget {
               Navigator.pop(context);
             },
           ),
-          const Divider(),
-          BottomSheetActionTile(
-            icon: const Icon(Icons.close),
-            label: "Close",
-            onTap: () {
-              Navigator.pop(context);
-            },
-          )
+          // const Divider(),
+          // BottomSheetActionTile(
+          //   icon: const Icon(Icons.close),
+          //   label: "Close",
+          //   onTap: () {
+          //     Navigator.pop(context);
+          //   },
+          // )
         ],
       ),
     );

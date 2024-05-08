@@ -20,6 +20,8 @@ class _AreasPageState extends State<AreasPage> {
   @override
   Widget build(BuildContext context) {
     var menu = _areaRepository.menu(widget.area);
+    menu.sort((a,b) => a.compareTo(b));
+
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -28,6 +30,7 @@ class _AreasPageState extends State<AreasPage> {
         ),
       ),
       body: ListView.separated(
+        padding: const EdgeInsets.only(bottom: 80.0),
         shrinkWrap: true,
         separatorBuilder: (context, index) => const Divider(
           color: Colors.grey,

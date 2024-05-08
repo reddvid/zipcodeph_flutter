@@ -40,10 +40,12 @@ class _SearchPageState extends State<SearchPage> {
       autoFocus: true,
       hintText: "Search towns, cities, or province",
       onChanged: (value) {
-        setState(() {
-          query = value;
-          textController.text = value;
-        });
+        if (value.trim() != "") {
+          setState(() {
+            query = value;
+            textController.text = value;
+          });
+        }
       },
       // leading: const Icon(Icons.arrow_back_outlined),
       trailing: [

@@ -11,6 +11,8 @@ const kTileLeadingTextStyle = TextStyle(
   fontWeight: FontWeight.bold,
 );
 
+const kSnackBarMargin = EdgeInsets.only(bottom: 64.0);
+
 const List<AreaMenuButton> menuButtons = [
   AreaMenuButton(
     bgImage: AssetImage("assets/images/ncr.jpg"),

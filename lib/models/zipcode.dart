@@ -1,6 +1,6 @@
 class ZipCode {
   final int id;
-  final int code;
+  final String code;
   final String town;
   final String area;
   int fave;
@@ -9,7 +9,7 @@ class ZipCode {
 
   ZipCode.fromMap(Map<String, dynamic> data)
       : id = data['_id'],
-        code = data['code'],
+        code = data['code'] < 1000 ? "0${data['code']}" : data['code'].toString(),
         town = data['town'],
         area = data['area'],
         fave = data['fave'];
