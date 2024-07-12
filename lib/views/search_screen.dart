@@ -27,7 +27,7 @@ class _SearchPageState extends State<SearchPage> {
 
   _SearchPageState() {
     searchBar = SearchBar(
-      elevation: MaterialStateProperty.all(2),
+      elevation: WidgetStateProperty.all(2),
       controller: textController,
       constraints: const BoxConstraints(
         maxWidth: double.maxFinite,
