@@ -31,6 +31,7 @@ class AreaMenuButton extends StatelessWidget {
             ),
             width: double.infinity,
             height: height,
+            height: height,
           ),
           ClipRRect(
             child: BackdropFilter(
@@ -57,6 +58,7 @@ class AreaMenuButton extends StatelessWidget {
                     },
                     child: SizedBox(
                       width: double.infinity,
+                      height: height,
                       height: height,
                       child: Center(
                         child: Text(
