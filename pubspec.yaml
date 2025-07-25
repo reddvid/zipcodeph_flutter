@@ -1,5 +1,5 @@
-name: zipcodeph_flutter2
-description: "ZIP Code PH built on Flutter"
+name: zipcodeph_flutter
+description: 'ZIP Code PH built on Flutter'
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 

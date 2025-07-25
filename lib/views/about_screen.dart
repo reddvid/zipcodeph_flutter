@@ -52,7 +52,7 @@ class _AboutPageState extends State<AboutPage> {
                 padding: const EdgeInsets.only(bottom: 10.0),
                 child: Text(
                   "What is a ZIP Code?",
-                  style: Theme.of(context).textTheme.headline6,
+                  style: Theme.of(context).textTheme.headlineLarge,
                 ),
               ),
               subtitle: Text(
@@ -65,7 +65,7 @@ class _AboutPageState extends State<AboutPage> {
                 padding: const EdgeInsets.only(bottom: 10.0),
                 child: Text(
                   "Where to put the ZIP Code?",
-                  style: Theme.of(context).textTheme.headline6,
+                  style: Theme.of(context).textTheme.headlineLarge,
                 ),
               ),
               subtitle: Column(
