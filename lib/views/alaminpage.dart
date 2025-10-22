@@ -70,7 +70,6 @@ class _AlaminPageState extends State<AlaminPage> with RouteAware {
                   if (!options.contains(answer)) options.add(answer);
                   options.shuffle();
                   bool hasAnswered = false;
-                  String selectedAnswer = "";
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
@@ -124,7 +123,6 @@ class _AlaminPageState extends State<AlaminPage> with RouteAware {
                                       totalQuestionsAvailable - 1) {
                                     setState(() {
                                       currentIndex++;
-                                      selectedAnswer = "";
                                     });
                                   } else {
                                     // TODO: Show Total Score
