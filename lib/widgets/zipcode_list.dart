@@ -40,23 +40,43 @@ class _ZipCodesListState extends State<ZipCodesList> {
     return FutureBuilder<List<ZipCode>?>(
       future: widget.future,
       builder: (context, snapshot) {
-        if (!snapshot.hasData) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
           return const Center(
-            child: Text("Error loading ZIP codes."),
+            child: CircularProgressIndicator(),
           );
+        } else if (snapshot.hasError) {
+          return Center(
+            child: Text(widget.errorText),
+          );
+        } else if (!snapshot.hasData || snapshot.data == null) {
+          return widget.emptyGraphics ??
+              const Center(child: Text("No data available"));
         } else {
           final List<ZipCode> list = snapshot.data!;
-          debugPrint(list.length.toString());
+          debugPrint('ZIP codes loaded: ${list.length}');
+
           if (list.isEmpty && widget.emptyGraphics != null) {
             return widget.emptyGraphics!;
           } else {
-            return ListView.separated(
+            // Use ListView.builder with lazy loading for better memory management
+            return ListView.builder(
               shrinkWrap: true,
-              separatorBuilder: (_, index) => const Divider(),
-              itemCount: list.length,
+              physics: const ClampingScrollPhysics(), // Better for memory
+              itemCount: list.length +
+                  (list.length > 0
+                      ? list.length - 1
+                      : 0), // Account for separators
               itemBuilder: (context, index) {
+                // Handle separators
+                if (index.isOdd) {
+                  return const Divider();
+                }
+
+                final itemIndex = index ~/ 2;
+                if (itemIndex >= list.length) return const SizedBox.shrink();
+
                 return ZipCodeTile(
-                  zipCode: list[index],
+                  zipCode: list[itemIndex],
                   refreshListCallback: _refreshList,
                   showTrailing: widget.showTrailing,
                   showSubtitle: widget.showSubtitle,

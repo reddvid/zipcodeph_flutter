@@ -43,9 +43,28 @@ class ZipDB {
   }
 
   // DATABASE METHODS
-  Future<List<Map<String, dynamic>>?> list() async {
+  Future<List<Map<String, dynamic>>?> list({int? limit, int? offset}) async {
     Database? db = await instance.database;
-    return await db?.query(table);
+    return await db?.query(
+      table,
+      limit: limit,
+      offset: offset,
+    );
+  }
+
+  Future<List<Map<String, dynamic>>?> search({
+    required String query,
+    int? limit,
+    int? offset,
+  }) async {
+    Database? db = await instance.database;
+    return await db?.query(
+      table,
+      where: '$columnTown LIKE ? OR $columnArea LIKE ?',
+      whereArgs: ['%$query%', '%$query%'],
+      limit: limit,
+      offset: offset,
+    );
   }
 
   Future<int?> update(Map<String, dynamic> updatedItem) async {

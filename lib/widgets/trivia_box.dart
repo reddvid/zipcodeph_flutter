@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:share_plus/share_plus.dart';
+import '../themes/app_theme.dart';
 
 class TriviaBox extends StatefulWidget {
   // ignore: prefer_const_constructors_in_immutables
@@ -35,9 +36,9 @@ class _TriviaBoxState extends State<TriviaBox> with RouteAware {
   }
 
   void _readTriviasJson() {
-    DefaultAssetBundle.of(context)
-        .loadString("assets/json/trivias.json")
-        .then((value) {
+    DefaultAssetBundle.of(context).loadString("assets/json/trivias.json").then((
+      value,
+    ) {
       final jsonResult = jsonDecode(value)["trivias"];
       setState(() {
         trivias = jsonResult;
@@ -83,16 +84,14 @@ class _TriviaBoxState extends State<TriviaBox> with RouteAware {
         child: Container(
           width: double.infinity,
           padding: const EdgeInsets.all(15.0),
-          decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(
-              Radius.circular(10.0),
-            ),
+          decoration: BoxDecoration(
+            borderRadius: const BorderRadius.all(Radius.circular(10.0)),
             gradient: LinearGradient(
               begin: Alignment.topRight,
               end: Alignment.bottomLeft,
               colors: [
-                Colors.blue,
-                Colors.red,
+                Theme.of(context).colorScheme.primary,
+                Theme.of(context).colorScheme.secondary,
               ],
             ),
           ),
@@ -100,11 +99,11 @@ class _TriviaBoxState extends State<TriviaBox> with RouteAware {
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 "Did you know?",
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.onPrimary,
                   fontSize: 16.0,
                 ),
               ),
@@ -114,7 +113,9 @@ class _TriviaBoxState extends State<TriviaBox> with RouteAware {
                 overflow: TextOverflow.ellipsis,
                 text: TextSpan(
                   text: currentTrivia,
-                  style: const TextStyle(color: Colors.white),
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
                 ),
               ),
               Visibility(
@@ -122,9 +123,9 @@ class _TriviaBoxState extends State<TriviaBox> with RouteAware {
                 child: Align(
                   alignment: Alignment.bottomRight,
                   child: InkWell(
-                    child: const Icon(
+                    child: Icon(
                       Icons.share,
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.onPrimary,
                       size: 14.0,
                     ),
                     onTap: () {

@@ -21,9 +21,7 @@ class GroupMenuButton extends StatelessWidget {
       children: [
         Container(
           decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(
-              Radius.circular(10.0),
-            ),
+            borderRadius: const BorderRadius.all(Radius.circular(18.0)),
             image: DecorationImage(
               image: AssetImage(backgroundImagePath),
               fit: BoxFit.fitWidth,
@@ -39,10 +37,7 @@ class GroupMenuButton extends StatelessWidget {
             child: Container(
               color: Colors.grey.withOpacity(0.1),
               alignment: Alignment.center,
-              child: MenuInkwell(
-                title: title,
-                height: height,
-              ),
+              child: MenuInkwell(title: title, height: height),
             ),
           ),
         ),

@@ -39,11 +39,11 @@ class ItemBottomSheet extends StatelessWidget {
             onTap: () {
               final String data =
                   "${zipCode.code} ${zipCode.town}, ${zipCode.area}";
-              Clipboard.setData(
-                ClipboardData(text: data),
-              );
+              Clipboard.setData(ClipboardData(text: data));
               Navigator.of(context).pop();
               final SnackBar snackBar = SnackBar(
+                backgroundColor: Theme.of(context).colorScheme.inverseSurface,
+                behavior: SnackBarBehavior.floating,
                 content: Text("Copied $data"),
               );
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
@@ -73,6 +73,8 @@ class ItemBottomSheet extends StatelessWidget {
               Navigator.pop(context);
 
               final SnackBar snackBar = SnackBar(
+                backgroundColor: Theme.of(context).colorScheme.inverseSurface,
+                behavior: SnackBarBehavior.floating,
                 content: Text(
                   zipCode.fave == 0
                       ? "Removed $data from favorites"
@@ -88,8 +90,9 @@ class ItemBottomSheet extends StatelessWidget {
             label: "Open in Maps",
             onTap: () {
               UrlLauncher.openUrl(
-                  "https://google.com/maps/search/${zipCode.town}," +
-                      zipCode.area);
+                "https://google.com/maps/search/${zipCode.town}," +
+                    zipCode.area,
+              );
               Navigator.pop(context);
             },
           ),
@@ -100,7 +103,7 @@ class ItemBottomSheet extends StatelessWidget {
             onTap: () {
               Navigator.pop(context);
             },
-          )
+          ),
         ],
       ),
     );

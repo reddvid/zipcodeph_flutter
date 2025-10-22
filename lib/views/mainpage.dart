@@ -46,8 +46,9 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
 
   void loadTrivias() async {
     try {
-      final response = await http
-          .get(Uri.parse("https://api.npoint.io/25a6f8775d3cb3d8f24c/"));
+      final response = await http.get(
+        Uri.parse("https://api.npoint.io/25a6f8775d3cb3d8f24c/"),
+      );
       // debugPrint(response.body);
 
       if (response.statusCode == 200) {
@@ -63,9 +64,9 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
     } on SocketException catch (e) {
       // Not Connected
       debugPrint("Reading local trivias\n${e.message}");
-      DefaultAssetBundle.of(context)
-          .loadString("assets/json/trivias.json")
-          .then((value) {
+      DefaultAssetBundle.of(
+        context,
+      ).loadString("assets/json/trivias.json").then((value) {
         final jsonResult = jsonDecode(value)['trivias'];
         setState(() {
           trivias = jsonResult;
@@ -80,27 +81,32 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
   Widget build(BuildContext context) {
     _height = ResponsiveBreakpoints.of(context).largerThan(MOBILE) ? 180 : 110;
     debugPrint(_height.toString());
+    final deviceHeight = MediaQuery.of(context).size.height;
+    debugPrint(deviceHeight.toString());
     return Container(
       constraints: const BoxConstraints(minWidth: 800, maxWidth: 800),
       // padding: const EdgeInsets.symmetric(horizontal: 10),
-      padding: ResponsiveValue<EdgeInsets>(context,
-          defaultValue: const EdgeInsets.symmetric(horizontal: 30.0),
-          conditionalValues: [
-            const Condition.smallerThan(
-              name: TABLET,
-              value: EdgeInsets.symmetric(horizontal: 0.0),
-            ),
-          ]).value,
+      padding: ResponsiveValue<EdgeInsets>(
+        context,
+        defaultValue: const EdgeInsets.symmetric(horizontal: 30.0),
+        conditionalValues: [
+          const Condition.smallerThan(
+            name: TABLET,
+            value: EdgeInsets.symmetric(horizontal: 0.0),
+          ),
+        ],
+      ).value,
       child: Stack(
         children: [
           Align(
             alignment: Alignment.topCenter,
             child: Column(
+              spacing: 15,
               mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
                 ResponsiveVisibility(
-                  visible: false,
+                  visible: true,
                   hiddenConditions: const [Condition.largerThan(name: MOBILE)],
                   child: aboutButton(),
                 ),
@@ -108,64 +114,47 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    searchButton(),
-                    favoritesButton(),
+                    Expanded(child: searchButton(deviceHeight)),
+                    const SizedBox(width: 10),
+                    Expanded(child: favoritesButton(deviceHeight)),
                   ],
                 ),
                 // LIST
                 ResponsiveVisibility(
                   visibleConditions: const [
-                    Condition.between(
-                      start: 0,
-                      end: 1200,
-                    ),
+                    Condition.between(start: 0, end: 1200),
                   ],
                   hiddenConditions: const [
-                    Condition.between(
-                      start: 1201,
-                      end: 1920,
-                    ),
+                    Condition.between(start: 1201, end: 1920),
                   ],
                   child: Expanded(
-                    child: Column(
-                      children: [
-                        GroupMenuButton(
-                          title: 'Metro Manila',
-                          backgroundImagePath: 'assets/images/ncr.jpg',
-                          height: _height,
-                        ),
-                        const Divider(
-                          height: 10,
-                          color: Colors.transparent,
-                        ),
-                        GroupMenuButton(
-                          title: 'Luzon',
-                          backgroundImagePath: 'assets/images/luzon.jpg',
-                          height: _height,
-                        ),
-                        const Divider(
-                          height: 10,
-                          color: Colors.transparent,
-                        ),
-                        GroupMenuButton(
-                          title: 'Visayas',
-                          backgroundImagePath: 'assets/images/visayas.jpg',
-                          height: _height,
-                        ),
-                        const Divider(
-                          height: 10,
-                          color: Colors.transparent,
-                        ),
-                        GroupMenuButton(
-                          title: 'Mindanao',
-                          backgroundImagePath: 'assets/images/mindanao.jpg',
-                          height: _height,
-                        ),
-                        const Divider(
-                          height: 10,
-                          color: Colors.transparent,
-                        ),
-                      ],
+                    child: SingleChildScrollView(
+                      physics: AlwaysScrollableScrollPhysics(),
+                      child: Column(
+                        spacing: 15,
+                        children: [
+                          GroupMenuButton(
+                            title: 'Metro Manila',
+                            backgroundImagePath: 'assets/images/ncr.jpg',
+                            height: _height,
+                          ),
+                          GroupMenuButton(
+                            title: 'Luzon',
+                            backgroundImagePath: 'assets/images/luzon.jpg',
+                            height: _height,
+                          ),
+                          GroupMenuButton(
+                            title: 'Visayas',
+                            backgroundImagePath: 'assets/images/visayas.jpg',
+                            height: _height,
+                          ),
+                          GroupMenuButton(
+                            title: 'Mindanao',
+                            backgroundImagePath: 'assets/images/mindanao.jpg',
+                            height: _height,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -239,26 +228,18 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
     return Container(
       width: double.infinity,
       decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(
-          Radius.circular(10),
-        ),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
         gradient: LinearGradient(
           begin: Alignment.topRight,
           end: Alignment.bottomLeft,
-          colors: [
-            Colors.yellow,
-            Colors.red,
-            Colors.blue,
-          ],
+          colors: [Colors.yellow, Colors.red, Colors.blue],
         ),
       ),
       child: ListTile(
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (context) => const AlaminPage(),
-            ),
+            MaterialPageRoute(builder: (context) => const AlaminPage()),
           );
         },
         title: const Text("Test Your Knowledge"),
@@ -273,16 +254,11 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
       width: double.infinity,
       padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
       decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(
-          Radius.circular(10),
-        ),
+        borderRadius: BorderRadius.all(Radius.circular(18.0)),
         gradient: LinearGradient(
           begin: Alignment.topRight,
           end: Alignment.bottomLeft,
-          colors: [
-            Colors.blue,
-            Colors.red,
-          ],
+          colors: [Colors.blue, Colors.red],
         ),
       ),
       child: Column(
@@ -291,12 +267,12 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
           const Text(
             'Did You Know?',
             style: TextStyle(
-                fontWeight: FontWeight.bold, color: Colors.white, fontSize: 16),
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+              fontSize: 16,
+            ),
           ),
-          const Divider(
-            height: 5,
-            color: Colors.transparent,
-          ),
+          const Divider(height: 5, color: Colors.transparent),
           RichText(
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
@@ -321,10 +297,7 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
               style: const TextStyle(color: Colors.white),
             ),
           ),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: shareButton(),
-          )
+          Align(alignment: Alignment.bottomRight, child: shareButton()),
         ],
       ),
     );
@@ -344,9 +317,7 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
           style: TextStyle(fontSize: 12.0, color: Colors.white),
         ),
         onPressed: () {
-          Clipboard.setData(
-            ClipboardData(text: currentTrivia),
-          );
+          Clipboard.setData(ClipboardData(text: currentTrivia));
           // var snackBar = const SnackBar(
           //   content: Text("Trivia copied for sharing"),
           // );
@@ -354,20 +325,18 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
           _shareTrivia(currentTrivia);
         },
         style: ButtonStyle(
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18.0),
-            ),
+          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
           ),
         ),
       ),
     );
   }
 
-  aboutButton() {
+  Widget aboutButton() {
     return Align(
       alignment: Alignment.topRight,
-      child: TextButton.icon(
+      child: OutlinedButton.icon(
         icon: Icon(
           Platform.isAndroid ? Icons.info_outline : CupertinoIcons.info_circle,
         ),
@@ -375,96 +344,147 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (context) => const AboutPage(),
-            ),
+            MaterialPageRoute(builder: (context) => const AboutPage()),
           );
         },
         style: ButtonStyle(
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18.0),
-            ),
+          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
           ),
         ),
       ),
     );
   }
 
-  searchButton() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5),
-      child: TextButton.icon(
-        icon: Icon(
-          Platform.isAndroid ? Icons.search : CupertinoIcons.search,
-        ),
-        label: const Text(
-          'Search ZIP Codes',
-        ),
-        onPressed: () {
-          Navigator.push(
+  Widget searchButton(double height) {
+    final icon = Icon(
+      Platform.isAndroid ? Icons.search : CupertinoIcons.search,
+    );
+    final label = Text('Search ZIP Codes');
+    if (height <= 900) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 5),
+        child: TextButton.icon(
+          icon: icon,
+          label: label,
+          onPressed: () => Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (context) => SearchPage(),
-            ),
-          );
-        },
-        style: ButtonStyle(
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18.0),
+            MaterialPageRoute(builder: (context) => SearchPage()),
+          ),
+          style: ButtonStyle(
+            shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
             ),
           ),
         ),
-      ),
-    );
-  }
-
-  favoritesButton() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5),
-      child: TextButton.icon(
-        icon: Icon(
-          Platform.isAndroid ? Icons.favorite_outline : CupertinoIcons.heart,
+      );
+    } else {
+      return Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(
+            color: Theme.of(context).colorScheme.outline,
+            width: 1,
+          ),
+          color: Theme.of(context).colorScheme.surface,
         ),
-        label: const Text('Favorites'),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => FavesPage(),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => SearchPage()),
             ),
-          );
-        },
-        style: ButtonStyle(
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18.0),
+            borderRadius: BorderRadius.circular(18),
+            splashColor: Theme.of(
+              context,
+            ).colorScheme.primary.withOpacity(0.12),
+            highlightColor: Theme.of(
+              context,
+            ).colorScheme.primary.withOpacity(0.08),
+            child: Container(
+              width: double.infinity,
+              height: 96,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [icon, const SizedBox(height: 8), label],
+              ),
             ),
           ),
         ),
-      ),
-    );
+      );
+    }
   }
 
-  divider() {
-    return const Divider(
-      height: 10,
-      color: Colors.transparent,
+  Widget favoritesButton(double height) {
+    final icon = Icon(
+      Platform.isAndroid ? Icons.favorite_outline : CupertinoIcons.heart,
     );
-  }
+    final label = const Text('Favorites');
 
-  enddivider() {
-    return const Divider(
-      height: 60,
-      color: Colors.transparent,
-    );
+    if (height <= 900) {
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 5),
+        child: TextButton.icon(
+          icon: icon,
+          label: label,
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => FavesPage()),
+            );
+          },
+          style: ButtonStyle(
+            shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
+            ),
+          ),
+        ),
+      );
+    } else {
+      return Container(
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(
+            color: Theme.of(context).colorScheme.outline,
+            width: 1,
+          ),
+          color: Theme.of(context).colorScheme.surface,
+        ),
+        child: Material(
+          color: Colors.transparent,
+          child: InkWell(
+            onTap: () => Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => FavesPage()),
+            ),
+            borderRadius: BorderRadius.circular(18),
+            splashColor: Theme.of(
+              context,
+            ).colorScheme.primary.withOpacity(0.12),
+            highlightColor: Theme.of(
+              context,
+            ).colorScheme.primary.withOpacity(0.08),
+            child: Container(
+              width: double.infinity,
+              height: 96,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [icon, const SizedBox(height: 8), label],
+              ),
+            ),
+          ),
+        ),
+      );
+    }
   }
 
   void _shareTrivia(String currentTrivia) {
-    Share.share(
-      "Did You Know? $currentTrivia #ZIPCodePH",
-      subject: "Did You Know? ZIP Code PH Trivia",
+    SharePlus.instance.share(
+      ShareParams(
+        text: "Did You Know? $currentTrivia #ZIPCodePH",
+        subject: "Did You Know? ZIP Code PH Trivia",
+      ),
     );
   }
 }
