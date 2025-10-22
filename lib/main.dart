@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
           color: Colors.white,
           elevation: 2,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(18),
           ),
         ),
 
@@ -233,6 +233,7 @@ class MainAppWithBottomNav extends StatefulWidget {
 }
 
 class MainAppWithBottomNavState extends State<MainAppWithBottomNav> {
+  late PageController _pageController;
   final List<Widget> _pages = [
     MainMenuPage(),
     FavesPage(),
@@ -241,16 +242,49 @@ class MainAppWithBottomNavState extends State<MainAppWithBottomNav> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    _pageController = PageController(
+      initialPage: NavigationService.selectedIndex.value,
+    );
+
+    // Listen to navigation service changes and animate to page
+    NavigationService.selectedIndex.addListener(_onNavigationChanged);
+  }
+
+  void _onNavigationChanged() {
+    final newIndex = NavigationService.selectedIndex.value;
+    if (_pageController.hasClients &&
+        newIndex != _pageController.page?.round()) {
+      _pageController.animateToPage(
+        newIndex,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    NavigationService.selectedIndex.removeListener(_onNavigationChanged);
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ValueListenableBuilder<int>(
       valueListenable: NavigationService.selectedIndex,
       builder: (context, selectedIndex, child) {
         return Scaffold(
           body: SafeArea(
-            child: Stack(
-              children: [
-                IndexedStack(index: selectedIndex, children: [..._pages]),
-              ],
+            child: PageView(
+              controller: _pageController,
+              onPageChanged: (index) {
+                // Update navigation service when user swipes
+                NavigationService.navigateToIndex(index);
+              },
+              children: _pages,
             ),
           ),
           floatingActionButton: FloatingActionButton(

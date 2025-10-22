@@ -35,16 +35,16 @@ class _TriviaBoxState extends State<TriviaBox> with RouteAware {
   }
 
   void _readTriviasJson() {
-    DefaultAssetBundle.of(context)
-        .loadString("assets/json/trivias.json")
-        .then((value) {
+    DefaultAssetBundle.of(context).loadString("assets/json/trivias.json").then((
+      value,
+    ) {
       final jsonResult = jsonDecode(value)["trivias"];
       setState(() {
         trivias = jsonResult;
         trivias.shuffle();
         currentTrivia = trivias.isNotEmpty
             ? trivias.first
-            : "this app was made by one person";
+            : "This app was made by one person";
       });
     });
   }
@@ -84,16 +84,11 @@ class _TriviaBoxState extends State<TriviaBox> with RouteAware {
           width: double.infinity,
           padding: const EdgeInsets.all(15.0),
           decoration: const BoxDecoration(
-            borderRadius: BorderRadius.all(
-              Radius.circular(10.0),
-            ),
+            borderRadius: BorderRadius.all(Radius.circular(18.0)),
             gradient: LinearGradient(
               begin: Alignment.topRight,
               end: Alignment.bottomLeft,
-              colors: [
-                Colors.blue,
-                Colors.red,
-              ],
+              colors: [Colors.blue, Colors.red],
             ),
           ),
           child: Column(

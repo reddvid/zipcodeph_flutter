@@ -18,7 +18,7 @@ class AreaMenuButton extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+              borderRadius: const BorderRadius.all(Radius.circular(18.0)),
               image: DecorationImage(image: bgImage, fit: BoxFit.fitWidth),
             ),
             width: double.infinity,
@@ -34,7 +34,7 @@ class AreaMenuButton extends StatelessWidget {
                   type: MaterialType.transparency,
                   child: InkWell(
                     customBorder: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
+                      borderRadius: BorderRadius.circular(18.0),
                     ),
                     onTap: () {
                       Navigator.push(

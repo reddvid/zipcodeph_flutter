@@ -232,12 +232,12 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
     );
   }
 
-  trivia() {
+  Widget trivia() {
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
+      padding: const EdgeInsets.fromLTRB(15, 15, 15, 25),
       decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(Radius.circular(10)),
+        borderRadius: BorderRadius.all(Radius.circular(18)),
         gradient: LinearGradient(
           begin: Alignment.topRight,
           end: Alignment.bottomLeft,
@@ -247,13 +247,19 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Did You Know?',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-              fontSize: 16,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                'Did You Know?',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white,
+                  fontSize: 16,
+                ),
+              ),
+              shareButton(),
+            ],
           ),
           const Divider(height: 5, color: Colors.transparent),
           RichText(
@@ -280,25 +286,15 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
               style: const TextStyle(color: Colors.white),
             ),
           ),
-          Align(alignment: Alignment.bottomRight, child: shareButton()),
         ],
       ),
     );
   }
 
-  shareButton() {
+  Widget shareButton() {
     return SizedBox(
       height: 35,
-      child: TextButton.icon(
-        icon: Icon(
-          Platform.isAndroid ? Icons.share : CupertinoIcons.share,
-          size: 12.0,
-          color: Colors.white,
-        ),
-        label: const Text(
-          'Share',
-          style: TextStyle(fontSize: 12.0, color: Colors.white),
-        ),
+      child: OutlinedButton(
         onPressed: () {
           Clipboard.setData(ClipboardData(text: currentTrivia));
           // var snackBar = const SnackBar(
@@ -308,9 +304,13 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
           _shareTrivia(currentTrivia);
         },
         style: ButtonStyle(
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+          shape: WidgetStateProperty.all<RoundedRectangleBorder>(
             RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
           ),
+        ),
+        child: const Text(
+          'Share',
+          style: TextStyle(fontSize: 12.0, color: Colors.white),
         ),
       ),
     );
