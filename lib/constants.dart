@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:zipcodeph_flutter/views/about_screen.dart';
-import 'package:zipcodeph_flutter/views/favorites_screen.dart';
 import 'package:zipcodeph_flutter/views/home_screen.dart';
 import 'package:zipcodeph_flutter/views/search_screen.dart';
 import 'package:zipcodeph_flutter/widgets/area_menu_button.dart';
@@ -30,12 +28,7 @@ const List<AreaMenuButton> menuButtons = [
   ),
 ];
 
-const List<Widget> pages = [
-  HomeScreen(),
-  SearchPage(),
-  FavoritesPage(),
-  AboutPage()
-];
+const List<Widget> pages = [HomeScreen(), SearchPage()];
 
 const List<String> sampleFormatText = [
   "Mr. Juan Dela Cruz",

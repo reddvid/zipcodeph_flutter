@@ -21,28 +21,26 @@ class GroupMenuButton extends StatelessWidget {
       children: [
         Container(
           decoration: BoxDecoration(
-            borderRadius: const BorderRadius.all(
-              Radius.circular(10.0),
-            ),
+            borderRadius: const BorderRadius.all(Radius.circular(18.0)),
             image: DecorationImage(
               image: AssetImage(backgroundImagePath),
-              fit: BoxFit.fitWidth,
+              fit: BoxFit
+                  .cover, // Changed from fitWidth to cover to fill entire card
             ),
           ),
           width: double.infinity,
-          height: height,
+          height: double.infinity, // Changed to fill all available height
         ),
         ClipRRect(
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(18.0),
           child: BackdropFilter(
             filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
             child: Container(
+              width: double.infinity,
+              height: double.infinity, // Fill all available space
               color: Colors.grey.withOpacity(0.1),
               alignment: Alignment.center,
-              child: MenuInkwell(
-                title: title,
-                height: height,
-              ),
+              child: MenuInkwell(title: title, height: height),
             ),
           ),
         ),

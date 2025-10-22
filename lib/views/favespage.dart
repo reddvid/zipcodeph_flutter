@@ -4,7 +4,7 @@ import 'package:url_launcher/url_launcher.dart';
 import '../controllers/faves.dart';
 import '../main.dart';
 import '../models/zipcode.dart';
-import '../views/searchpage.dart';
+import '../services/navigation_service.dart';
 
 class FavesPage extends StatefulWidget {
   FavesPage({super.key});
@@ -16,7 +16,9 @@ class FavesPage extends StatefulWidget {
 
 class _FavesPageState extends State<FavesPage> with RouteAware {
   void _refreshList() {
-    setState(() {});
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   @override
@@ -54,69 +56,88 @@ class _FavesPageState extends State<FavesPage> with RouteAware {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Favorites"),
-        actions: [
-          Padding(
-              padding: const EdgeInsets.only(right: 20.0),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => SearchPage()));
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.all(16),
+          child: Row(
+            children: [
+              const Text(
+                "Favorites",
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              ),
+              const Spacer(),
+              IconButton(
+                onPressed: () {
+                  NavigationService.navigateToSearch(); // Navigate to search page
                 },
-                child: const Icon(
-                  Icons.add,
-                  size: 26.0,
-                ),
-              )),
-        ],
-      ),
-      body: _List(widget._favesController, _refreshList),
+                icon: const Icon(Icons.add),
+                tooltip: "Add more favorites",
+              ),
+            ],
+          ),
+        ),
+        Expanded(child: _List(widget._favesController, _refreshList)),
+      ],
     );
   }
 }
 
-class _List extends StatelessWidget {
+class _List extends StatefulWidget {
   final FavesController _favesController;
   final VoidCallback _refreshList;
 
   const _List(this._favesController, this._refreshList);
 
   @override
+  State<_List> createState() => _ListState();
+}
+
+class _ListState extends State<_List> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<ZipCode>?>(
-        future: _favesController.getFaves(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      'assets/images/empty.png',
-                      width: MediaQuery.of(context).size.width * 0.6,
-                    ),
-                    const Text(
-                      "You have no favorites yet",
-                      style: TextStyle(fontWeight: FontWeight.w600),
-                    ),
-                    TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => SearchPage(),
-                              ));
-                        },
-                        child: const Text(
-                          "ADD A ZIP CODE",
-                          style: TextStyle(color: Colors.red),
-                        ))
-                  ]),
-            );
-          } else {
-            return ListView.separated(
+      future: widget._favesController.getFaves(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  'assets/images/empty.png',
+                  width: MediaQuery.of(context).size.width * 0.6,
+                ),
+                const Text(
+                  "You have no favorites yet",
+                  style: TextStyle(fontWeight: FontWeight.w600),
+                ),
+                TextButton(
+                  onPressed: () {
+                    NavigationService.navigateToSearch();
+                  },
+                  child: const Text(
+                    "ADD A ZIP CODE",
+                    style: TextStyle(color: Colors.red),
+                  ),
+                ),
+              ],
+            ),
+          );
+        } else {
+          return Scrollbar(
+            controller: _scrollController,
+            thumbVisibility: true,
+            child: ListView.separated(
+              controller: _scrollController,
               shrinkWrap: true,
               padding: const EdgeInsets.only(bottom: 80),
               separatorBuilder: (context, index) => const Divider(),
@@ -124,44 +145,58 @@ class _List extends StatelessWidget {
               itemBuilder: (context, index) {
                 ZipCode zipCode = snapshot.data![index];
                 return ListTile(
-                    onLongPress: () {
-                      showModalBottomSheet<void>(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return bottomSheet(
-                                context, snapshot.data![index], _refreshList);
-                          });
-                    },
-                    onTap: () {
-                      showModalBottomSheet<void>(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return bottomSheet(
-                                context, snapshot.data![index], _refreshList);
-                          });
-                    },
-                    visualDensity:
-                        const VisualDensity(vertical: -4), // to compact
-                    leading: Container(
-                        width: 48,
-                        height: double.infinity,
-                        alignment: Alignment.center,
-                        child: Text(
-                          zipCode.code.toString(),
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        )),
-                    subtitle: Text(zipCode.area),
-                    title: Text(zipCode.town));
+                  onLongPress: () {
+                    showModalBottomSheet<void>(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return bottomSheet(
+                          context,
+                          snapshot.data![index],
+                          widget._refreshList,
+                        );
+                      },
+                    );
+                  },
+                  onTap: () {
+                    showModalBottomSheet<void>(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return bottomSheet(
+                          context,
+                          snapshot.data![index],
+                          widget._refreshList,
+                        );
+                      },
+                    );
+                  },
+                  visualDensity: const VisualDensity(
+                    vertical: -4,
+                  ), // to compact
+                  leading: Container(
+                    width: 48,
+                    height: double.infinity,
+                    alignment: Alignment.center,
+                    child: Text(
+                      zipCode.code.toString(),
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  subtitle: Text(zipCode.area),
+                  title: Text(zipCode.town),
+                );
               },
-            );
-          }
-        });
+            ),
+          );
+        }
+      },
+    );
   }
 
-  bottomSheet(
-      BuildContext context, ZipCode zipCode, VoidCallback refreshList) {
+  bottomSheet(BuildContext context, ZipCode zipCode, VoidCallback refreshList) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
@@ -180,12 +215,16 @@ class _List extends StatelessWidget {
             leading: const Icon(Icons.copy),
             title: const Text("Copy"),
             onTap: () {
-              Clipboard.setData(ClipboardData(
-                  text: "${zipCode.code} ${zipCode.town}, ${zipCode.area}"));
+              Clipboard.setData(
+                ClipboardData(
+                  text: "${zipCode.code} ${zipCode.town}, ${zipCode.area}",
+                ),
+              );
               Navigator.pop(context);
               var snackBar = SnackBar(
                 content: Text(
-                    "Copied ${zipCode.code} ${zipCode.town}, ${zipCode.area}"),
+                  "Copied ${zipCode.code} ${zipCode.town}, ${zipCode.area}",
+                ),
               );
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
             },
@@ -196,17 +235,18 @@ class _List extends StatelessWidget {
                   title: const Text("Remove from favorites"),
                   onTap: () {
                     zipCode.fave = 0;
-                    _favesController.updateItem(zipCode);
+                    widget._favesController.updateItem(zipCode);
                     refreshList();
                     Navigator.pop(context);
                     var snackBar = SnackBar(
                       content: Text(
-                          "Removed ${zipCode.code} ${zipCode.town}, ${zipCode.area} from favorites"),
+                        "Removed ${zipCode.code} ${zipCode.town}, ${zipCode.area} from favorites",
+                      ),
                       action: SnackBarAction(
                         label: 'UNDO',
                         onPressed: () {
                           zipCode.fave = 1;
-                          _favesController.updateItem(zipCode);
+                          widget._favesController.updateItem(zipCode);
                           refreshList();
                         },
                       ),
@@ -219,17 +259,18 @@ class _List extends StatelessWidget {
                   title: const Text("Add to favorites"),
                   onTap: () {
                     zipCode.fave = 1;
-                    _favesController.updateItem(zipCode);
+                    widget._favesController.updateItem(zipCode);
                     refreshList();
                     Navigator.pop(context);
                     var snackBar = SnackBar(
                       content: Text(
-                          "Added ${zipCode.code} ${zipCode.town}, ${zipCode.area} to favorites"),
+                        "Added ${zipCode.code} ${zipCode.town}, ${zipCode.area} to favorites",
+                      ),
                       action: SnackBarAction(
                         label: 'UNDO',
                         onPressed: () {
                           zipCode.fave = 0;
-                          _favesController.updateItem(zipCode);
+                          widget._favesController.updateItem(zipCode);
                           refreshList();
                         },
                       ),
@@ -242,7 +283,8 @@ class _List extends StatelessWidget {
             title: const Text("Open in Maps"),
             onTap: () {
               _launchUrl(
-                  "https://google.com/maps/search/${zipCode.town}, ${zipCode.area}");
+                "https://google.com/maps/search/${zipCode.town}, ${zipCode.area}",
+              );
               Navigator.pop(context);
             },
           ),

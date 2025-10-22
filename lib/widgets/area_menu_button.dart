@@ -1,13 +1,10 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
-import '../views/cities_screen.dart';
+import 'package:zipcodeph_flutter/views/areaspage.dart';
 
 class AreaMenuButton extends StatelessWidget {
-  const AreaMenuButton({
-    Key? key,
-    required this.bgImage,
-    required this.label,
-  }) : super(key: key);
+  const AreaMenuButton({Key? key, required this.bgImage, required this.label})
+    : super(key: key);
 
   final AssetImage bgImage;
   final String label;
@@ -21,23 +18,15 @@ class AreaMenuButton extends StatelessWidget {
         children: [
           Container(
             decoration: BoxDecoration(
-              borderRadius: const BorderRadius.all(
-                Radius.circular(10.0),
-              ),
-              image: DecorationImage(
-                image: bgImage,
-                fit: BoxFit.fitWidth,
-              ),
+              borderRadius: const BorderRadius.all(Radius.circular(10.0)),
+              image: DecorationImage(image: bgImage, fit: BoxFit.fitWidth),
             ),
             width: double.infinity,
             height: _height,
           ),
           ClipRRect(
             child: BackdropFilter(
-              filter: ImageFilter.blur(
-                sigmaX: 0.0,
-                sigmaY: 0.0,
-              ),
+              filter: ImageFilter.blur(sigmaX: 0.0, sigmaY: 0.0),
               child: Container(
                 color: const Color(0x10888888),
                 alignment: Alignment.center,
@@ -73,7 +62,7 @@ class AreaMenuButton extends StatelessWidget {
                 ),
               ),
             ),
-          )
+          ),
         ],
       ),
     );

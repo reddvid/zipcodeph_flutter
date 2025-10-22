@@ -17,6 +17,8 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> with RouteAware {
   late SearchBar searchBar;
   late String query = "";
+  late FocusNode _focusNode;
+  late TextEditingController _textController;
 
   void _refreshList() {
     setState(() {});
@@ -25,40 +27,66 @@ class _SearchPageState extends State<SearchPage> with RouteAware {
   @override
   void initState() {
     super.initState();
+    _focusNode = FocusNode();
+    _textController = TextEditingController();
 
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
-      routeObserver.subscribe(this, ModalRoute.of(context)!);
-    });
-  }
-
-  AppBar buildAppBar(BuildContext context) {
-    return AppBar(
-      title: const Text("Search"),
-      actions: [searchBar],
-    );
-  }
-
-  _SearchPageState() {
+    // Initialize SearchBar after controllers are ready
     searchBar = SearchBar(
+      elevation: WidgetStatePropertyAll(0),
       hintText: "Search towns, cities, or province",
+      controller: _textController,
+      focusNode: _focusNode,
       onChanged: (value) {
         setState(() {
           query = value;
         });
       },
     );
+
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+      routeObserver.subscribe(this, ModalRoute.of(context)!);
+      // Auto-focus the search bar when the page loads
+      _focusNode.requestFocus();
+    });
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    _textController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void didPopNext() {
+    super.didPopNext();
+    // Focus search bar when returning to this page
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (_focusNode.canRequestFocus) {
+        _focusNode.requestFocus();
+      }
+    });
+  }
+
+  AppBar buildAppBar(BuildContext context) {
+    return AppBar(title: const Text("Search"), actions: [searchBar]);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(actions: [searchBar],),
-      body: _List(widget._searchController, query, _refreshList),
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+          child: searchBar,
+        ),
+        Expanded(child: _List(widget._searchController, query, _refreshList)),
+      ],
     );
   }
 }
 
-class _List extends StatelessWidget {
+class _List extends StatefulWidget {
   final CustomSearchController _searchController;
   final String _query;
   final VoidCallback _refreshList;
@@ -66,82 +94,114 @@ class _List extends StatelessWidget {
   const _List(this._searchController, this._query, this._refreshList);
 
   @override
+  State<_List> createState() => _ListState();
+}
+
+class _ListState extends State<_List> {
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<ZipCode>?>(
-        future: _searchController.findCodes(_query),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return ListView.separated(
-              shrinkWrap: true,
+      future: widget._searchController.findCodes(widget._query),
+      builder: (context, snapshot) {
+        if (snapshot.hasData) {
+          return Scrollbar(
+            controller: _scrollController,
+            thumbVisibility: true,
+            child: ListView.separated(
+              controller: _scrollController,
               padding: const EdgeInsets.only(bottom: 80),
               separatorBuilder: (context, index) => const Divider(),
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 ZipCode zipCode = snapshot.data![index];
                 return ListTile(
-                    onLongPress: () {
-                      showModalBottomSheet<void>(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return bottomSheet(
-                                context, snapshot.data![index], _refreshList);
-                          });
-                    },
-                    onTap: () {
-                      showModalBottomSheet<void>(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return bottomSheet(
-                                context, snapshot.data![index], _refreshList);
-                          });
-                    },
-                    visualDensity: const VisualDensity(vertical: -4),
-                    // to compact
-                    leading: Container(
-                        width: 48,
-                        height: double.infinity,
-                        alignment: Alignment.center,
-                        child: Text(
-                          zipCode.code.toString(),
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                              fontSize: 16, fontWeight: FontWeight.bold),
-                        )),
-                    subtitle: Text(zipCode.area),
-                    title: Text(zipCode.town));
+                  onLongPress: () {
+                    showModalBottomSheet<void>(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return bottomSheet(
+                          context,
+                          snapshot.data![index],
+                          widget._refreshList,
+                        );
+                      },
+                    );
+                  },
+                  onTap: () {
+                    showModalBottomSheet<void>(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return bottomSheet(
+                          context,
+                          snapshot.data![index],
+                          widget._refreshList,
+                        );
+                      },
+                    );
+                  },
+                  visualDensity: const VisualDensity(vertical: -4),
+                  // to compact
+                  leading: Container(
+                    width: 48,
+                    height: double.infinity,
+                    alignment: Alignment.center,
+                    child: Text(
+                      zipCode.code.toString(),
+                      textAlign: TextAlign.center,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                  subtitle: Text(zipCode.area),
+                  title: Text(zipCode.town),
+                );
               },
-            );
-          } else {
-            return Center(
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Image.asset(
-                      'assets/images/notfound.png',
-                      width: MediaQuery.of(context).size.width * 0.6,
-                    ),
-                    Text(
-                      "Found nothing for '$_query'",
-                      style: const TextStyle(fontWeight: FontWeight.w600),
-                    ),
-                    TextButton(
-                        onPressed: () async {
-                          final info = await PackageInfo.fromPlatform();
-                          _launchUrl(
-                              "mailto:reddavidapps?subject=[FEEDBACK] ZIP Code PH&body=App version: ${info.version} build ${info.buildNumber}");
-                        },
-                        child: const Text(
-                          "SEND FEEDBACK",
-                          style: TextStyle(color: Colors.red),
-                        ))
-                  ]),
-            );
-          }
-        });
+            ),
+          );
+        } else {
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Image.asset(
+                  'assets/images/notfound.png',
+                  width: MediaQuery.of(context).size.width * 0.6,
+                ),
+                Text(
+                  "Found nothing for '${widget._query}'",
+                  style: const TextStyle(fontWeight: FontWeight.w600),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    final info = await PackageInfo.fromPlatform();
+                    _launchUrl(
+                      "mailto:reddavidapps?subject=[FEEDBACK] ZIP Code PH&body=App version: ${info.version} build ${info.buildNumber}",
+                    );
+                  },
+                  child: const Text(
+                    "SEND FEEDBACK",
+                    style: TextStyle(color: Colors.red),
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+      },
+    );
   }
 
-  bottomSheet(
-      BuildContext context, ZipCode zipCode, VoidCallback refreshList) {
+  bottomSheet(BuildContext context, ZipCode zipCode, VoidCallback refreshList) {
     return Container(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Column(
@@ -160,12 +220,16 @@ class _List extends StatelessWidget {
             leading: const Icon(Icons.copy),
             title: const Text("Copy"),
             onTap: () {
-              Clipboard.setData(ClipboardData(
-                  text: "${zipCode.code} ${zipCode.town}, ${zipCode.area}"));
+              Clipboard.setData(
+                ClipboardData(
+                  text: "${zipCode.code} ${zipCode.town}, ${zipCode.area}",
+                ),
+              );
               Navigator.pop(context);
               var snackBar = SnackBar(
                 content: Text(
-                    "Copied ${zipCode.code} ${zipCode.town}, ${zipCode.area}"),
+                  "Copied ${zipCode.code} ${zipCode.town}, ${zipCode.area}",
+                ),
               );
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
             },
@@ -176,17 +240,18 @@ class _List extends StatelessWidget {
                   title: const Text("Remove from favorites"),
                   onTap: () {
                     zipCode.fave = 0;
-                    _searchController.updateItem(zipCode);
+                    widget._searchController.updateItem(zipCode);
                     refreshList();
                     Navigator.pop(context);
                     var snackBar = SnackBar(
                       content: Text(
-                          "Removed ${zipCode.code} ${zipCode.town}, ${zipCode.area} from favorites"),
+                        "Removed ${zipCode.code} ${zipCode.town}, ${zipCode.area} from favorites",
+                      ),
                       action: SnackBarAction(
                         label: 'UNDO',
                         onPressed: () {
                           zipCode.fave = 1;
-                          _searchController.updateItem(zipCode);
+                          widget._searchController.updateItem(zipCode);
                           refreshList();
                         },
                       ),
@@ -199,17 +264,18 @@ class _List extends StatelessWidget {
                   title: const Text("Add to favorites"),
                   onTap: () {
                     zipCode.fave = 1;
-                    _searchController.updateItem(zipCode);
+                    widget._searchController.updateItem(zipCode);
                     refreshList();
                     Navigator.pop(context);
                     var snackBar = SnackBar(
                       content: Text(
-                          "Added ${zipCode.code} ${zipCode.town}, ${zipCode.area} to favorites"),
+                        "Added ${zipCode.code} ${zipCode.town}, ${zipCode.area} to favorites",
+                      ),
                       action: SnackBarAction(
                         label: 'UNDO',
                         onPressed: () {
                           zipCode.fave = 0;
-                          _searchController.updateItem(zipCode);
+                          widget._searchController.updateItem(zipCode);
                           refreshList();
                         },
                       ),
@@ -222,7 +288,8 @@ class _List extends StatelessWidget {
             title: const Text("Open in Maps"),
             onTap: () {
               _launchUrl(
-                  "https://google.com/maps/search/${zipCode.town}, ${zipCode.area}");
+                "https://google.com/maps/search/${zipCode.town}, ${zipCode.area}",
+              );
               Navigator.pop(context);
             },
           ),

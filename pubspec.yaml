@@ -27,7 +27,7 @@ dependencies:
   shimmer: ^3.0.0
   sqflite: ^2.4.2
   url_launcher: ^6.3.2
-
+  animated_bottom_navigation_bar: ^1.4.0
   http: ^1.5.0
 dev_dependencies:
   flutter_test:

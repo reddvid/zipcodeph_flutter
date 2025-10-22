@@ -2,11 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:zipcodeph_flutter/views/areaspage.dart';
 
 class MenuInkwell extends StatelessWidget {
-  const MenuInkwell({
-    super.key,
-    required this.title,
-    required this.height,
-  });
+  const MenuInkwell({super.key, required this.title, required this.height});
 
   final String title;
   final double height;
@@ -22,14 +18,12 @@ class MenuInkwell extends StatelessWidget {
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (_) => AreasPage(area: title),
-            ),
+            MaterialPageRoute(builder: (_) => AreasPage(area: title)),
           );
         },
         child: SizedBox(
           width: double.infinity,
-          height: height,
+          height: double.infinity,
           child: Center(
             child: Text(
               title,

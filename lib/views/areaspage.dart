@@ -14,6 +14,13 @@ class AreasPage extends StatefulWidget {
 
 class _AreasPageState extends State<AreasPage> with RouteAware {
   final AreaRepository _areaRepository = AreaRepository();
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
@@ -29,8 +36,10 @@ class _AreasPageState extends State<AreasPage> with RouteAware {
     var menu = _areaRepository.menu(widget.area);
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.area,
-            style: const TextStyle(fontWeight: FontWeight.bold)),
+        title: Text(
+          widget.area,
+          style: const TextStyle(fontWeight: FontWeight.bold),
+        ),
       ),
       body: Stack(
         children: [
@@ -40,36 +49,35 @@ class _AreasPageState extends State<AreasPage> with RouteAware {
               alignment: Alignment.topCenter,
               child: Container(
                 constraints: const BoxConstraints(minWidth: 800, maxWidth: 800),
-                child: ListView.separated(
-                  shrinkWrap: true,
-                  padding: const EdgeInsets.only(bottom: 80),
-                  separatorBuilder: (context, index) => const Divider(),
-                  itemCount: menu.length,
-                  itemBuilder: (context, index) {
-                    return Center(
-                      child: ListTile(
-                        visualDensity: const VisualDensity(vertical: -4),
-                        // to compact
-                        trailing: const Icon(Icons.chevron_right),
-                        title: Text(
-                          menu[index],
-                        ),
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ZipsPage(
-                                area: [
-                                  widget.area,
-                                  menu[index],
-                                ],
+                child: Scrollbar(
+                  controller: _scrollController,
+                  thumbVisibility: true,
+                  child: ListView.separated(
+                    controller: _scrollController,
+                    shrinkWrap: true,
+                    padding: const EdgeInsets.only(bottom: 80),
+                    separatorBuilder: (context, index) => const Divider(),
+                    itemCount: menu.length,
+                    itemBuilder: (context, index) {
+                      return Center(
+                        child: ListTile(
+                          visualDensity: const VisualDensity(vertical: -4),
+                          // to compact
+                          trailing: const Icon(Icons.chevron_right),
+                          title: Text(menu[index]),
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) =>
+                                    ZipsPage(area: [widget.area, menu[index]]),
                               ),
-                            ),
-                          );
-                        },
-                      ),
-                    );
-                  },
+                            );
+                          },
+                        ),
+                      );
+                    },
+                  ),
                 ),
               ),
             ),

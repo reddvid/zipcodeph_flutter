@@ -13,9 +13,7 @@ import 'package:share_plus/share_plus.dart';
 import 'package:zipcodeph_flutter/views/alaminpage.dart';
 import 'package:zipcodeph_flutter/widgets/menu/group_menu_button.dart';
 import '../main.dart';
-import '../views/aboutpage.dart';
-import '../views/favespage.dart';
-import '../views/searchpage.dart';
+
 import 'package:http/http.dart' as http;
 
 class MainMenu extends StatefulWidget {
@@ -44,8 +42,9 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
 
   void loadTrivias() async {
     try {
-      final response = await http
-          .get(Uri.parse("https://api.npoint.io/25a6f8775d3cb3d8f24c/"));
+      final response = await http.get(
+        Uri.parse("https://api.npoint.io/25a6f8775d3cb3d8f24c/"),
+      );
       // debugPrint(response.body);
 
       if (response.statusCode == 200) {
@@ -61,9 +60,9 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
     } on SocketException catch (e) {
       // Not Connected
       debugPrint("Reading local trivias\n${e.message}");
-      DefaultAssetBundle.of(context)
-          .loadString("assets/json/trivias.json")
-          .then((value) {
+      DefaultAssetBundle.of(
+        context,
+      ).loadString("assets/json/trivias.json").then((value) {
         final jsonResult = jsonDecode(value)['trivias'];
         setState(() {
           trivias = jsonResult;
@@ -76,19 +75,17 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
 
   @override
   Widget build(BuildContext context) {
-    _height = ResponsiveBreakpoints.of(context).largerThan(MOBILE) ? 180 : 110;
-    debugPrint(_height.toString());
+    // Calculate height to fill available screen space
+    final screenHeight = MediaQuery.of(context).size.height;
+    final availableHeight =
+        screenHeight - 400; // Account for trivia section and padding
+    _height = availableHeight / 4; // Divide by 4 cards to fill the height
+
+    debugPrint('Screen height: $screenHeight, Card height: $_height');
     return Container(
-      constraints: const BoxConstraints(minWidth: 800, maxWidth: 800),
-      // padding: const EdgeInsets.symmetric(horizontal: 10),
-      padding: ResponsiveValue<EdgeInsets>(context,
-          defaultValue: const EdgeInsets.symmetric(horizontal: 30.0),
-          conditionalValues: [
-            const Condition.smallerThan(
-              name: TABLET,
-              value: EdgeInsets.symmetric(horizontal: 0.0),
-            ),
-          ]).value,
+      width: double.infinity, // Remove width constraints
+      // Remove horizontal padding to fill entire width
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 40),
       child: Stack(
         children: [
           Align(
@@ -97,71 +94,48 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
               mainAxisAlignment: MainAxisAlignment.start,
               mainAxisSize: MainAxisSize.min,
               children: [
-                ResponsiveVisibility(
-                  visible: false,
-                  hiddenConditions: const [Condition.largerThan(name: MOBILE)],
-                  child: aboutButton(),
-                ),
                 trivia(),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    searchButton(),
-                    favoritesButton(),
-                  ],
-                ),
-                // LIST
+                const SizedBox(height: 16),
+                // LIST - Fill remaining space
                 ResponsiveVisibility(
                   visibleConditions: const [
-                    Condition.between(
-                      start: 0,
-                      end: 1200,
-                    ),
+                    Condition.between(start: 0, end: 1200),
                   ],
                   hiddenConditions: const [
-                    Condition.between(
-                      start: 1201,
-                      end: 1920,
-                    ),
+                    Condition.between(start: 1201, end: 1920),
                   ],
                   child: Expanded(
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      spacing: 15,
                       children: [
-                        GroupMenuButton(
-                          title: 'Metro Manila',
-                          backgroundImagePath: 'assets/images/ncr.jpg',
-                          height: _height,
+                        Expanded(
+                          child: GroupMenuButton(
+                            title: 'Metro Manila',
+                            backgroundImagePath: 'assets/images/ncr.jpg',
+                            height: _height,
+                          ),
                         ),
-                        const Divider(
-                          height: 10,
-                          color: Colors.transparent,
+                        Expanded(
+                          child: GroupMenuButton(
+                            title: 'Luzon',
+                            backgroundImagePath: 'assets/images/luzon.jpg',
+                            height: _height,
+                          ),
                         ),
-                        GroupMenuButton(
-                          title: 'Luzon',
-                          backgroundImagePath: 'assets/images/luzon.jpg',
-                          height: _height,
+                        Expanded(
+                          child: GroupMenuButton(
+                            title: 'Visayas',
+                            backgroundImagePath: 'assets/images/visayas.jpg',
+                            height: _height,
+                          ),
                         ),
-                        const Divider(
-                          height: 10,
-                          color: Colors.transparent,
-                        ),
-                        GroupMenuButton(
-                          title: 'Visayas',
-                          backgroundImagePath: 'assets/images/visayas.jpg',
-                          height: _height,
-                        ),
-                        const Divider(
-                          height: 10,
-                          color: Colors.transparent,
-                        ),
-                        GroupMenuButton(
-                          title: 'Mindanao',
-                          backgroundImagePath: 'assets/images/mindanao.jpg',
-                          height: _height,
-                        ),
-                        const Divider(
-                          height: 10,
-                          color: Colors.transparent,
+                        Expanded(
+                          child: GroupMenuButton(
+                            title: 'Mindanao',
+                            backgroundImagePath: 'assets/images/mindanao.jpg',
+                            height: _height,
+                          ),
                         ),
                       ],
                     ),
@@ -237,26 +211,18 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
     return Container(
       width: double.infinity,
       decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(
-          Radius.circular(10),
-        ),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
         gradient: LinearGradient(
           begin: Alignment.topRight,
           end: Alignment.bottomLeft,
-          colors: [
-            Colors.yellow,
-            Colors.red,
-            Colors.blue,
-          ],
+          colors: [Colors.yellow, Colors.red, Colors.blue],
         ),
       ),
       child: ListTile(
         onTap: () {
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (context) => const AlaminPage(),
-            ),
+            MaterialPageRoute(builder: (context) => const AlaminPage()),
           );
         },
         title: const Text("Test Your Knowledge"),
@@ -271,16 +237,11 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
       width: double.infinity,
       padding: const EdgeInsets.fromLTRB(15, 15, 15, 0),
       decoration: const BoxDecoration(
-        borderRadius: BorderRadius.all(
-          Radius.circular(10),
-        ),
+        borderRadius: BorderRadius.all(Radius.circular(10)),
         gradient: LinearGradient(
           begin: Alignment.topRight,
           end: Alignment.bottomLeft,
-          colors: [
-            Colors.blue,
-            Colors.red,
-          ],
+          colors: [Colors.blue, Colors.red],
         ),
       ),
       child: Column(
@@ -289,12 +250,12 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
           const Text(
             'Did You Know?',
             style: TextStyle(
-                fontWeight: FontWeight.bold, color: Colors.white, fontSize: 16),
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+              fontSize: 16,
+            ),
           ),
-          const Divider(
-            height: 5,
-            color: Colors.transparent,
-          ),
+          const Divider(height: 5, color: Colors.transparent),
           RichText(
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
@@ -319,10 +280,7 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
               style: const TextStyle(color: Colors.white),
             ),
           ),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: shareButton(),
-          )
+          Align(alignment: Alignment.bottomRight, child: shareButton()),
         ],
       ),
     );
@@ -342,9 +300,7 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
           style: TextStyle(fontSize: 12.0, color: Colors.white),
         ),
         onPressed: () {
-          Clipboard.setData(
-            ClipboardData(text: currentTrivia),
-          );
+          Clipboard.setData(ClipboardData(text: currentTrivia));
           // var snackBar = const SnackBar(
           //   content: Text("Trivia copied for sharing"),
           // );
@@ -353,92 +309,7 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
         },
         style: ButtonStyle(
           shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18.0),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  aboutButton() {
-    return Align(
-      alignment: Alignment.topRight,
-      child: TextButton.icon(
-        icon: Icon(
-          Platform.isAndroid ? Icons.info_outline : CupertinoIcons.info_circle,
-        ),
-        label: const Text('Help & About'),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const AboutPage(),
-            ),
-          );
-        },
-        style: ButtonStyle(
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18.0),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  searchButton() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5),
-      child: TextButton.icon(
-        icon: Icon(
-          Platform.isAndroid ? Icons.search : CupertinoIcons.search,
-        ),
-        label: const Text(
-          'Search ZIP Codes',
-        ),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => SearchPage(),
-            ),
-          );
-        },
-        style: ButtonStyle(
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18.0),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  favoritesButton() {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5),
-      child: TextButton.icon(
-        icon: Icon(
-          Platform.isAndroid ? Icons.favorite_outline : CupertinoIcons.heart,
-        ),
-        label: const Text('Favorites'),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => FavesPage(),
-            ),
-          );
-        },
-        style: ButtonStyle(
-          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(18.0),
-            ),
+            RoundedRectangleBorder(borderRadius: BorderRadius.circular(18.0)),
           ),
         ),
       ),
@@ -446,17 +317,11 @@ class _MainMenuState extends State<MainMenu> with RouteAware {
   }
 
   divider() {
-    return const Divider(
-      height: 10,
-      color: Colors.transparent,
-    );
+    return const Divider(height: 10, color: Colors.transparent);
   }
 
   enddivider() {
-    return const Divider(
-      height: 60,
-      color: Colors.transparent,
-    );
+    return const Divider(height: 60, color: Colors.transparent);
   }
 
   void _shareTrivia(String currentTrivia) {
